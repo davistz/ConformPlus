@@ -1,6 +1,6 @@
 # 🏥 Sistema de Controle de Registro de Não Conformidades
 
-**Fundação de Saúde Parreiras Horta**
+**Desafio para o Fundação de Saúde Parreiras Horta**
 
 ## 📄 Descrição do Projeto
 
