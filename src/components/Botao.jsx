@@ -9,6 +9,8 @@ const Botao = ({ children, select, ...rest }) => {
         not: "text-white border-l-0 ml-[25px]",
         yes: "bg-white text-[#164095] ",
         btn: "bg-[#4880FF] text-white py-3 px-6 rounded-lg font-bold w-[288px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
+        btn_add:
+          "bg-[#164095] text-white py-3 px-6 rounded-lg font-bold w-[300px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
       },
       type: {},
     },
@@ -28,7 +30,7 @@ const Botao = ({ children, select, ...rest }) => {
 
 Botao.propTypes = {
   children: PropTypes.node.isRequired,
-  select: PropTypes.oneOf(["not", "yes"]).isRequired,
+  select: PropTypes.oneOf(["not", "yes", "btn", "btn_add"]).isRequired,
 };
 
 export default Botao;
