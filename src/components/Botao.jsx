@@ -8,7 +8,9 @@ const Botao = ({ children, select, ...rest }) => {
       select: {
         not: "text-white border-l-0 ml-[25px]",
         yes: "bg-white text-[#164095] ",
+        btn: "bg-[#4880FF] text-white py-3 px-6 rounded-lg font-bold w-[288px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
       },
+      type: {},
     },
   });
 

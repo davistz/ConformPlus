@@ -2,14 +2,14 @@ import PropTypes from "prop-types";
 
 const Checkbox = ({ label, name, id }) => {
   return (
-    <div className="flex items-center">
+    <div className={`flex items-center mb-[26px]`}>
       <input
         type="checkbox"
         name={name}
         id={id}
-        className="mr-2 w-6 h-6 rounded-xl"
+        className="mr-2 w-6 h-6 rounded-md appearance-none border border-gray-300 bg-gray-200 checked:bg-[#164095] checked:border-transparent checked:after:content-['✔'] checked:after:text-white checked:after:text-sm checked:after:block checked:after:text-center"
       />
-      <label htmlFor={id} className="text-lg">
+      <label htmlFor={id} className="text-lg text-[#393939]">
         {label}
       </label>
     </div>
