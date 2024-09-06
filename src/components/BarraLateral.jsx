@@ -10,10 +10,10 @@ const BarraLateral = () => {
   return (
     <div
       id="geral"
-      className="bg-[#164095] w-[248px] h-[877px] box-border flex flex-col justify-between"
+      className="bg-[#164095] box-border flex flex-col justify-between md:h-screen sm:h-screen lg:h-[877px]"
     >
-      <div>
-        <Botao className="" select="yes">
+      <div className="mr-3">
+        <Botao select="yes">
           <FaTableList className="mr-[10px]" />
           Não conformidades
         </Botao>
@@ -26,7 +26,6 @@ const BarraLateral = () => {
           Usuários
         </Botao>
       </div>
-
       <div className="mb-[50px]">
         <hr />
         <Botao select="not">

@@ -3,12 +3,12 @@ import { tv } from "tailwind-variants";
 
 const Botao = ({ children, select, ...rest }) => {
   const botao = tv({
-    base: "flex font-bold items-center mt-2 rounded-lg w-[210px] h-[50px] px-[15px]",
+    base: "flex font-bold items-center mt-2 w-[210px] h-[50px] px-[15px]",
     variants: {
       select: {
         not: "text-white border-l-0 ml-[25px]",
         yes: "bg-white text-[#164095] ",
-        btn: "bg-[#4880FF] text-white py-3 px-6 rounded-lg font-bold w-[288px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
+        btn: "bg-[#4880FF] text-white py-3 px-6 font-bold w-[288px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
         btn_add:
           "bg-[#164095] text-white py-3 px-6 rounded-lg font-bold w-[300px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
       },
