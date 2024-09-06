@@ -8,7 +8,7 @@ function App() {
       <div>
         <Header />
         <div className="flex">
-          <BarraLateral />
+          <BarraLateral className="" />
           <Home />
         </div>
       </div>

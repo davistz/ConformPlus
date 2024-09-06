@@ -7,18 +7,19 @@ import { IoMdAdd } from "react-icons/io";
 const Home = () => {
   return (
     <div className="flex flex-col overflow-hidden">
-      <div className="flex flex-wrap items-start space-x-4 px-4 mt-[55px]">
-        <BarraPesquisa />
-        <Filtro />
-        <div className="mb-10 w-full md:w-auto">
-          <Botao className="ml-auto md:ml-[480px]" select="btn_add">
-            Adicionar Não Conformidade
-            <IoMdAdd className="h-5 w-5 ml-2" />
-          </Botao>
-        </div>
+      <div className="flex mobile:flex-col flex-row items-start space-x-4 px-4 mt-[55px]">
+        <BarraPesquisa className="desktop:w-[450px] laptop:w-[280px] mobile:w-[280px]" />
+        <Filtro className="desktop:w-[100px] laptop:w-[95px]" />
+        <Botao
+          className="desktop:text-sm desktop:w-[255px] desktop:ml-[630px] laptop:w-[280px] mobile:w-[280px] mb-10"
+          select="btn_add"
+        >
+          Adicionar Não Conformidade
+          <IoMdAdd className="h-5 w-5 ml-2" />
+        </Botao>
       </div>
-      <div className="ml-[50px] px-4 w-full">
-        <Conformidades title="Não Iniciado" />
+      <div className="ml-[50px] px-4 ">
+        <Conformidades />
       </div>
     </div>
   );

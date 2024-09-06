@@ -3,14 +3,15 @@ import { IoIosGitNetwork } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
 import { FaGear } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
+import PropTypes from "prop-types";
 
 import Botao from "./Botao";
 
-const BarraLateral = () => {
+const BarraLateral = ({ className }) => {
   return (
     <div
       id="geral"
-      className="bg-[#164095] box-border flex flex-col justify-between md:h-screen sm:h-screen lg:h-[877px]"
+      className={`${className} bg-[#164095] box-border flex flex-col justify-between  tablet:h-screen desktop:h-[877px]`}
     >
       <div className="mr-3">
         <Botao select="yes">
@@ -39,6 +40,10 @@ const BarraLateral = () => {
       </div>
     </div>
   );
+};
+
+BarraLateral.propTypes = {
+  className: PropTypes.node,
 };
 
 export default BarraLateral;
