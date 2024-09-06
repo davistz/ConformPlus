@@ -1,6 +1,6 @@
 import BarraLateral from "./components/BarraLateral";
 import Header from "./components/Header";
-import TelaConformidade from "./components/TelaConformidade";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
         <Header />
         <div className="flex">
           <BarraLateral />
-          <TelaConformidade />
+          <Home />
         </div>
       </div>
     </>
