@@ -11,7 +11,7 @@ const Home = () => {
         <BarraPesquisa className="desktop:w-[450px] laptop:w-[280px] mobile:w-[280px]" />
         <Filtro className="desktop:w-[100px] laptop:w-[95px]" />
         <Botao
-          className="desktop:text-sm desktop:w-[255px] desktop:ml-[630px] laptop:w-[280px] mobile:w-[280px] mb-10"
+          className="desktop:text-xs justify-center desktop:w-[255px] desktop:ml-[630px] laptop:w-[280px] mobile:w-[280px] mb-10"
           select="btn_add"
         >
           Adicionar Não Conformidade

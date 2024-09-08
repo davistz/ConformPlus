@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import Checkbox from "./Checkbox";
+import Botao from "./Botao";
+import { CiCircleInfo } from "react-icons/ci";
 
 const ConformidadeItem = ({ conformidade }) => {
   const getStatusClasses = () => {
@@ -7,26 +9,30 @@ const ConformidadeItem = ({ conformidade }) => {
       return "bg-[#dbdbdb] text-[#202224]";
     }
     if (conformidade.status == "andamento") {
-      return "bg-[#FFAA04] text-[#202224]";
+      return "bg-[#f5d872] text-[#202224]";
     }
     if (conformidade.status == "concluida") {
-      return "bg-[#00969eae] text-[#202224]";
+      return "bg-[#27aeb564] text-[#202224]";
     }
   };
 
   return (
     <div
-      className={`${getStatusClasses()} flex w-[1440px] mt-2 ml-[27px] py-5 rounded-[10px]`}
+      className={`${getStatusClasses()} flex w-[1440px] h-[60px] items-center ml-[27px] rounded-[10px]`}
     >
       <div className="flex ml-[30px] ">
-        <Checkbox />
-        <div className="flex ml-[75px] text-xl font-medium gap-[210px]">
-          <p>{conformidade.id}</p>
-          <p>{conformidade.title}</p>
-          <p>{conformidade.departament}</p>
-          <p>{conformidade.departament_destino}</p>
-          <p>{conformidade.grau_severidade}</p>
+        <Checkbox type="conformidade" />
+        <div className="flex ml-[65px] mt-2 text-base font-normal">
+          <p className="mr-[165px]">{conformidade.id}</p>
+          <p className="mr-[140px]">{conformidade.departament}</p>
+          <p className="mr-[105px]">{conformidade.departament_destino}</p>
+          <p className="mr-[175px]">{conformidade.data}</p>
+          <p className="mr-[145px]">{conformidade.grau_severidade}</p>
         </div>
+        <Botao className="ml-8" select="conformidade_aberta">
+          Em aberto
+        </Botao>
+        <CiCircleInfo className="h-[35px] w-[35px] mx-3" />
       </div>
     </div>
   );

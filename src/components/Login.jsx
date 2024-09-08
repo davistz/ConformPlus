@@ -39,16 +39,27 @@ const Login = () => {
             placeholder="Digite sua senha novamente"
             className="w-[516px] h-[56px] md:w-[316px] md:h-[45px] lg:w-[516px] lg:h-[50px] mb-2 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#A6A6A6] border border-[#A6A6A6]"
           />
-          <Checkbox label="Salvar Senha" name="Salvar" id="Salvar" />
+          <Checkbox
+            type="login"
+            label="Salvar Senha"
+            name="Salvar"
+            id="Salvar"
+          />
 
           <div className="flex-col mt-[55px] md:mt-[35px]">
-            <div className="flex justify-center md:mr-[50px] lg:mr-10 gap-[45px]">
+            <div className="flex justify-center md:mr-[50px] lg:mr-10 mb-5 gap-[45px]">
               <Checkbox
+                type="login"
                 label="Administrador"
                 name="Administrador"
                 id="Administrador"
               />
-              <Checkbox label="Usúario" name="Usúario" id="Usúario" />
+              <Checkbox
+                type="login"
+                label="Usúario"
+                name="Usúario"
+                id="Usúario"
+              />
             </div>
           </div>
         </div>

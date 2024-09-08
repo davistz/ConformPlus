@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Poppins", "sans-serif"],
+      },
       screens: {
         tablet: "640px",
         // => @media (min-width: 640px) { ... }
@@ -15,5 +21,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [react(), svgr()],
 };
