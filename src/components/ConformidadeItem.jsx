@@ -3,43 +3,47 @@ import Checkbox from "./Checkbox";
 import Botao from "./Botao";
 import { CiCircleInfo } from "react-icons/ci";
 
-const ConformidadeItem = ({ conformidade }) => {
+const ConformidadeItem = ({ conformidade, btn_status, color }) => {
   const getStatusClasses = () => {
-    if (conformidade.status == "aberto") {
+    if (conformidade.status === "aberto") {
       return "bg-[#dbdbdb] text-[#202224]";
     }
-    if (conformidade.status == "andamento") {
+    if (conformidade.status === "andamento") {
       return "bg-[#f5d872] text-[#202224]";
     }
-    if (conformidade.status == "concluida") {
+    if (conformidade.status === "concluida") {
       return "bg-[#27aeb564] text-[#202224]";
     }
   };
 
   return (
-    <div
-      className={`${getStatusClasses()} flex w-[1440px] h-[60px] items-center ml-[27px] rounded-[10px]`}
+    <li
+      className={`${getStatusClasses()} flex w-[1440px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
     >
-      <div className="flex ml-[30px] ">
+      <div className="w-full items-center ml-[30px] flex">
         <Checkbox type="conformidade" />
-        <div className="flex ml-[65px] mt-2 text-base font-normal">
-          <p className="mr-[165px]">{conformidade.id}</p>
-          <p className="mr-[140px]">{conformidade.departament}</p>
-          <p className="mr-[105px]">{conformidade.departament_destino}</p>
-          <p className="mr-[175px]">{conformidade.data}</p>
-          <p className="mr-[145px]">{conformidade.grau_severidade}</p>
+        <ul className="grid grid-cols-[100px_auto_auto_auto_auto] w-full ml-[55px] text-base font-normal list-none">
+          <li className="mr-[150px]">{conformidade.id}</li>
+          <li className="mr-[150px]">{conformidade.departament}</li>
+          <li className="mr-[150px]">{conformidade.departament_destino}</li>
+          <li className="mr-[150px]">{conformidade.data}</li>
+          <li>{conformidade.grau_severidade}</li>
+        </ul>
+        <div className="flex items-center">
+          <Botao className={`ml-8 ${color}`} select="conformidade">
+            {btn_status}
+          </Botao>
+          <CiCircleInfo className="h-[35px] w-[35px] mx-3" />
         </div>
-        <Botao className="ml-8" select="conformidade_aberta">
-          Em aberto
-        </Botao>
-        <CiCircleInfo className="h-[35px] w-[35px] mx-3" />
       </div>
-    </div>
+    </li>
   );
 };
 
 ConformidadeItem.propTypes = {
-  conformidade: PropTypes.node.isRequired,
+  conformidade: PropTypes.object.isRequired,
+  btn_status: PropTypes.string,
+  color: PropTypes.string,
 };
 
 export default ConformidadeItem;

@@ -1,11 +1,13 @@
-const Id = () => {
+const Id = ({ className }) => {
   return (
-    <div className="flex font-bold ml-[150px]">
-      <h1 className="mr-[140px]">Id</h1>
-      <h1 className="mr-[140px]">Departamento</h1>
-      <h1 className="mr-[140px]">Setor Destino</h1>
-      <h1 className="mr-[140px]">Data</h1>
-      <h1 className="mr-[140px]">Grau de Severidade</h1>
+    <div
+      className={`${className} grid grid-cols-[100px_300px_350px_200px_200px] w-full font-bold`}
+    >
+      <h1>Id</h1>
+      <h1>Departamento</h1>
+      <h1>Setor Destino</h1>
+      <h1>Data</h1>
+      <h1>Grau de Severidade</h1>
     </div>
   );
 };
