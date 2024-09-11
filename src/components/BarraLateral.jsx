@@ -1,7 +1,7 @@
 import { FaTableList } from "react-icons/fa6";
 import { IoIosGitNetwork } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
-import { FaGear } from "react-icons/fa6";
+
 import { MdLogout } from "react-icons/md";
 import PropTypes from "prop-types";
 
@@ -29,10 +29,6 @@ const BarraLateral = ({ className }) => {
       </div>
       <div className="mb-[50px]">
         <hr />
-        <Botao select="not">
-          <FaGear className="mr-[10px]" />
-          Configurações
-        </Botao>
         <Botao select="not">
           <MdLogout className="mr-[10px]" />
           Sair

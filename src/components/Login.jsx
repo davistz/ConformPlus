@@ -29,7 +29,7 @@ const Login = () => {
             />
             <a
               href="#"
-              className="absolute right-14 top-2 font-medium text-sm text-[#404040]"
+              className="absolute right-14 top-2 font-medium text-sm text-[#404040] hover:text-[#48a7ff] transition-colors"
             >
               Esqueceu a senha?
             </a>

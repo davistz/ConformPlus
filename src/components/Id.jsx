@@ -1,7 +1,9 @@
+import PropTypes from "prop-types";
+
 const Id = ({ className }) => {
   return (
     <div
-      className={`${className} grid grid-cols-[100px_300px_350px_200px_200px] w-full font-bold`}
+      className={`${className} grid grid-cols-[100px_300px_300px_200px_200px] w-full font-bold`}
     >
       <h1>Id</h1>
       <h1>Departamento</h1>
@@ -10,6 +12,10 @@ const Id = ({ className }) => {
       <h1>Grau de Severidade</h1>
     </div>
   );
+};
+
+Id.propTypes = {
+  className: PropTypes.node,
 };
 
 export default Id;

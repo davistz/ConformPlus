@@ -24,8 +24,12 @@ const Conformidades = () => {
         <div className="flex items-center justify-between">
           <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">Em Aberto</h1>
           <div className="flex items-center gap-5 pr-[30px]">
-            <IoMdAdd className="w-7 h-7" />
-            <GiHamburgerMenu className="w-5 h-5" />
+            <a href="#">
+              <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
+            </a>
+            <a href="#">
+              <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
+            </a>
           </div>
         </div>
         <Id className="ml-[140px]" />
@@ -47,8 +51,12 @@ const Conformidades = () => {
             Em Andamento
           </h1>
           <div className="flex items-center gap-5 pr-[30px]">
-            <IoMdAdd className="w-7 h-7" />
-            <GiHamburgerMenu className="w-5 h-5" />
+            <a href="#">
+              <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
+            </a>
+            <a href="#">
+              <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
+            </a>
           </div>
         </div>
         <Id className="ml-[140px]" />
@@ -66,10 +74,16 @@ const Conformidades = () => {
 
       <div className="mt-6 bg-[#00969e64] rounded-xl">
         <div className="flex items-center justify-between">
-          <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">Concluida</h1>
+          <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">
+            Concluídas
+          </h1>
           <div className="flex items-center gap-5 pr-[30px]">
-            <IoMdAdd className="w-7 h-7" />
-            <GiHamburgerMenu className="w-5 h-5" />
+            <a href="#">
+              <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
+            </a>
+            <a href="#">
+              <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
+            </a>
           </div>
         </div>
         <Id className="ml-[140px]" />
