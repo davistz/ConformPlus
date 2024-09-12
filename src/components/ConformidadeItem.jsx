@@ -10,6 +10,7 @@ const ConformidadeItem = ({
   btn_status,
   color,
   alterarStatusConformidade,
+  deletarNaoConformidade,
 }) => {
   const getStatusClasses = () => {
     if (conformidade.status === "aberto") {
@@ -55,12 +56,12 @@ const ConformidadeItem = ({
             <Botao className={`ml-8 ${color}`} select="conformidade">
               {btn_status}
             </Botao>
-            <a href="#">
+            <button onClick={() => deletarNaoConformidade(conformidade.id)}>
               <FaTrashAlt className="text-[#ff4848] hover:text-[#ff0000] h-[20px] w-[20px] mr-2 ml-3 transition-all duration-300" />
-            </a>
-            <a href="#">
+            </button>
+            <button>
               <CiCircleInfo className="h-[35px] w-[35px] mr-3 text-[#6c6c6c] hover:text-[#000000] transition-all duration-300" />
-            </a>
+            </button>
           </div>
         </div>
       </li>
@@ -73,6 +74,7 @@ ConformidadeItem.propTypes = {
   btn_status: PropTypes.string,
   color: PropTypes.string,
   alterarStatusConformidade: PropTypes.func,
+  deletarNaoConformidade: PropTypes.func,
 };
 
 export default ConformidadeItem;

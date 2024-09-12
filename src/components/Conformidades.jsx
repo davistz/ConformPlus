@@ -4,6 +4,7 @@ import Id from "./Id";
 import { useState } from "react";
 import CONFORMIDADES from "../../src/constants/nao_conformidades";
 import ConformidadeItem from "./ConformidadeItem";
+import { toast } from "sonner";
 
 const Conformidades = () => {
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
@@ -18,6 +19,14 @@ const Conformidades = () => {
     (conformidade) => conformidade.status == "concluida"
   );
 
+  const deletarNaoConformidade = (conformidadeId) => {
+    const novasConformidades = conformidades.filter(
+      (conformidade) => conformidade.id != conformidadeId
+    );
+    setConformidades(novasConformidades);
+    toast.success("Não conformidade removida com sucesso!");
+  };
+
   const alterarStatusConformidade = (conformidadeId) => {
     const novasConformidades = conformidades.map((conformidade) => {
       if (conformidade.id != conformidadeId) {
@@ -25,9 +34,11 @@ const Conformidades = () => {
       }
 
       if (conformidade.status == "aberto") {
+        toast.success("Não conformidade alterada para em andamento!");
         return { ...conformidades, status: "andamento" };
       }
       if (conformidade.status == "andamento") {
+        toast.success("Não conformidade alterada para em concluida!");
         return { ...conformidades, status: "concluida" };
       }
       if (conformidade.status == "concluida") {
@@ -60,6 +71,7 @@ const Conformidades = () => {
               btn_status="Em aberto"
               color="bg-[#b1b1b1] text-[#3a3a3a]"
               alterarStatusConformidade={alterarStatusConformidade}
+              deletarNaoConformidade={deletarNaoConformidade}
             />
           ))}
         </div>
@@ -88,6 +100,7 @@ const Conformidades = () => {
               btn_status="Em andamento"
               color="bg-[#FFAA04] text-[#3d331d]"
               alterarStatusConformidade={alterarStatusConformidade}
+              deletarNaoConformidade={deletarNaoConformidade}
             />
           ))}
         </div>
@@ -116,6 +129,7 @@ const Conformidades = () => {
               btn_status="Concluída"
               color="bg-[#00ADB5] text-black"
               alterarStatusConformidade={alterarStatusConformidade}
+              deletarNaoConformidade={deletarNaoConformidade}
             />
           ))}
         </div>
