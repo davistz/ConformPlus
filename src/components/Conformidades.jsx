@@ -18,6 +18,25 @@ const Conformidades = () => {
     (conformidade) => conformidade.status == "concluida"
   );
 
+  const alterarStatusConformidade = (conformidadeId) => {
+    const novasConformidades = conformidades.map((conformidade) => {
+      if (conformidade.id != conformidadeId) {
+        return conformidade;
+      }
+
+      if (conformidade.status == "aberto") {
+        return { ...conformidades, status: "andamento" };
+      }
+      if (conformidade.status == "andamento") {
+        return { ...conformidades, status: "concluida" };
+      }
+      if (conformidade.status == "concluida") {
+        return { ...conformidades, status: "aberto" };
+      }
+    });
+    setConformidades(novasConformidades);
+  };
+
   return (
     <div className="w-full h-full ">
       <div className="bg-white rounded-xl">
@@ -40,6 +59,7 @@ const Conformidades = () => {
               conformidade={conformidade}
               btn_status="Em aberto"
               color="bg-[#b1b1b1] text-[#3a3a3a]"
+              alterarStatusConformidade={alterarStatusConformidade}
             />
           ))}
         </div>
@@ -67,6 +87,7 @@ const Conformidades = () => {
               conformidade={conformidade}
               btn_status="Em andamento"
               color="bg-[#FFAA04] text-[#3d331d]"
+              alterarStatusConformidade={alterarStatusConformidade}
             />
           ))}
         </div>
@@ -94,6 +115,7 @@ const Conformidades = () => {
               conformidade={conformidade}
               btn_status="Concluída"
               color="bg-[#00ADB5] text-black"
+              alterarStatusConformidade={alterarStatusConformidade}
             />
           ))}
         </div>

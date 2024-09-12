@@ -5,7 +5,12 @@ import { CiCircleInfo } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import Botao from "./Botao";
 
-const ConformidadeItem = ({ conformidade, btn_status, color }) => {
+const ConformidadeItem = ({
+  conformidade,
+  btn_status,
+  color,
+  alterarStatusConformidade,
+}) => {
   const getStatusClasses = () => {
     if (conformidade.status === "aberto") {
       return "bg-[#dbdbdb] text-[#202224]";
@@ -21,7 +26,7 @@ const ConformidadeItem = ({ conformidade, btn_status, color }) => {
   return (
     <div>
       <li
-        className={`${getStatusClasses()} flex w-[1440px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
+        className={`${getStatusClasses()}  flex w-[1440px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
       >
         <label
           className={`transition relative ml-[25px] bg-opacity-100 flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg opacity-80 ${color}`}
@@ -29,6 +34,7 @@ const ConformidadeItem = ({ conformidade, btn_status, color }) => {
           <input
             type="checkbox"
             className="absolute cursor-pointer opacity-0"
+            onChange={() => alterarStatusConformidade(conformidade.id)}
           />
           {conformidade.status == "concluida" && (
             <FaCheck className="text-white w-5 h-5" />
@@ -66,6 +72,7 @@ ConformidadeItem.propTypes = {
   conformidade: PropTypes.object.isRequired,
   btn_status: PropTypes.string,
   color: PropTypes.string,
+  alterarStatusConformidade: PropTypes.func,
 };
 
 export default ConformidadeItem;
