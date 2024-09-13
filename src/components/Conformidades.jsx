@@ -5,9 +5,12 @@ import { useState } from "react";
 import CONFORMIDADES from "../../src/constants/nao_conformidades";
 import ConformidadeItem from "./ConformidadeItem";
 import { toast } from "sonner";
+import AddConformidadeDialog from "./AddConformidadeDialog";
 
 const Conformidades = () => {
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
+  const [addConformidadeDialogIsOpen, setaddConformidadeDialogIsOpen] =
+    useState(false);
 
   const conformidadesAberto = conformidades.filter(
     (conformidade) => conformidade.status == "aberto"
@@ -29,20 +32,20 @@ const Conformidades = () => {
 
   const alterarStatusConformidade = (conformidadeId) => {
     const novasConformidades = conformidades.map((conformidade) => {
-      if (conformidade.id != conformidadeId) {
+      if (conformidade.id !== conformidadeId) {
         return conformidade;
       }
 
       if (conformidade.status == "aberto") {
         toast.success("Não conformidade alterada para em andamento!");
-        return { ...conformidades, status: "andamento" };
+        return { ...conformidade, status: "andamento" };
       }
       if (conformidade.status == "andamento") {
         toast.success("Não conformidade alterada para em concluida!");
-        return { ...conformidades, status: "concluida" };
+        return { ...conformidade, status: "concluida" };
       }
       if (conformidade.status == "concluida") {
-        return { ...conformidades, status: "aberto" };
+        return { ...conformidade, status: "aberto" };
       }
     });
     setConformidades(novasConformidades);
@@ -55,7 +58,10 @@ const Conformidades = () => {
           <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">Em Aberto</h1>
           <div className="flex items-center gap-5 pr-[30px]">
             <a href="#">
-              <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
+              <IoMdAdd
+                className="w-7 h-7 hover:scale-110 transition-all duration-300"
+                onClick={() => setaddConformidadeDialogIsOpen(true)}
+              />
             </a>
             <a href="#">
               <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
@@ -132,6 +138,7 @@ const Conformidades = () => {
               deletarNaoConformidade={deletarNaoConformidade}
             />
           ))}
+          <AddConformidadeDialog isOpen={addConformidadeDialogIsOpen} />
         </div>
       </div>
     </div>

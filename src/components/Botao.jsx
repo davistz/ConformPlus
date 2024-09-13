@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { tv } from "tailwind-variants";
 
-const Botao = ({ children, select, ...rest }) => {
+const Botao = ({ children, select, onClick, ...rest }) => {
   const botao = tv({
     base: "flex font-bold items-center",
     variants: {
@@ -23,7 +23,7 @@ const Botao = ({ children, select, ...rest }) => {
       {select === "yes" && (
         <div className="border-l-4 rounded-r-xl border-white pl-6 h-[50px]"></div>
       )}
-      <button href="#" className={botao({ select, ...rest })}>
+      <button href="#" onClick={onClick} className={botao({ select, ...rest })}>
         {children}
       </button>
     </div>
@@ -34,6 +34,7 @@ Botao.propTypes = {
   children: PropTypes.node.isRequired,
   select: PropTypes.oneOf(["not", "yes", "btn", "btn_add", "conformidade"])
     .isRequired,
+  onClick: PropTypes.func,
 };
 
 export default Botao;

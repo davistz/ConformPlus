@@ -17,7 +17,6 @@ const Filter = ({ className }) => {
         <option value="concluidas">Concluídas</option>
       </select>
 
-      {/* Ícone de seta */}
       <FaFilter className="absolute ml-[95px] lg:ml-[65px] top-3 mt-1 text-[#666666] pointer-events-none" />
     </div>
   );

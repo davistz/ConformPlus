@@ -1,6 +1,7 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
+import forms from "@tailwindcss/forms"; // Importa o plugin usando a sintaxe ES6
 
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -11,15 +12,14 @@ export default {
       },
       screens: {
         tablet: "640px",
-        // => @media (min-width: 640px) { ... }
-
         laptop: "1024px",
-        // => @media (min-width: 1024px) { ... }
-
         desktop: "1280px",
-        // => @media (min-width: 1280px) { ... }
       },
     },
   },
-  plugins: [react(), svgr()],
+  plugins: [
+    react(),
+    svgr(),
+    forms, // Adiciona o plugin à lista de plugins
+  ],
 };
