@@ -27,7 +27,7 @@ const ConformidadeItem = ({
   return (
     <div>
       <li
-        className={`${getStatusClasses()}  flex w-[1440px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
+        className={`${getStatusClasses()}  flex w-[1400px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
       >
         <label
           className={`transition relative ml-[25px] bg-opacity-100 flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg opacity-80 ${color}`}

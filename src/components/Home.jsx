@@ -3,30 +3,41 @@ import AddConformidadeDialog from "./AddConformidadeDialog.jsx";
 import BarraPesquisa from "./BarraPesquisa.jsx";
 import Botao from "./Botao.jsx";
 import Conformidades from "./Conformidades.jsx";
-import Filtro from "./Filtro.jsx";
 import { IoMdAdd } from "react-icons/io";
 
 const Home = () => {
-  const [addConformidadeDialogIsOpen, setaddConformidadeDialogIsOpen] =
+  const [addConformidadeDialogIsOpen, setAddConformidadeDialogIsOpen] =
     useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const canViewConformidadesPendente =
+    user?.permission === "Admin" || user?.permission === "Gestor";
 
   return (
     <div className="flex flex-col overflow-hidden">
-      <div className="flex mobile:flex-col flex-row items-start space-x-4 px-4 mt-[55px]">
-        <BarraPesquisa className="desktop:w-[450px] laptop:w-[280px] mobile:w-[280px]" />
-        <Filtro className="desktop:w-[100px] laptop:w-[95px]" />
-        <Botao
-          className="desktop:text-xs justify-center desktop:w-[255px] desktop:ml-[630px] laptop:w-[280px] mobile:w-[280px] mb-10"
-          select="btn_add"
-          onClick={() => setaddConformidadeDialogIsOpen(true)}
-        >
-          Adicionar Não Conformidade
-          <IoMdAdd className="h-5 w-5 ml-2" />
-        </Botao>
+      <div className="flex mobile:flex-col flex-row items-start space-x-4 px-4 mt-[55px] w-full">
+        <BarraPesquisa className="desktop:w-[550px] laptop:w-[280px] mobile:w-[280px]" />
+        <div className="flex mb-10 gap-4 w-full justify-end">
+          {canViewConformidadesPendente && (
+            <Botao select="btn_check">Conformidades Pendentes 3</Botao>
+          )}
+          <Botao
+            className=""
+            select="btn_add"
+            onClick={() => setAddConformidadeDialogIsOpen(true)}
+          >
+            Adicionar Não Conformidade
+            <IoMdAdd className="h-5 w-5 ml-2" />
+          </Botao>
+        </div>
       </div>
-      <div className="ml-[50px] px-4 ">
+      <div className="ml-[50px] px-4">
         <Conformidades />
-        <AddConformidadeDialog isOpen={addConformidadeDialogIsOpen} />
+        <AddConformidadeDialog
+          handleClose={() => setAddConformidadeDialogIsOpen(false)}
+          isOpen={addConformidadeDialogIsOpen}
+        />
       </div>
     </div>
   );

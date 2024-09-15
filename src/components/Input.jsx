@@ -15,7 +15,7 @@ const Input = ({ type, label, labelClass, isTextarea, ...rest }) => {
         <input
           type={type}
           {...rest}
-          className={`${rest.className} placeholder-black`}
+          className={`${rest.className} placeholder-[#878787]`}
         />
       )}
     </div>

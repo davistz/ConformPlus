@@ -4,8 +4,9 @@ import Input from "./Input";
 import Selector from "./Selector";
 import Botao from "./Botao";
 import { IoMdAdd } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
-const AddConformidadeDialog = ({ isOpen }) => {
+const AddConformidadeDialog = ({ isOpen, handleClose }) => {
   if (!isOpen) return null;
 
   const optionsDepartamento = [
@@ -26,7 +27,11 @@ const AddConformidadeDialog = ({ isOpen }) => {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-      <div className="bg-white flex-col p-6 justify-center rounded-[20px] w-[917px] h-[660px] shadow-lg">
+      <div className="relative bg-white flex-col p-6 justify-center rounded-[20px] w-[917px] h-[660px] shadow-lg">
+        <IoMdClose
+          className="absolute top-4 right-4 text-2xl cursor-pointer text-gray-600 hover:text-gray-800"
+          onClick={handleClose}
+        />
         <div className="flex flex-col items-center">
           <h1 className="font-bold text-2xl">Adicionar Não Conformidade</h1>
           <p>Insira as informações abaixo</p>
@@ -71,7 +76,7 @@ const AddConformidadeDialog = ({ isOpen }) => {
                 Grau de Severidade
               </h1>
               <Selector
-                title="Escolha seu departamento"
+                title="Grau de Severidade"
                 options={optionsGrauSeveridade}
               />
             </div>
@@ -92,6 +97,7 @@ const AddConformidadeDialog = ({ isOpen }) => {
 
 AddConformidadeDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func,
 };
 
 export default AddConformidadeDialog;

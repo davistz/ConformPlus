@@ -10,7 +10,9 @@ const Botao = ({ children, select, onClick, ...rest }) => {
         yes: "bg-white rounded-xl text-[#164095] w-[210px] h-[50px] px-[15px]",
         btn: "bg-[#4880FF] text-white py-3px-6 font-bold w-[288px] h-[50px] justify-center hover:bg-blue-700 transition duration-300",
         btn_add:
-          "bg-[#164095] w-[210px] h-[50px] text-white rounded-lg hover:bg-blue-700 transition duration-300",
+          "bg-[#164095] w-[260px] h-[50px] px-2 text-sm text-white rounded-lg hover:bg-blue-700 transition duration-300",
+        btn_check:
+          "bg-[#FFB74D] w-[220px] h-[50px] px-2 text-sm text-white rounded-lg hover:bg-[#e1a244] transition duration-300",
         conformidade:
           "w-[130px] text-sm font-normal  h-[35px] justify-center rounded-[10px]",
       },
@@ -32,8 +34,14 @@ const Botao = ({ children, select, onClick, ...rest }) => {
 
 Botao.propTypes = {
   children: PropTypes.node.isRequired,
-  select: PropTypes.oneOf(["not", "yes", "btn", "btn_add", "conformidade"])
-    .isRequired,
+  select: PropTypes.oneOf([
+    "not",
+    "yes",
+    "btn",
+    "btn_add",
+    "btn_check",
+    "conformidade",
+  ]).isRequired,
   onClick: PropTypes.func,
 };
 

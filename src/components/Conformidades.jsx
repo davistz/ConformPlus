@@ -52,7 +52,7 @@ const Conformidades = () => {
   };
 
   return (
-    <div className="w-full h-full ">
+    <div className="w-[1440px] h-full ">
       <div className="bg-white rounded-xl">
         <div className="flex items-center justify-between">
           <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">Em Aberto</h1>
