@@ -22,6 +22,11 @@ const Conformidades = () => {
     (conformidade) => conformidade.status == "concluida"
   );
 
+  const handleAddConformidade = (novaConformidade) => {
+    setConformidades([...conformidades, novaConformidade]);
+    toast.success("Não conformidade adicionada com sucesso!");
+  };
+
   const deletarNaoConformidade = (conformidadeId) => {
     const novasConformidades = conformidades.filter(
       (conformidade) => conformidade.id != conformidadeId
@@ -138,7 +143,10 @@ const Conformidades = () => {
               deletarNaoConformidade={deletarNaoConformidade}
             />
           ))}
-          <AddConformidadeDialog isOpen={addConformidadeDialogIsOpen} />
+          <AddConformidadeDialog
+            isOpen={addConformidadeDialogIsOpen}
+            handleSubmit={handleAddConformidade}
+          />
         </div>
       </div>
     </div>

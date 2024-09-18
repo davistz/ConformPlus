@@ -3,27 +3,14 @@ import { createPortal } from "react-dom";
 import Input from "./Input";
 import Selector from "./Selector";
 import Botao from "./Botao";
-import { IoMdAdd } from "react-icons/io";
-import { IoMdClose } from "react-icons/io";
+import { IoMdAdd, IoMdClose } from "react-icons/io";
 
 const AddConformidadeDialog = ({ isOpen, handleClose }) => {
-  if (!isOpen) return null;
+  const optionDeparmento = ["Laboratorio", "Clinica"];
+  const optionStatus = ["Aberto", "Fechado"];
+  const optionGrau = ["Alto", "Baixo"];
 
-  const optionsDepartamento = [
-    { value: "laboratorio", label: "Laboratorio" },
-    { value: "clinica", label: "Clinica" },
-    { value: "hospital", label: "Hospital" },
-  ];
-  const optionsStatus = [
-    { value: "aberto", label: "Em aberto" },
-    { value: "andamento", label: "Em andamento" },
-    { value: "concluidas", label: "Concluídas" },
-  ];
-  const optionsGrauSeveridade = [
-    { value: "baixo", label: "Baixo" },
-    { value: "moderado", label: "Moderado" },
-    { value: "grave", label: "Grave" },
-  ];
+  if (!isOpen) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
@@ -63,21 +50,29 @@ const AddConformidadeDialog = ({ isOpen, handleClose }) => {
             <div>
               <h1 className="text-2xl font-bold mb-[15px]">Departamento</h1>
               <Selector
-                title="Escolha seu departamento"
-                options={optionsDepartamento}
+                options={optionDeparmento}
+                value="departamento"
+                placeholder="Escolha o Departamento"
               />
             </div>
             <div>
               <h1 className="text-2xl font-bold mb-[15px]">Status</h1>
-              <Selector title="Escolha o status" options={optionsStatus} />
+              <Selector
+                title="Selecione seu status"
+                value="status"
+                options={optionStatus}
+                placeholder="Escolha o Status"
+              />
             </div>
             <div className="mt-[120px]">
               <h1 className="text-2xl font-bold mb-[15px]">
                 Grau de Severidade
               </h1>
               <Selector
-                title="Grau de Severidade"
-                options={optionsGrauSeveridade}
+                title="Selecione o Grau de Severidade"
+                options={optionGrau}
+                value="grau_severidade"
+                placeholder="Escolha o Grau De Severidade"
               />
             </div>
           </div>
@@ -91,13 +86,19 @@ const AddConformidadeDialog = ({ isOpen, handleClose }) => {
         </Botao>
       </div>
     </div>,
-    document.getElementById("root")
+    document.body
   );
 };
 
 AddConformidadeDialog.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func,
+  handleSubmit: PropTypes.func,
+};
+
+AddConformidadeDialog.defaultProps = {
+  handleClose: () => {},
+  handleSubmit: () => {},
 };
 
 export default AddConformidadeDialog;

@@ -1,25 +1,20 @@
 import PropTypes from "prop-types";
 
-const Selector = ({ className, title, options = [] }) => {
+const Selector = ({ id, options = [], placeholder }) => {
   return (
-    <div className="relative w-[133px]">
-      <select
-        className={`${className} appearance-none h-[40px] w-[230px] bg-[#F1F4F9] text-[#000000] border border-[#000000] pl-[13px] pr-[40px] border-solid  rounded-2xl text-xs cursor-pointer`}
-        defaultValue=""
-      >
-        <option value="" disabled>
-          {title}
+    <div className="">
+      <select id={id} className="bg-[#F1F4F9] w-[240px] h-[45px] rounded-2xl">
+        <option value="" disabled selected>
+          {placeholder}
         </option>
         {options.length > 0 ? (
           options.map((option, index) => (
-            <option key={index} value={option.value}>
-              {option.label}
+            <option key={index} value={option}>
+              {option}
             </option>
           ))
         ) : (
-          <option value="" disabled>
-            Sem opções disponíveis
-          </option>
+          <option value="">Nenhuma opção disponível</option>
         )}
       </select>
     </div>
@@ -27,14 +22,10 @@ const Selector = ({ className, title, options = [] }) => {
 };
 
 Selector.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ),
+  id: PropTypes.string,
+  options: PropTypes.arrayOf(PropTypes.string),
+  value: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 export default Selector;
