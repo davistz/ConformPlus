@@ -5,7 +5,11 @@ import Selector from "./Selector";
 import Botao from "./Botao";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 
-const AddConformidadeDialog = ({ isOpen, handleClose }, handleSubmit) => {
+const AddConformidadeDialog = ({
+  isOpen,
+  handleClose,
+  handleAddConformidadeSubmit,
+}) => {
   const optionDeparmento = ["Laboratorio", "Clinica"];
   const optionStatus = ["Aberto", "Fechado"];
   const optionGrau = ["Alto", "Baixo"];
@@ -80,7 +84,7 @@ const AddConformidadeDialog = ({ isOpen, handleClose }, handleSubmit) => {
         <Botao
           className="desktop:text-xs justify-center desktop:w-[255px] desktop:ml-[630px] laptop:w-[280px] mobile:w-[280px] mt-7"
           select="btn_add"
-          onClick={() => handleSubmit()}
+          onClick={handleAddConformidadeSubmit}
         >
           Adicionar Não Conformidade
           <IoMdAdd className="h-5 w-5 ml-2" />

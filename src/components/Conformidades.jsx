@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import AddConformidadeDialog from "./AddConformidadeDialog";
 
 const Conformidades = () => {
+  console.log("tste");
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [addConformidadeDialogIsOpen, setaddConformidadeDialogIsOpen] =
     useState(false);
@@ -31,7 +32,7 @@ const Conformidades = () => {
   };
 
   const handleAddConformidadeSubmit = () => {
-    console.log("Adicionei");
+    return console.log("Adicionei");
   };
 
   const alterarStatusConformidade = (conformidadeId) => {
@@ -144,7 +145,8 @@ const Conformidades = () => {
           ))}
           <AddConformidadeDialog
             isOpen={addConformidadeDialogIsOpen}
-            handleSubmit={handleAddConformidadeSubmit()}
+            handleClose={() => setaddConformidadeDialogIsOpen(false)} // Adicione isso para fechar o diálogo
+            handleAddConformidadeSubmit={handleAddConformidadeSubmit}
           />
         </div>
       </div>
