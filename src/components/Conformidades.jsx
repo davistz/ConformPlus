@@ -22,17 +22,16 @@ const Conformidades = () => {
     (conformidade) => conformidade.status == "concluida"
   );
 
-  const handleAddConformidade = (novaConformidade) => {
-    setConformidades([...conformidades, novaConformidade]);
-    toast.success("Não conformidade adicionada com sucesso!");
-  };
-
   const deletarNaoConformidade = (conformidadeId) => {
     const novasConformidades = conformidades.filter(
       (conformidade) => conformidade.id != conformidadeId
     );
     setConformidades(novasConformidades);
     toast.success("Não conformidade removida com sucesso!");
+  };
+
+  const handleAddConformidadeSubmit = () => {
+    console.log("Adicionei");
   };
 
   const alterarStatusConformidade = (conformidadeId) => {
@@ -145,7 +144,7 @@ const Conformidades = () => {
           ))}
           <AddConformidadeDialog
             isOpen={addConformidadeDialogIsOpen}
-            handleSubmit={handleAddConformidade}
+            handleSubmit={handleAddConformidadeSubmit()}
           />
         </div>
       </div>

@@ -4,7 +4,7 @@ const Selector = ({ id, options = [], placeholder }) => {
   return (
     <div className="">
       <select id={id} className="bg-[#F1F4F9] w-[240px] h-[45px] rounded-2xl">
-        <option value="" disabled selected>
+        <option value="" defaultValue="">
           {placeholder}
         </option>
         {options.length > 0 ? (
