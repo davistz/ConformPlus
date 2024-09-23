@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import AddConformidadeDialog from "./AddConformidadeDialog";
 
 const Conformidades = () => {
-  console.log("tste");
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [addConformidadeDialogIsOpen, setaddConformidadeDialogIsOpen] =
     useState(false);
@@ -31,8 +30,11 @@ const Conformidades = () => {
     toast.success("Não conformidade removida com sucesso!");
   };
 
-  const handleAddConformidadeSubmit = () => {
-    return console.log("Adicionei");
+  const handleAddConformidadeSubmit = (novaConformidade) => {
+    const conformidadeComId = { ...novaConformidade, status: "aberto" };
+    setConformidades([...conformidades, conformidadeComId]);
+    toast.success("Não conformidade adicionada com sucesso!");
+    setaddConformidadeDialogIsOpen(false);
   };
 
   const alterarStatusConformidade = (conformidadeId) => {
@@ -59,14 +61,16 @@ const Conformidades = () => {
   return (
     <div className="w-[1440px] h-full ">
       <div className="bg-white rounded-xl">
+        <AddConformidadeDialog
+          isOpen={addConformidadeDialogIsOpen}
+          handleClose={() => setaddConformidadeDialogIsOpen(false)}
+          addConformidadeFunction={handleAddConformidadeSubmit}
+        />
         <div className="flex items-center justify-between">
           <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">Em Aberto</h1>
           <div className="flex items-center gap-5 pr-[30px]">
-            <a href="#">
-              <IoMdAdd
-                className="w-7 h-7 hover:scale-110 transition-all duration-300"
-                onClick={() => setaddConformidadeDialogIsOpen(true)}
-              />
+            <a onClick={() => setaddConformidadeDialogIsOpen(true)} href="#">
+              <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
             </a>
             <a href="#">
               <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
@@ -143,11 +147,6 @@ const Conformidades = () => {
               deletarNaoConformidade={deletarNaoConformidade}
             />
           ))}
-          <AddConformidadeDialog
-            isOpen={addConformidadeDialogIsOpen}
-            handleClose={() => setaddConformidadeDialogIsOpen(false)} // Adicione isso para fechar o diálogo
-            handleAddConformidadeSubmit={handleAddConformidadeSubmit}
-          />
         </div>
       </div>
     </div>

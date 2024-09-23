@@ -1,14 +1,9 @@
-import { useState } from "react";
-import AddConformidadeDialog from "./AddConformidadeDialog.jsx";
 import BarraPesquisa from "./BarraPesquisa.jsx";
 import Botao from "./Botao.jsx";
 import Conformidades from "./Conformidades.jsx";
 import { IoMdAdd } from "react-icons/io";
 
 const Home = () => {
-  const [addConformidadeDialogIsOpen, setAddConformidadeDialogIsOpen] =
-    useState(false);
-
   const user = JSON.parse(localStorage.getItem("user"));
 
   const canViewConformidadesPendente =
@@ -22,11 +17,7 @@ const Home = () => {
           {canViewConformidadesPendente && (
             <Botao select="btn_check">Conformidades Pendentes 3</Botao>
           )}
-          <Botao
-            className=""
-            select="btn_add"
-            onClick={() => setAddConformidadeDialogIsOpen(true)}
-          >
+          <Botao className="" select="btn_add">
             Adicionar Não Conformidade
             <IoMdAdd className="h-5 w-5 ml-2" />
           </Botao>
@@ -34,10 +25,6 @@ const Home = () => {
       </div>
       <div className="ml-[50px] px-4">
         <Conformidades />
-        <AddConformidadeDialog
-          handleClose={() => setAddConformidadeDialogIsOpen(false)}
-          isOpen={addConformidadeDialogIsOpen}
-        />
       </div>
     </div>
   );
