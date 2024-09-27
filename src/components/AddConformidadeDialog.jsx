@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import Input from "./Input";
-// import Selector from "./Selector";
 import Botao from "./Botao";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { useState } from "react";
@@ -10,22 +9,25 @@ const AddConformidadeDialog = ({
   handleClose,
   addConformidadeFunction,
 }) => {
-  // const optionDeparmento = ["Laboratorio", "Clinica"];
-  // const optionStatus = ["Aberto", "Fechado"];
-  // const optionGrau = ["Alto", "Baixo"];
-
   const [title, setTitle] = useState("");
-  const [descricao, setDescricao] = useState("");
+  const [departamento, setDepartamento] = useState("");
+  const [departamento_destino, setDepartamentoDestino] = useState("");
+  const [grau_severidade, setgrauSeveridade] = useState("");
 
   const handleSaveClick = () => {
-    if (!title.trim() || !descricao.trim()) {
-      return alert("Preencha todos os campos");
-    }
+    // Coletando a data atual
+    const dataAtual = new Date().toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
 
     addConformidadeFunction({
       id: 4,
-      title,
-      descricao,
+      departamento,
+      departamento_destino,
+      grau_severidade,
+      data: dataAtual, // Adicionando a data atual aqui
       status: "aberto",
     });
   };
@@ -59,41 +61,37 @@ const AddConformidadeDialog = ({
               labelClass="ml-5 text-2xl"
               isTextarea={true}
               className="w-[520px] h-[166px] rounded-[20px] p-5 bg-[#F1F4F9] text-black border border-[#000000] resize-none"
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
             />
-            {/* <Input
+            <Input
               label="Setor de Destino"
               placeholder="Insira o setor de destino"
               labelClass="ml-5 text-2xl"
               className="w-[520px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
-              value={setorDestino}
-              onChange={(e) => setSetorDestino(e.target.value)}
-            /> */}
+              value={departamento_destino}
+              onChange={(e) => setDepartamentoDestino(e.target.value)}
+            />
           </div>
 
           <div className="flex flex-col ml-[50px] mt-[25px] gap-[30px]">
             <div>
-              {/* <Selector
-              <h1 className="text-2xl font-bold mb-[15px]">Departamento</h1>
-                options={optionDeparmento}
-                placeholder="Escolha o Departamento"
+              <Input
+                label="Departamento"
+                placeholder="Insira o Departamento"
+                labelClass="ml-5 text-2xl"
+                className="w-[300px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                value={departamento}
                 onChange={(e) => setDepartamento(e.target.value)}
-              /> */}
+              />
             </div>
-            <div>
-              {/* <h1 className="text-2xl font-bold mb-[15px]">Status</h1>
-              <Selector options={optionStatus} placeholder="Escolha o Status" /> */}
-            </div>
-            <div className="mt-[120px]">
-              <h1 className="text-2xl font-bold mb-[15px]">
-                Grau de Severidade
-              </h1>
-              {/* <Selector
-                options={optionGrau}
-                placeholder="Escolha o Grau De Severidade"
-                onChange={(e) => setGrauSeveridade(e.target.value)}
-              /> */}
+            <div className="mt-[235px]">
+              <Input
+                label="Grau de Severidade"
+                placeholder="Insira o Grau de Severidade"
+                labelClass="ml-5 text-2xl"
+                className="w-[300px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                value={grau_severidade}
+                onChange={(e) => setgrauSeveridade(e.target.value)}
+              />
             </div>
           </div>
         </div>

@@ -33,20 +33,26 @@ const CONFORMIDADES = [
 
   {
     id: "3",
-    title: "teste 1",
-    descricao: "asdwd",
+    departamento: "Laboratorio",
+    departamento_destino: "asdwd",
+    data: "14 Fev 2024",
+    grau_severidade: "Alto",
     status: "aberto",
   },
   {
     id: "2",
-    title: "teste 2",
-    descricao: "asdwd",
+    departamento: "Clinica",
+    departamento_destino: "asdwd",
+    data: "14 Fev 2024",
+    grau_severidade: "Alto",
     status: "andamento",
   },
   {
     id: "1",
-    title: " teste 3",
-    descricao: "asdwd",
+    departamento: "Hospital",
+    departamento_destino: "asdwd",
+    data: "14 Fev 2024",
+    grau_severidade: "Alto",
     status: "concluida",
   },
 ];
