@@ -47,9 +47,9 @@ const ConformidadeItem = ({
         <div className="w-full items-center flex">
           <ul className="grid grid-cols-[100px_auto_auto_auto_auto] w-full ml-[55px] text-base font-normal list-none">
             <li className="mr-[150px]">{conformidade.id}</li>
-            <li className="mr-[130px]">{conformidade.departament}</li>
-            <li className="mr-[130px]">{conformidade.departament_destino}</li>
-            <li className="mr-[130px]">{conformidade.data}</li>
+            <li className="mr-[130px]">{conformidade.title}</li>
+            <li className="mr-[130px]">{conformidade.descricao}</li>
+            <li className="mr-[130px]">{conformidade.time}</li>
             <li>{conformidade.grau_severidade}</li>
           </ul>
           <div className="flex items-center">

@@ -13,45 +13,49 @@ const Conformidades = () => {
     useState(false);
 
   const conformidadesAberto = conformidades.filter(
-    (conformidade) => conformidade.status == "aberto"
+    (conformidade) =>
+      conformidade.status && conformidade.status.toLowerCase() === "aberto"
   );
+
   const conformidadesAndamento = conformidades.filter(
-    (conformidade) => conformidade.status == "andamento"
+    (conformidade) =>
+      conformidade.status && conformidade.status.toLowerCase() === "andamento"
   );
+
   const conformidadesConcluida = conformidades.filter(
-    (conformidade) => conformidade.status == "concluida"
+    (conformidade) =>
+      conformidade.status && conformidade.status.toLowerCase() === "concluida"
   );
 
   const deletarNaoConformidade = (conformidadeId) => {
     const novasConformidades = conformidades.filter(
-      (conformidade) => conformidade.id != conformidadeId
+      (conformidade) => conformidade.id !== conformidadeId
     );
     setConformidades(novasConformidades);
     toast.success("Não conformidade removida com sucesso!");
   };
 
   const handleAddConformidadeSubmit = (novaConformidade) => {
-    const conformidadeComId = { ...novaConformidade, status: "aberto" };
-    setConformidades([...conformidades, conformidadeComId]);
+    setConformidades([...conformidades, novaConformidade]);
     toast.success("Não conformidade adicionada com sucesso!");
     setaddConformidadeDialogIsOpen(false);
   };
 
   const alterarStatusConformidade = (conformidadeId) => {
     const novasConformidades = conformidades.map((conformidade) => {
-      if (conformidade.id !== conformidadeId) {
+      if (conformidade.id !== conformidadeId || !conformidade.status) {
         return conformidade;
       }
 
-      if (conformidade.status == "aberto") {
+      if (conformidade.status === "aberto") {
         toast.success("Não conformidade alterada para em andamento!");
         return { ...conformidade, status: "andamento" };
       }
-      if (conformidade.status == "andamento") {
-        toast.success("Não conformidade alterada para em concluida!");
+      if (conformidade.status === "andamento") {
+        toast.success("Não conformidade alterada para concluída!");
         return { ...conformidade, status: "concluida" };
       }
-      if (conformidade.status == "concluida") {
+      if (conformidade.status === "concluida") {
         return { ...conformidade, status: "aberto" };
       }
     });

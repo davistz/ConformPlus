@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import Input from "./Input";
-import Selector from "./Selector";
+// import Selector from "./Selector";
 import Botao from "./Botao";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { useState } from "react";
@@ -10,39 +10,24 @@ const AddConformidadeDialog = ({
   handleClose,
   addConformidadeFunction,
 }) => {
-  const [titulo, setTitulo] = useState("");
+  // const optionDeparmento = ["Laboratorio", "Clinica"];
+  // const optionStatus = ["Aberto", "Fechado"];
+  // const optionGrau = ["Alto", "Baixo"];
+
+  const [title, setTitle] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [setorDestino, setSetorDestino] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [status, setStatus] = useState("");
-  const [grauSeveridade, setGrauSeveridade] = useState("");
 
-  const optionDeparmento = ["Laboratorio", "Clinica"];
-  const optionStatus = ["Aberto", "Fechado"];
-  const optionGrau = ["Alto", "Baixo"];
+  const handleSaveClick = () => {
+    if (!title.trim() || !descricao.trim()) {
+      return alert("Preencha todos os campos");
+    }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const novaConformidade = {
-      id: Date.now(),
-      titulo,
+    addConformidadeFunction({
+      id: 4,
+      title,
       descricao,
-      setorDestino,
-      departamento,
-      status,
-      grauSeveridade,
-    };
-
-    addConformidadeFunction(novaConformidade);
-
-    setTitulo("");
-    setDescricao("");
-    setSetorDestino("");
-    setDepartamento("");
-    setStatus("");
-    setGrauSeveridade("");
-    handleClose();
+      status: "aberto",
+    });
   };
 
   if (!isOpen) return null;
@@ -61,12 +46,12 @@ const AddConformidadeDialog = ({
         <div className="flex">
           <div className="flex flex-col items-start mt-6 space-y-6">
             <Input
-              label="Titulo"
+              label="Título"
               placeholder="Insira um título"
               labelClass="ml-5 text-2xl"
               className="w-[520px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <Input
               label="Descrição"
@@ -77,52 +62,45 @@ const AddConformidadeDialog = ({
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
             />
-            <Input
+            {/* <Input
               label="Setor de Destino"
               placeholder="Insira o setor de destino"
               labelClass="ml-5 text-2xl"
               className="w-[520px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
               value={setorDestino}
               onChange={(e) => setSetorDestino(e.target.value)}
-            />
+            /> */}
           </div>
 
           <div className="flex flex-col ml-[50px] mt-[25px] gap-[30px]">
             <div>
+              {/* <Selector
               <h1 className="text-2xl font-bold mb-[15px]">Departamento</h1>
-              <Selector
                 options={optionDeparmento}
-                value={departamento}
-                onChange={(e) => setDepartamento(e.target.value)}
                 placeholder="Escolha o Departamento"
-              />
+                onChange={(e) => setDepartamento(e.target.value)}
+              /> */}
             </div>
             <div>
-              <h1 className="text-2xl font-bold mb-[15px]">Status</h1>
-              <Selector
-                value={status}
-                options={optionStatus}
-                onChange={(e) => setStatus(e.target.value)}
-                placeholder="Escolha o Status"
-              />
+              {/* <h1 className="text-2xl font-bold mb-[15px]">Status</h1>
+              <Selector options={optionStatus} placeholder="Escolha o Status" /> */}
             </div>
             <div className="mt-[120px]">
               <h1 className="text-2xl font-bold mb-[15px]">
                 Grau de Severidade
               </h1>
-              <Selector
+              {/* <Selector
                 options={optionGrau}
-                value={grauSeveridade}
-                onChange={(e) => setGrauSeveridade(e.target.value)}
                 placeholder="Escolha o Grau De Severidade"
-              />
+                onChange={(e) => setGrauSeveridade(e.target.value)}
+              /> */}
             </div>
           </div>
         </div>
         <Botao
           className="desktop:text-xs justify-center desktop:w-[255px] desktop:ml-[630px] laptop:w-[280px] mobile:w-[280px] mt-7"
           select="btn_add"
-          onClick={handleSubmit}
+          onClick={handleSaveClick}
         >
           Adicionar Não Conformidade
           <IoMdAdd className="h-5 w-5 ml-2" />
