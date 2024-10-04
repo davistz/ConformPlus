@@ -36,7 +36,16 @@ const Conformidades = () => {
   };
 
   const handleAddConformidadeSubmit = (novaConformidade) => {
-    setConformidades([...conformidades, novaConformidade]);
+    const ultimoId =
+      conformidades.length > 0
+        ? Math.max(...conformidades.map((c) => parseInt(c.id)))
+        : 0;
+
+    const novaConformidadeComId = {
+      ...novaConformidade,
+      id: (ultimoId + 1).toString(),
+    };
+    setConformidades([...conformidades, novaConformidadeComId]);
     toast.success("Não conformidade adicionada com sucesso!");
     setaddConformidadeDialogIsOpen(false);
   };

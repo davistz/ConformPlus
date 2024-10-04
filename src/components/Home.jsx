@@ -15,6 +15,7 @@ const Home = () => {
         <BarraPesquisa className="desktop:w-[550px] laptop:w-[280px] mobile:w-[280px]" />
         <div className="flex mb-10 gap-4 w-full justify-end">
           {canViewConformidadesPendente && (
+            // Quero que você coloque a função de abrir o dialog para aceitar as não conformidades aqui
             <Botao select="btn_check">Conformidades Pendentes 3</Botao>
           )}
           <Botao className="" select="btn_add">

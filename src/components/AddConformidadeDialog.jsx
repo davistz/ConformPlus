@@ -15,7 +15,6 @@ const AddConformidadeDialog = ({
   const [grau_severidade, setgrauSeveridade] = useState("");
 
   const handleSaveClick = () => {
-    // Coletando a data atual
     const dataAtual = new Date().toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "short",
@@ -27,9 +26,14 @@ const AddConformidadeDialog = ({
       departamento,
       departamento_destino,
       grau_severidade,
-      data: dataAtual, // Adicionando a data atual aqui
+      data: dataAtual,
       status: "aberto",
     });
+
+    setTitle("");
+    setDepartamento("");
+    setDepartamentoDestino("");
+    setgrauSeveridade("");
   };
 
   if (!isOpen) return null;

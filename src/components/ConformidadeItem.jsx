@@ -27,7 +27,7 @@ const ConformidadeItem = ({
   return (
     <div>
       <li
-        className={`${getStatusClasses()}  flex w-[1400px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
+        className={`${getStatusClasses()} flex w-[1400px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
       >
         <label
           className={`transition relative ml-[25px] bg-opacity-100 flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg opacity-80 ${color}`}
@@ -45,14 +45,14 @@ const ConformidadeItem = ({
           )}
         </label>
         <div className="w-full items-center flex">
-          <ul className="grid grid-cols-[100px_auto_auto_auto_auto] w-full ml-[55px] text-base font-normal list-none">
-            <li className="mr-[150px]">{conformidade.id}</li>
-            <li className="mr-[130px]">{conformidade.departamento}</li>
-            <li className="mr-[130px]">{conformidade.departamento_destino}</li>
-            <li className="mr-[130px]">{conformidade.data}</li>
+          <ul className="grid grid-cols-[100px_240px_150px_260px_100px] gap-x-8 w-full ml-[55px] text-base font-normal list-none">
+            <li>{conformidade.id}</li>
+            <li>{conformidade.departamento}</li>
+            <li>{conformidade.departamento_destino}</li>
+            <li>{conformidade.data}</li>
             <li>{conformidade.grau_severidade}</li>
           </ul>
-          <div className="flex items-center">
+          <div className="flex items-center ml-auto">
             <Botao className={`ml-8 ${color}`} select="conformidade">
               {btn_status}
             </Botao>
