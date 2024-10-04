@@ -7,11 +7,16 @@ import CONFORMIDADES from "../../src/constants/nao_conformidades";
 import ConformidadeItem from "./ConformidadeItem";
 import { toast } from "sonner";
 import AddConformidadeDialog from "./AddConformidadeDialog";
+import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
 
 const Home = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
+  const [
+    checkNaoConformidadeDialogIsOpen,
+    setcheckNaoConformidadeDialogIsOpen,
+  ] = useState(false);
   const [addConformidadeDialogIsOpen, setaddConformidadeDialogIsOpen] =
     useState(false);
 
@@ -83,7 +88,12 @@ const Home = () => {
         <BarraPesquisa className="desktop:w-[550px] laptop:w-[280px] mobile:w-[280px]" />
         <div className="flex mb-10 gap-4 w-full justify-end">
           {canViewConformidadesPendente && (
-            <Botao select="btn_check">Conformidades Pendentes 3</Botao>
+            <Botao
+              select="btn_check"
+              onClick={() => setcheckNaoConformidadeDialogIsOpen(true)}
+            >
+              Conformidades Pendentes 3
+            </Botao>
           )}
           <Botao
             onClick={() => setaddConformidadeDialogIsOpen(true)}
@@ -102,6 +112,10 @@ const Home = () => {
               isOpen={addConformidadeDialogIsOpen}
               handleClose={() => setaddConformidadeDialogIsOpen(false)}
               addConformidadeFunction={handleAddConformidadeSubmit}
+            />
+            <NaoConformidadeCheck
+              isOpen={checkNaoConformidadeDialogIsOpen}
+              handleClose={() => setcheckNaoConformidadeDialogIsOpen(false)}
             />
             <div className="flex items-center justify-between">
               <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">

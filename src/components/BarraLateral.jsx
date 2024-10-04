@@ -18,6 +18,9 @@ const BarraLateral = ({ className }) => {
     }, 2000);
   };
 
+  const handleConformidades = () => {
+    navigate("/home");
+  };
   const handleDepartament = () => {
     navigate("/departamentos");
   };
@@ -31,7 +34,7 @@ const BarraLateral = ({ className }) => {
       className={`${className} bg-[#164095] box-border flex flex-col justify-between  tablet:h-screen desktop:h-[877px]`}
     >
       <div className="mr-3">
-        <Botao className="w-[240px]" select="yes">
+        <Botao onClick={handleConformidades} className="w-[240px]" select="yes">
           <FaTableList className="mr-[10px]" />
           Não conformidades
         </Botao>

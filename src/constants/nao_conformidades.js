@@ -8,7 +8,7 @@ const CONFORMIDADES = [
   {
     id: "3",
     departamento: "Laboratorio",
-    departamento_destino: "asdwd",
+    departamento_destino: "Clinica",
     data: data,
     grau_severidade: "Alto",
     status: "aberto",
@@ -16,7 +16,7 @@ const CONFORMIDADES = [
   {
     id: "2",
     departamento: "Clinica",
-    departamento_destino: "asdwd",
+    departamento_destino: "Clinica",
     data: data,
     grau_severidade: "Alto",
     status: "andamento",
@@ -24,7 +24,7 @@ const CONFORMIDADES = [
   {
     id: "1",
     departamento: "Hospital",
-    departamento_destino: "asdwd",
+    departamento_destino: "Clinica",
     data: data,
     grau_severidade: "Alto",
     status: "concluida",
