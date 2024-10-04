@@ -11,6 +11,7 @@ import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
 
 const Home = () => {
+  // teste
   const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [
