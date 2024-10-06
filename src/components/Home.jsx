@@ -10,6 +10,7 @@ import AddConformidadeDialog from "./AddConformidadeDialog";
 import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
 
+// teste
 const Home = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
