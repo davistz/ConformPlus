@@ -12,7 +12,7 @@ const Botao = ({ children, select, onClick, ...rest }) => {
         btn_add:
           "bg-[#164095] w-[260px] h-[50px] px-2 text-sm text-white rounded-lg hover:bg-blue-700 transition duration-300",
         btn_check:
-          "bg-[#FFB74D] w-[220px] h-[50px] px-2 text-sm text-white rounded-lg hover:bg-[#e1a244] transition duration-300",
+          "bg-[#FFB74D] w-[220px] h-[50px] px-2 text-sm text-white rounded-lg hover:bg-[#ffa827] transition duration-300",
         conformidade:
           "w-[130px] text-sm font-normal  h-[35px] justify-center rounded-[10px]",
       },

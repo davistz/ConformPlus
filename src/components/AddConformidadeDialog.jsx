@@ -4,6 +4,7 @@ import Botao from "./Botao";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { useState, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
+import Selector from "./Selector";
 
 const AddConformidadeDialog = ({
   isOpen,
@@ -13,7 +14,7 @@ const AddConformidadeDialog = ({
   const [title, setTitle] = useState("");
   const [departamento, setDepartamento] = useState("");
   const [departamento_destino, setDepartamentoDestino] = useState("");
-  const [grau_severidade, setgrauSeveridade] = useState("");
+  const [grau_severidade, setgrauSeveridade] = useState("Baixo");
 
   const handleSaveClick = () => {
     const dataAtual = new Date().toLocaleDateString("pt-BR", {
@@ -23,7 +24,6 @@ const AddConformidadeDialog = ({
     });
 
     addConformidadeFunction({
-      id: 4,
       departamento,
       departamento_destino,
       grau_severidade,
@@ -93,13 +93,9 @@ const AddConformidadeDialog = ({
                   />
                 </div>
                 <div className="mt-[235px]">
-                  <Input
-                    label="Grau de Severidade"
-                    placeholder="Insira o Grau de Severidade"
-                    labelClass="ml-5 text-2xl"
-                    className="w-[300px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                  <Selector
                     value={grau_severidade}
-                    onChange={(e) => setgrauSeveridade(e.target.value)}
+                    onChange={setgrauSeveridade}
                   />
                 </div>
               </div>

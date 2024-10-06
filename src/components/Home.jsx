@@ -25,6 +25,10 @@ const Home = () => {
   const canViewConformidadesPendente =
     user?.permission === "Admin" || user?.permission === "Gestor";
 
+  const conformidadesPendentes = conformidades.filter(
+    (conformidade) => conformidade && conformidade.status === "pendente"
+  );
+
   const conformidadesAberto = conformidades.filter(
     (conformidade) =>
       conformidade.status && conformidade.status.toLowerCase() === "aberto"
@@ -57,9 +61,10 @@ const Home = () => {
     const novaConformidadeComId = {
       ...novaConformidade,
       id: (ultimoId + 1).toString(),
+      status: "pendente", // Adiciona status como "pendente"
     };
     setConformidades([...conformidades, novaConformidadeComId]);
-    toast.success("Não conformidade adicionada com sucesso!");
+    toast.success("Não conformidade pendente adicionada com sucesso!");
     setaddConformidadeDialogIsOpen(false);
   };
 
@@ -72,6 +77,11 @@ const Home = () => {
       if (conformidade.status === "aberto") {
         toast.success("Não conformidade alterada para em andamento!");
         return { ...conformidade, status: "andamento" };
+      }
+      if (conformidade.status === "pendente") {
+        toast.success("Não conformidade alterada para em andamento!");
+        setcheckNaoConformidadeDialogIsOpen(false);
+        return { ...conformidade, status: "aberto" };
       }
       if (conformidade.status === "andamento") {
         toast.success("Não conformidade alterada para concluída!");
@@ -94,7 +104,10 @@ const Home = () => {
               select="btn_check"
               onClick={() => setcheckNaoConformidadeDialogIsOpen(true)}
             >
-              Conformidades Pendentes 3
+              Conformidades Pendentes{" "}
+              {conformidadesPendentes.length > 0
+                ? conformidadesPendentes.length
+                : ""}
             </Botao>
           )}
           <Botao
@@ -118,6 +131,9 @@ const Home = () => {
             <NaoConformidadeCheck
               isOpen={checkNaoConformidadeDialogIsOpen}
               handleClose={() => setcheckNaoConformidadeDialogIsOpen(false)}
+              conformidadesPendentes={conformidadesPendentes} // Passando as conformidades pendentes
+              alterarStatusConformidade={alterarStatusConformidade}
+              deletarNaoConformidade={deletarNaoConformidade}
             />
             <div className="flex items-center justify-between">
               <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">
