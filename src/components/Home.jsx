@@ -12,6 +12,7 @@ import Id from "./Id";
 
 // teste
 const Home = () => {
+  // teste
   const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [
