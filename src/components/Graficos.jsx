@@ -1,0 +1,349 @@
+import { useEffect, useRef } from "react";
+import { Chart } from "chart.js/auto";
+
+const GraficosDetalhados = () => {
+  const trendChartRef = useRef(null);
+  const rootCauseChartRef = useRef(null);
+  const pieChartRef = useRef(null);
+  const severityChartRef = useRef(null);
+  const histogramChartRef = useRef(null);
+  const effectivenessChartRef = useRef(null);
+
+  useEffect(() => {
+    const createChart = (ctx, type, data, options, chartRef) => {
+      destroyChart(chartRef);
+      chartRef.current = new Chart(ctx, {
+        type: type,
+        data: data,
+        options: options,
+      });
+    };
+
+    const destroyChart = (chartRef) => {
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
+
+    const initializeCharts = () => {
+      const trendCtx = document.getElementById("trendChart")?.getContext("2d");
+      const rootCauseCtx = document
+        .getElementById("rootCauseChart")
+        ?.getContext("2d");
+      const pieCtx = document
+        .getElementById("conformidadesChart")
+        ?.getContext("2d");
+      const severityCtx = document
+        .getElementById("severityChart")
+        ?.getContext("2d");
+      const histogramCtx = document
+        .getElementById("histogramChart")
+        ?.getContext("2d");
+      const effectivenessCtx = document
+        .getElementById("effectivenessChart")
+        ?.getContext("2d");
+
+      if (trendCtx) {
+        createChart(
+          trendCtx,
+          "line",
+          {
+            labels: [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+            ],
+            datasets: [
+              {
+                label: "Não Conformidades",
+                data: [12, 19, 3, 5, 2, 3, 9, 12, 7, 5, 8, 10],
+                borderColor: "rgba(75, 192, 192, 1)",
+                fill: false,
+                tension: 0.1,
+              },
+            ],
+          },
+          {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } },
+          },
+          trendChartRef
+        );
+      }
+
+      if (rootCauseCtx) {
+        createChart(
+          rootCauseCtx,
+          "bar",
+          {
+            labels: [
+              "Processo",
+              "Treinamento",
+              "Equipamento",
+              "Pessoas",
+              "Material",
+            ],
+            datasets: [
+              {
+                label: "Causa Raiz",
+                data: [10, 15, 12, 8, 5],
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.4)",
+                  "rgba(54, 162, 235, 0.4)",
+                  "rgba(255, 206, 86, 0.4)",
+                  "rgba(75, 192, 192, 0.4)",
+                  "rgba(153, 102, 255, 0.4)",
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } },
+          },
+          rootCauseChartRef
+        );
+      }
+
+      if (pieCtx) {
+        createChart(
+          pieCtx,
+          "pie",
+          {
+            labels: ["Em Aberto", "Pendente", "Concluídas"],
+            datasets: [
+              {
+                label: "Conformidades Totais",
+                data: [15, 5, 10],
+                backgroundColor: [
+                  "rgba(27, 73, 255, 0.8)",
+                  "rgba(246, 157, 48, 0.8)",
+                  "rgba(79, 193, 64, 0.8)",
+                ],
+                borderColor: [
+                  "rgba(27, 73, 255, 1)",
+                  "rgba(246, 157, 48, 1)",
+                  "rgba(79, 193, 64, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+          pieChartRef
+        );
+      }
+
+      if (severityCtx) {
+        createChart(
+          severityCtx,
+          "doughnut",
+          {
+            labels: ["Baixo", "Médio", "Alto"],
+            datasets: [
+              {
+                label: "Classificação por Grau de Severidade",
+                data: [20, 10, 5],
+                backgroundColor: [
+                  "rgba(79, 193, 64, 0.8)",
+                  "rgba(246, 157, 48, 0.8)",
+                  "rgba(255, 0, 55, 0.8)",
+                ],
+                borderColor: [
+                  "rgba(79, 193, 64, 1)",
+                  "rgba(246, 157, 48, 1)",
+                  "rgba(255, 0, 55, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+          severityChartRef
+        );
+      }
+
+      if (histogramCtx) {
+        createChart(
+          histogramCtx,
+          "bar",
+          {
+            labels: ["Setor A", "Setor B", "Setor C", "Setor D"],
+            datasets: [
+              {
+                label: "Não Conformidades",
+                data: [8, 15, 6, 12],
+                backgroundColor: "rgba(255, 159, 64, 0.6)",
+                borderColor: "rgba(255, 159, 64, 1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } },
+          },
+          histogramChartRef
+        );
+      }
+
+      if (effectivenessCtx) {
+        createChart(
+          effectivenessCtx,
+          "doughnut",
+          {
+            labels: ["Eficazes", "Ineficazes"],
+            datasets: [
+              {
+                label: "Eficácia das Ações Corretivas",
+                data: [30, 10],
+                backgroundColor: [
+                  "rgba(75, 192, 192, 0.8)",
+                  "rgba(255, 99, 132, 0.8)",
+                ],
+                borderColor: ["rgba(75, 192, 192, 1)", "rgba(255, 99, 132, 1)"],
+                borderWidth: 1,
+              },
+            ],
+          },
+          {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+          effectivenessChartRef
+        );
+      }
+    };
+
+    const timeoutId = setTimeout(() => {
+      initializeCharts();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      destroyChart(trendChartRef);
+      destroyChart(rootCauseChartRef);
+      destroyChart(pieChartRef);
+      destroyChart(severityChartRef);
+      destroyChart(histogramChartRef);
+      destroyChart(effectivenessChartRef);
+    };
+  }, []);
+
+  return (
+    <div className="container ml-8">
+      <div className="flex mt-4 gap-4">
+        {/* Linha 1 */}
+        <div className="">
+          <div
+            className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4"
+            style={{ height: "400px" }}
+          >
+            <h2 className="chart-title text-lg mt-2 font-semibold">
+              Causa Raiz das Não Conformidades
+            </h2>
+            <canvas
+              id="rootCauseChart"
+              style={{ height: "100%", width: "100%" }}
+            ></canvas>
+          </div>
+          <div
+            className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
+            style={{ height: "400px" }}
+          >
+            <h2 className="chart-title text-lg mt-2 mb-1 font-semibold">
+              Tendência das Não Conformidades
+            </h2>
+            <canvas
+              id="trendChart"
+              style={{ height: "100%", width: "100%" }}
+            ></canvas>
+          </div>
+        </div>
+
+        <div>
+          <div
+            className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4"
+            style={{ height: "400px", width: "300px" }}
+          >
+            <h2 className="chart-title text-base mt-2 mb-1 font-semibold">
+              Eficácia das Ações Corretivas
+            </h2>
+            <canvas
+              id="effectivenessChart"
+              style={{ height: "100%", width: "100%" }}
+            ></canvas>
+          </div>
+
+          <div
+            className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
+            style={{ height: "400px", width: "300px" }}
+          >
+            <h2 className="chart-title text-base mt-2 mb-1 font-semibold">
+              Classificação por Severidade
+            </h2>
+            <canvas
+              id="severityChart"
+              style={{ height: "100%", width: "100%" }}
+            ></canvas>
+          </div>
+        </div>
+
+        <div>
+          <div
+            className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4 md:col-span-2"
+            style={{ height: "400px" }}
+          >
+            <h2 className="chart-title text-lg mt-2 mb-1 font-semibold">
+              Gráfico de Histogramas
+            </h2>
+            <canvas
+              id="histogramChart"
+              style={{ height: "100%", width: "100%" }}
+            ></canvas>
+          </div>
+          <div
+            className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
+            style={{ height: "400px" }}
+          >
+            <h2 className="chart-title text-lg mt-2 mb-1 font-semibold">
+              Conformidades Totais
+            </h2>
+            <canvas
+              id="conformidadesChart"
+              style={{ height: "100%", width: "100%" }}
+            ></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default GraficosDetalhados;

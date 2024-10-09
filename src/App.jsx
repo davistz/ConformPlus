@@ -14,10 +14,10 @@ function App() {
           },
         }}
       />
-      <div>
+      <div className="">
         <Header />
         <div className="flex">
-          <BarraLateral className="" />
+          <BarraLateral className="h-[877px] max-sm:hidden" />
           <Home />
         </div>
       </div>

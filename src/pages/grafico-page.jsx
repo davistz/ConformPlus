@@ -1,17 +1,17 @@
 import BarraLateral from "../components/BarraLateral";
-import Departamentos from "../components/DepartamentoPage";
+import GraficosDetalhados from "../components/Graficos";
 import Header from "../components/Header";
 
-const DepartamentoPage = () => {
+const GraficoPage = () => {
   return (
     <div className="flex-col">
       <Header />
       <div className="flex">
         <BarraLateral className="h-[877px]" />
-        <Departamentos />
+        <GraficosDetalhados />
       </div>
     </div>
   );
 };
 
-export default DepartamentoPage;
+export default GraficoPage;

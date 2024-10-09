@@ -7,7 +7,7 @@ const UsersPage = () => {
     <div className="flex-col">
       <Header />
       <div className="flex">
-        <BarraLateral />
+        <BarraLateral className="h-[877px]" />
         <Users />
       </div>
     </div>

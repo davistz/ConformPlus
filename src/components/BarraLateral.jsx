@@ -3,13 +3,13 @@ import { IoIosGitNetwork } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
 import { MdLogout } from "react-icons/md";
 import PropTypes from "prop-types";
-
 import Botao from "./Botao";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 
 const BarraLateral = ({ className }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Captura a rota atual
 
   const handleLogout = () => {
     toast.success("Deslogado com sucesso!");
@@ -28,22 +28,39 @@ const BarraLateral = ({ className }) => {
     navigate("/users");
   };
 
+  // Define o estado do botão com base na rota atual
+  const getButtonSelectState = (path) => {
+    return location.pathname === path ? "yes" : "not";
+  };
+
   return (
     <div
       id="geral"
-      className={`${className} bg-[#164095] box-border flex flex-col justify-between  tablet:h-screen desktop:h-[877px]`}
+      className={`${className} bg-[#164095] flex flex-col justify-between pr-3 h-100vh`}
     >
-      <div className="mr-3">
-        <Botao onClick={handleConformidades} className="w-[240px]" select="yes">
-          <FaTableList className="mr-[10px]" />
+      <div className="flex flex-col ">
+        <Botao
+          onClick={handleConformidades}
+          className="w-full"
+          select={getButtonSelectState("/home")}
+        >
+          <FaTableList className="mr-2" />
           Não conformidades
         </Botao>
-        <Botao onClick={handleDepartament} className="w-[240px]" select="not">
-          <IoIosGitNetwork className="mr-[10px]" />
+        <Botao
+          onClick={handleDepartament}
+          className="w-full md:w-[240px]"
+          select={getButtonSelectState("/departamentos")}
+        >
+          <IoIosGitNetwork className="mr-2" />
           Departamentos
         </Botao>
-        <Botao onClick={handleUsuario} className="w-[240px]" select="not">
-          <PiUsersLight className="mr-[12px]" />
+        <Botao
+          onClick={handleUsuario}
+          className="w-full md:w-[240px]"
+          select={getButtonSelectState("/users")}
+        >
+          <PiUsersLight className="mr-2" />
           Usuários
         </Botao>
       </div>
@@ -54,10 +71,14 @@ const BarraLateral = ({ className }) => {
           },
         }}
       />
-      <div className="mb-[50px]">
+      <div>
         <hr />
-        <Botao onClick={handleLogout} className="mt-3" select="not">
-          <MdLogout className="mr-[10px]" />
+        <Botao
+          onClick={handleLogout}
+          className="mt-3 md:w-[240px]"
+          select="not"
+        >
+          <MdLogout className="mr-2" />
           Sair
         </Botao>
       </div>
@@ -66,7 +87,7 @@ const BarraLateral = ({ className }) => {
 };
 
 BarraLateral.propTypes = {
-  className: PropTypes.node,
+  className: PropTypes.string,
 };
 
 export default BarraLateral;

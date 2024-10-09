@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BarraPesquisa from "./BarraPesquisa.jsx";
 import Botao from "./Botao.jsx";
 import { IoMdAdd } from "react-icons/io";
@@ -10,38 +10,46 @@ import AddConformidadeDialog from "./AddConformidadeDialog";
 import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
 
-// teste
 const Home = () => {
-  // teste
   const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [
     checkNaoConformidadeDialogIsOpen,
-    setcheckNaoConformidadeDialogIsOpen,
+    setCheckNaoConformidadeDialogIsOpen,
   ] = useState(false);
-  const [addConformidadeDialogIsOpen, setaddConformidadeDialogIsOpen] =
+  const [addConformidadeDialogIsOpen, setAddConformidadeDialogIsOpen] =
     useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  // Função para verificar o tamanho da tela
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth <= 640); // 640px é o limite para "sm" no Tailwind
+    };
+
+    // Verificar quando a tela é redimensionada
+    window.addEventListener("resize", checkScreenSize);
+
+    // Verificação inicial
+    checkScreenSize();
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   const canViewConformidadesPendente =
     user?.permission === "Admin" || user?.permission === "Gestor";
 
   const conformidadesPendentes = conformidades.filter(
-    (conformidade) => conformidade && conformidade.status === "pendente"
+    (conformidade) => conformidade.status === "pendente"
   );
-
   const conformidadesAberto = conformidades.filter(
-    (conformidade) =>
-      conformidade.status && conformidade.status.toLowerCase() === "aberto"
+    (conformidade) => conformidade.status === "aberto"
   );
-
   const conformidadesAndamento = conformidades.filter(
-    (conformidade) =>
-      conformidade.status && conformidade.status.toLowerCase() === "andamento"
+    (conformidade) => conformidade.status === "andamento"
   );
-
   const conformidadesConcluida = conformidades.filter(
-    (conformidade) =>
-      conformidade.status && conformidade.status.toLowerCase() === "concluida"
+    (conformidade) => conformidade.status === "concluida"
   );
 
   const deletarNaoConformidade = (conformidadeId) => {
@@ -61,11 +69,11 @@ const Home = () => {
     const novaConformidadeComId = {
       ...novaConformidade,
       id: (ultimoId + 1).toString(),
-      status: "pendente", // Adiciona status como "pendente"
+      status: "pendente",
     };
     setConformidades([...conformidades, novaConformidadeComId]);
     toast.success("Não conformidade pendente adicionada com sucesso!");
-    setaddConformidadeDialogIsOpen(false);
+    setAddConformidadeDialogIsOpen(false);
   };
 
   const alterarStatusConformidade = (conformidadeId) => {
@@ -80,29 +88,27 @@ const Home = () => {
       }
       if (conformidade.status === "pendente") {
         toast.success("Não conformidade alterada para em andamento!");
-        setcheckNaoConformidadeDialogIsOpen(false);
+        setCheckNaoConformidadeDialogIsOpen(false);
         return { ...conformidade, status: "aberto" };
       }
       if (conformidade.status === "andamento") {
         toast.success("Não conformidade alterada para concluída!");
         return { ...conformidade, status: "concluida" };
       }
-      if (conformidade.status === "concluida") {
-        return { ...conformidade, status: "aberto" };
-      }
+      return conformidade;
     });
     setConformidades(novasConformidades);
   };
 
   return (
-    <div className="flex flex-col overflow-hidden">
-      <div className="flex mobile:flex-col flex-row items-start space-x-4 px-4 mt-[55px] w-full">
-        <BarraPesquisa className="desktop:w-[550px] laptop:w-[280px] mobile:w-[280px]" />
-        <div className="flex mb-10 gap-4 w-full justify-end">
+    <div className="flex flex-col desktop:h-[829px]">
+      <div className="flex mobile:flex-col flex-row  px-4 mt-[55px] ">
+        <BarraPesquisa className="desktop:w-[550px] laptop:w-[280px] mobile:w-[280px] max-sm:hidden " />
+        <div className="flex mb-10 gap-4 max-sm:w-[480px] 2xl:w-full justify-end">
           {canViewConformidadesPendente && (
             <Botao
               select="btn_check"
-              onClick={() => setcheckNaoConformidadeDialogIsOpen(true)}
+              onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
             >
               Conformidades Pendentes{" "}
               {conformidadesPendentes.length > 0
@@ -111,7 +117,7 @@ const Home = () => {
             </Botao>
           )}
           <Botao
-            onClick={() => setaddConformidadeDialogIsOpen(true)}
+            onClick={() => setAddConformidadeDialogIsOpen(true)}
             select="btn_add"
           >
             Adicionar Não Conformidade
@@ -120,28 +126,28 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="ml-[50px] px-4">
-        <div className="w-[1440px] h-full ">
-          <div className="bg-white rounded-xl">
+      <div className="">
+        <div className="pl-[50px] max-sm:pl-[20px]">
+          <div className="bg-white rounded-xl max-sm:w-[550px]">
             <AddConformidadeDialog
               isOpen={addConformidadeDialogIsOpen}
-              handleClose={() => setaddConformidadeDialogIsOpen(false)}
+              handleClose={() => setAddConformidadeDialogIsOpen(false)}
               addConformidadeFunction={handleAddConformidadeSubmit}
             />
             <NaoConformidadeCheck
               isOpen={checkNaoConformidadeDialogIsOpen}
-              handleClose={() => setcheckNaoConformidadeDialogIsOpen(false)}
-              conformidadesPendentes={conformidadesPendentes} // Passando as conformidades pendentes
+              handleClose={() => setCheckNaoConformidadeDialogIsOpen(false)}
+              conformidadesPendentes={conformidadesPendentes}
               alterarStatusConformidade={alterarStatusConformidade}
               deletarNaoConformidade={deletarNaoConformidade}
             />
-            <div className="flex items-center justify-between">
-              <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">
+            <div className="flex items-center max-sm:w-[550px] justify-between">
+              <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
                 Em Aberto
               </h1>
               <div className="flex items-center gap-5 pr-[30px]">
                 <a
-                  onClick={() => setaddConformidadeDialogIsOpen(true)}
+                  onClick={() => setAddConformidadeDialogIsOpen(true)}
                   href="#"
                 >
                   <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
@@ -151,8 +157,17 @@ const Home = () => {
                 </a>
               </div>
             </div>
-            <Id className="ml-[140px]" />
-            <div className="pb-4">
+
+            {isSmallScreen ? (
+              <div className="font-bold mb-1 flex text-xs gap-5 ml-[120px]">
+                <h1>Departamento</h1>
+                <h1>Setor Destino</h1>
+                <h1>Grau de Severidade</h1>
+              </div>
+            ) : (
+              <Id className="ml-[140px]" />
+            )}
+            <div className="pb-4 pr-4">
               {conformidadesAberto.map((conformidade) => (
                 <ConformidadeItem
                   key={conformidade.id}
@@ -166,9 +181,9 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="mt-6 bg-[#ffe589] rounded-xl">
+          <div className="mt-6 bg-[#ffe589] max-sm:w-[550px] rounded-xl">
             <div className="flex items-center justify-between">
-              <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">
+              <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
                 Em Andamento
               </h1>
               <div className="flex items-center gap-5 pr-[30px]">
@@ -180,7 +195,15 @@ const Home = () => {
                 </a>
               </div>
             </div>
-            <Id className="ml-[140px]" />
+            {isSmallScreen ? (
+              <div className="font-bold mb-1 flex text-xs gap-5 ml-[120px]">
+                <h1>Departamento</h1>
+                <h1>Setor Destino</h1>
+                <h1>Grau de Severidade</h1>
+              </div>
+            ) : (
+              <Id className="ml-[140px]" />
+            )}
             <div className="pb-4">
               {conformidadesAndamento.map((conformidade) => (
                 <ConformidadeItem
@@ -195,9 +218,9 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="mt-6 bg-[#00969e64] rounded-xl">
+          <div className="mt-6 bg-[#00969e64] max-sm:w-[550px] rounded-xl">
             <div className="flex items-center justify-between">
-              <h1 className="py-[20px] pl-[20px] text-2xl font-bold ">
+              <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
                 Concluídas
               </h1>
               <div className="flex items-center gap-5 pr-[30px]">
@@ -209,7 +232,15 @@ const Home = () => {
                 </a>
               </div>
             </div>
-            <Id className="ml-[140px]" />
+            {isSmallScreen ? (
+              <div className="font-bold mb-1 flex text-xs gap-5 ml-[120px]">
+                <h1>Departamento</h1>
+                <h1>Setor Destino</h1>
+                <h1>Grau de Severidade</h1>
+              </div>
+            ) : (
+              <Id className="ml-[140px]" />
+            )}
             <div className="pb-4">
               {conformidadesConcluida.map((conformidade) => (
                 <ConformidadeItem

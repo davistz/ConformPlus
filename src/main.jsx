@@ -6,6 +6,7 @@ import LoginPage from "./pages/login-page.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UsersPage from "./pages/users-page.jsx";
 import DepartamentoPage from "./pages/departamentos-page.jsx";
+import GraficoPage from "./pages/grafico-page.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/departamentos",
     element: <DepartamentoPage />,
+  },
+  {
+    path: "/graficos",
+    element: <GraficoPage />,
   },
 ]);
 
