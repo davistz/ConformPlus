@@ -2,7 +2,7 @@ import { Toaster } from "sonner";
 
 import BarraLateral from "./components/BarraLateral";
 import Header from "./components/Header";
-import Home from "./components/Home";
+import GraficosDetalhados from "./components/Graficos";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Header />
         <div className="flex">
           <BarraLateral className="h-[877px] max-sm:hidden" />
-          <Home />
+          <GraficosDetalhados />
         </div>
       </div>
     </>

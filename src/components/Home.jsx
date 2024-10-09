@@ -10,7 +10,7 @@ import AddConformidadeDialog from "./AddConformidadeDialog";
 import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
 
-const Home = () => {
+const NaoConformidades = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [
@@ -260,4 +260,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default NaoConformidades;

@@ -6,7 +6,8 @@ import LoginPage from "./pages/login-page.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UsersPage from "./pages/users-page.jsx";
 import DepartamentoPage from "./pages/departamentos-page.jsx";
-import GraficoPage from "./pages/grafico-page.jsx";
+
+import NaoConformidadePage from "./pages/naoconformidades-page.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,8 @@ const router = createBrowserRouter([
     element: <DepartamentoPage />,
   },
   {
-    path: "/graficos",
-    element: <GraficoPage />,
+    path: "/conformidades",
+    element: <NaoConformidadePage />,
   },
 ]);
 
