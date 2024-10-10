@@ -30,7 +30,7 @@ const ConformidadeItem = ({
 
   const getStatusClasses = () => {
     if (conformidade.status === "aberto") {
-      return "bg-[#dbdbdb] text-[#202224]";
+      return "bg-[#c0c0c0] text-[#202224]";
     }
     if (conformidade.status === "andamento") {
       return "bg-[#f5d872] text-[#202224]";

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import Logo from "../img/logo.png";
-import { BiSolidUserCircle } from "react-icons/bi";
 
 const Header = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -20,11 +19,18 @@ const Header = () => {
       case "Gestor":
         return "text-[#ff9f2a]";
       case "Usuario":
-        return "text-gray-500";
+        return "text-[#bebebe]";
       default:
-        return "text-gray-500";
+        return "text-[#bebebe]";
     }
   };
+
+  const initials = user.name
+    .split(" ")
+    .slice(0, 2) // Pega apenas os 2 primeiros nomes
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
 
   return (
     <div className="xl:w-screen 2xl:w-screen lg:w-screen grid grid-cols-1 sm:grid-cols-3 max-sm:flex max-sm:justify-between items-center bg-[#164095] px-4 py-5">
@@ -42,7 +48,12 @@ const Header = () => {
             className="flex items-center cursor-pointer"
             onClick={handleUsers}
           >
-            <BiSolidUserCircle className="w-[60px] h-[60px] mr-1 text-white" />
+            <div
+              className={`flex-shrink-0 bg-[#0E5EBA] mr-2 text-white w-[70px] h-[70px] rounded-full text-3xl flex items-center justify-center`}
+            >
+              {initials} {/* Exibir as iniciais aqui */}
+            </div>
+
             <div>
               <p className="font-medium text-white">{user.name}</p>
               <p className={`${getPermissionColor(user.permission)} text-sm`}>

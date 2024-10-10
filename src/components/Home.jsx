@@ -128,7 +128,7 @@ const NaoConformidades = () => {
 
       <div className="">
         <div className="pl-[50px] max-sm:pl-[20px]">
-          <div className="bg-white rounded-xl max-sm:w-[550px]">
+          <div className="bg-[#e1e1e1] rounded-xl max-sm:w-[550px]">
             <AddConformidadeDialog
               isOpen={addConformidadeDialogIsOpen}
               handleClose={() => setAddConformidadeDialogIsOpen(false)}
