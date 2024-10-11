@@ -4,11 +4,18 @@ import Users from "../components/UsersPage";
 
 const UsersPage = () => {
   return (
-    <div className="flex-col">
+    <div className="flex-col ">
+      {/* Header fixo no topo */}
       <Header />
+
+      {/* Container para o conteúdo principal */}
       <div className="flex">
-        <BarraLateral className="h-[877px]" />
-        <Users />
+        {/* Barra lateral fixa à esquerda */}
+        <BarraLateral className="hidden lg:flex" />
+        {/* Conteúdo de Users com padding-top para compensar o header */}
+        <div className="">
+          <Users />
+        </div>
       </div>
     </div>
   );

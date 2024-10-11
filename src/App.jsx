@@ -17,8 +17,10 @@ function App() {
       <div className="">
         <Header />
         <div className="flex">
-          <BarraLateral className="h-[877px] max-sm:hidden" />
-          <GraficosDetalhados />
+          <BarraLateral className="max-sm:hidden" />
+          <div className="">
+            <GraficosDetalhados />
+          </div>
         </div>
       </div>
     </>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import BarraPesquisa from "./BarraPesquisa.jsx";
 import Botao from "./Botao.jsx";
 import { IoMdAdd } from "react-icons/io";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -102,8 +101,7 @@ const NaoConformidades = () => {
 
   return (
     <div className="flex flex-col desktop:h-[829px]">
-      <div className="flex mobile:flex-col flex-row  px-4 mt-[55px] ">
-        <BarraPesquisa className="desktop:w-[550px] laptop:w-[280px] mobile:w-[280px] max-sm:hidden " />
+      <div className="flex ml-12 mobile:flex-col flex-row  px-4 mt-[55px] ">
         <div className="flex mb-10 gap-4 max-sm:w-[480px] 2xl:w-full justify-end">
           {canViewConformidadesPendente && (
             <Botao

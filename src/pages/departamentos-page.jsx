@@ -7,7 +7,7 @@ const DepartamentoPage = () => {
     <div className="flex-col">
       <Header />
       <div className="flex">
-        <BarraLateral className="h-[877px]" />
+        <BarraLateral className="hidden lg:flex" />
         <Departamentos />
       </div>
     </div>

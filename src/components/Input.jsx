@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 const Input = ({ type, label, labelClass, isTextarea, ...rest }) => {
   return (
     <div>
-      <h1 className={`mb-[15px] ${labelClass} text-[#000000] font-bold`}>
-        {label}
-      </h1>
+      <h1 className={`mb-[15px] ${labelClass} text-[#000000] `}>{label}</h1>
       {isTextarea ? (
         <textarea
           {...rest}

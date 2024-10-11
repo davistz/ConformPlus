@@ -4,6 +4,7 @@ import { IoMdAdd } from "react-icons/io";
 import Logo from "../img/logo.png";
 import LOGINS from "../constants/logins";
 import Input from "./Input";
+import { toast } from "sonner";
 
 const UsuariosComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,6 +111,7 @@ const UsuariosComponent = () => {
         photo: userPhoto || initials,
       };
       setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
+      toast.success("Adicionado com sucesso");
     }
     closeModal();
   };
@@ -145,12 +147,17 @@ const UsuariosComponent = () => {
   };
 
   return (
-    <div>
-      <div className="flex bg-[#10254f] w-[1500px] h-[250px] ml-[60px] justify-end mt-[30px] rounded-xl relative">
+    <div className="flex flex-col">
+      <div className="flex bg-[#10254f] max-sm:hidden 2xl:w-[1500px] xl:w-[930px] lg:w-[690px] md:w-full max-lg:w-[100px] sm:w-[520px] max-sm:w-[450px] h-[250px] max-sm:ml-[25px] max-md:ml-[40px] ml-[60px] md:ml-[30px] justify-end mt-[30px] rounded-xl relative">
         <div className="w-full flex flex-col items-end gap-8">
           <div className="flex bg-[#164095] rounded-t-xl h-[135px] w-full items-center justify-between text-xl">
-            <img className="w-[400px] cursor-pointer" src={Logo} alt="Logo" />
-            <div className="mr-[60px] flex items-center gap-3">
+            <img
+              className="hidden lg:block w-[400px] lg:w-[300px] cursor-pointer"
+              src={Logo}
+              alt="Logo"
+            />
+
+            <div className="mr-[60px] md:ml-[100px] max-sm:ml-[120px] flex items-center gap-3">
               <div
                 className={`flex-shrink-0 bg-[#0E5EBA] text-white w-[70px] h-[70px] rounded-full text-3xl flex items-center justify-center`}
               >
@@ -172,38 +179,54 @@ const UsuariosComponent = () => {
               </div>
             </div>
           </div>
-          <div className="mr-4">
-            <button className="bg-[#164095] w-[260px] h-[50px] px-2 font-bold text-lg text-white rounded-lg hover:bg-blue-700 transition duration-300">
+          <div className="md:mr-[100px] sm:mr-6 lg:mr-3">
+            <button className="bg-[#164095] hidden sm:block md:block justify-center items-center w-[200px] h-[40px] px-2 font-bold text-base text-white rounded-lg hover:bg-blue-700 transition duration-300">
               Editar Perfil
             </button>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-6">
-        <h1 className="text-2xl ml-[60px]">Usuários Existentes</h1>
-        {canAddUser && (
-          <button
-            onClick={() => openModal()}
-            className="bg-[#164095] flex items-center justify-center font-semibold w-[290px] h-[42px] px-2 text-base text-white rounded-lg hover:bg-blue-700 transition duration-300"
-          >
-            Adicionar Usuário
-            <IoMdAdd className="h-6 w-6 ml-2" />
-          </button>
-        )}
-      </div>
-      <div className="border-b pb-1 border-[#bdbdbd] ml-[60px]">
-        {" "}
-        {/* Aqui é onde a borda é adicionada */}
+      <div className="ml-10 max-sm:mt-5 max-sm:ml-0 ">
+        <div className="flex max-sm:w-screen justify-between items-center mt-6">
+          <h1 className="text-2xl font-medium max-sm:text-xl max-sm:ml-5 sm:text-lg md:text-xl lg:text-2xl">
+            Usuários Existentes
+          </h1>
+          {canAddUser && (
+            <button
+              onClick={() => openModal()}
+              className="
+            bg-[#164095] 
+            flex items-center justify-center 
+            font-semibold 
+            w-[290px] h-[42px] px-2 
+            text-base text-white 
+            rounded-lg 
+            hover:bg-blue-700 
+            transition duration-300
+            max-sm:w-[190px] max-sm:mr-6 max-sm:h-[36px] max-sm:text-sm max-sm:px-1 ma
+            sm:w-[230px] sm:h-[40px] sm:text-base sm:px-2
+            md:w-[260px] md:h-[42px] md:text-base md:px-3
+            lg:w-[290px] lg:h-[42px] lg:text-lg lg:px-4
+            xl:w-[320px] xl:h-[44px] xl:text-lg xl:px-5
+          "
+            >
+              Adicionar Usuário
+              <IoMdAdd className="h-6 w-6 ml-2" />
+            </button>
+          )}
+        </div>
+        <div className="border-b pb-1  border-[#bdbdbd] ">
+          {" "}
+          {/* Aqui é onde a borda é adicionada */}
+        </div>
       </div>
 
-      {/* Quadrados de usuários */}
-      <div className="grid grid-cols-3 gap-4 mt-8  ml-[60px]">
+      <div className="grid grid-cols-1 max-sm:ml-[60px]  md:mr-10 md:grid-cols-3 gap-4 mt-8 sm:ml-[40px]  max-sm:w-[385px]">
         {profiles.map((profile, index) => {
-          // Calcular as iniciais
           const initials = profile.name
             .split(" ")
-            .slice(0, 2) // Pega apenas os 2 primeiros nomes
+            .slice(0, 2)
             .map((n) => n[0])
             .join("")
             .toUpperCase();
@@ -212,30 +235,32 @@ const UsuariosComponent = () => {
           return (
             <div
               key={profile.id}
-              className="bg-[#dcdcdc] cursor-pointer hover:scale-[1.02] transform transition-transform shadow-md rounded-lg p-4 flex flex-col relative" // Adicionando flex-col para o layout
+              className="bg-[#dcdcdc] max-sm:mr-30 cursor-pointer hover:scale-[1.02] transform transition-transform shadow-md rounded-lg p-4 flex flex-col relative 
+                   w-full" // Ajusta a largura para ocupar a coluna toda
             >
               <div className="flex justify-between items-start w-full">
-                {" "}
-                {/* Flex container para posicionar ícone e conteúdo */}
                 <div
-                  className={`flex-shrink-0 ${colorClass} text-white w-[80px] h-[80px] rounded-full text-3xl flex items-center justify-center`}
+                  className={`flex-shrink-0 ${colorClass} text-white w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] md:w-[70px] md:h-[70px] lg:w-[80px] lg:h-[80px] rounded-full text-xl sm:text-2xl md:text-3xl flex items-center justify-center`}
                 >
-                  {initials} {/* Exibir as iniciais aqui */}
+                  {initials}
                 </div>
                 <button
                   onClick={() => openModal(profile)}
-                  className="text-[#565656] hover:text-[#232323] transform transition-transform hover:scale-[1.02] justify-end items-end" // Ajustando estilo do botão
+                  className="text-[#565656] hover:text-[#232323] transform transition-transform hover:scale-[1.02] justify-end items-end"
                 >
-                  {canAddUser && <CiCircleInfo className="w-10 h-10" />}
+                  {canAddUser && (
+                    <CiCircleInfo className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10" />
+                  )}
                 </button>
               </div>
-
-              <div className="flex flex-col ml-4 mt-2">
-                {" "}
-                {/* Mantendo o texto em flex-column */}
-                <h3 className="text-lg font-semibold">{profile.name}</h3>
-                <p>{profile.department}</p>
-                <p className="text-sm text-gray-500">{profile.manager}</p>
+              <div className="flex flex-col ml-2 mt-2 sm:ml-4">
+                <h3 className="text-base sm:text-lg font-semibold">
+                  {profile.name}
+                </h3>
+                <p className="text-sm">{profile.department}</p>
+                <p className="text-xs sm:text-sm text-gray-500">
+                  {profile.manager}
+                </p>
                 <span
                   className={`status-badge ${
                     profile.status === "active"
@@ -246,7 +271,6 @@ const UsuariosComponent = () => {
                   {profile.status === "active" ? "Ativo" : "Bloqueado"}
                 </span>
               </div>
-
               {canAddUser && (
                 <div className="flex mt-2 space-x-2 ml-auto">
                   <button
@@ -271,7 +295,7 @@ const UsuariosComponent = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-xl font-bold mb-4 flex justify-center items-center">
               {isEditMode ? "Editar Usuário" : "Adicionar Usuário"}
             </h2>
             <form onSubmit={handleFormSubmit}>
@@ -280,6 +304,8 @@ const UsuariosComponent = () => {
                   type="text"
                   label="Nome Completo"
                   value={userName}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  labelClass="text-sm"
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
