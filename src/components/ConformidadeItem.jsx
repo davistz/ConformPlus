@@ -13,16 +13,13 @@ const ConformidadeItem = ({
 }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  // Função para verificar o tamanho da tela
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth <= 640); // 640px é o limite para "sm" no Tailwind
+      setIsSmallScreen(window.innerWidth <= 640);
     };
 
-    // Verificar quando a tela é redimensionada
     window.addEventListener("resize", checkScreenSize);
 
-    // Verificação inicial
     checkScreenSize();
 
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -61,7 +58,6 @@ const ConformidadeItem = ({
           )}
         </label>
         <div className="w-screen max-sm:w-[100px] items-center flex">
-          {/* Renderiza os itens de acordo com o tamanho da tela */}
           <div className="items-center justify-end flex">
             <ul
               className={`${

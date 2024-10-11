@@ -255,12 +255,10 @@ const GraficosDetalhados = () => {
       destroyChart(effectivenessChartRef);
     };
   }, []);
-
   return (
-    <div className="container ml-8">
-      <div className="flex mt-4 gap-4">
-        {/* Linha 1 */}
-        <div className="">
+    <div className="container mx-auto px-4">
+      <div className="flex flex-col md:flex-row lg:flex lg:ml-4 mt-4 gap-4">
+        <div className="flex flex-col w-full md:w-1/2">
           <div
             className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4"
             style={{ height: "400px" }}
@@ -287,10 +285,10 @@ const GraficosDetalhados = () => {
           </div>
         </div>
 
-        <div>
+        <div className="flex flex-col w-full md:w-1/4">
           <div
             className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4"
-            style={{ height: "400px", width: "300px" }}
+            style={{ height: "400px" }}
           >
             <h2 className="chart-title text-base mt-2 mb-1 font-semibold">
               Eficácia das Ações Corretivas
@@ -303,7 +301,7 @@ const GraficosDetalhados = () => {
 
           <div
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px", width: "300px" }}
+            style={{ height: "400px" }}
           >
             <h2 className="chart-title text-base mt-2 mb-1 font-semibold">
               Classificação por Severidade
@@ -315,9 +313,9 @@ const GraficosDetalhados = () => {
           </div>
         </div>
 
-        <div>
+        <div className="flex flex-col w-full md:w-1/4">
           <div
-            className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4 md:col-span-2"
+            className="chart-container flex flex-col justify-center items-center border mb-3 border-gray-300 rounded-lg p-4"
             style={{ height: "400px" }}
           >
             <h2 className="chart-title text-lg mt-2 mb-1 font-semibold">

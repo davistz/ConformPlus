@@ -43,7 +43,6 @@ const BarraLateral = ({ className }) => {
       className={`${className} bg-[#164095] flex flex-col justify-between pr-3 h-screen`}
     >
       <div className="flex flex-col">
-        {/* Botões no topo */}
         <Botao
           onClick={handleDashboard}
           className="w-full sm:w-[160px] md:w-[200px] lg:w-[240px]"
@@ -86,9 +85,7 @@ const BarraLateral = ({ className }) => {
         }}
       />
 
-      {/* Botão de Sair no final */}
-      <div className="mt-auto">
-        <hr />
+      <div className="mt-auto flex flex-col items-center">
         <Botao
           onClick={handleLogout}
           className="mt-3 w-full sm:w-[160px] md:w-[200px] lg:w-[240px]"

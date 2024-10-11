@@ -166,7 +166,6 @@ const UsuariosComponent = () => {
                   .map((n) => n[0])
                   .join("")
                   .toUpperCase()}{" "}
-                {/* Exibe as iniciais aqui */}
               </div>
 
               <div>
@@ -216,10 +215,7 @@ const UsuariosComponent = () => {
             </button>
           )}
         </div>
-        <div className="border-b pb-1  border-[#bdbdbd] ">
-          {" "}
-          {/* Aqui é onde a borda é adicionada */}
-        </div>
+        <div className="border-b pb-1  border-[#bdbdbd] "> </div>
       </div>
 
       <div className="grid grid-cols-1 max-sm:ml-[60px]  md:mr-10 md:grid-cols-3 gap-4 mt-8 sm:ml-[40px]  max-sm:w-[385px]">
@@ -236,7 +232,7 @@ const UsuariosComponent = () => {
             <div
               key={profile.id}
               className="bg-[#dcdcdc] max-sm:mr-30 cursor-pointer hover:scale-[1.02] transform transition-transform shadow-md rounded-lg p-4 flex flex-col relative 
-                   w-full" // Ajusta a largura para ocupar a coluna toda
+                   w-full"
             >
               <div className="flex justify-between items-start w-full">
                 <div

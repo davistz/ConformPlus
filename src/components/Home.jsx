@@ -20,16 +20,13 @@ const NaoConformidades = () => {
     useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  // Função para verificar o tamanho da tela
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth <= 640); // 640px é o limite para "sm" no Tailwind
+      setIsSmallScreen(window.innerWidth <= 640);
     };
 
-    // Verificar quando a tela é redimensionada
     window.addEventListener("resize", checkScreenSize);
 
-    // Verificação inicial
     checkScreenSize();
 
     return () => window.removeEventListener("resize", checkScreenSize);

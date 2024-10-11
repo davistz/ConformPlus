@@ -36,7 +36,7 @@ const Header = ({ className }) => {
   };
 
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 755);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Gerencia a visibilidade da barra lateral
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -71,14 +71,12 @@ const Header = ({ className }) => {
     .join("")
     .toUpperCase();
 
-  // Alterna a visibilidade da barra lateral
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
     <div>
-      {/* Cabeçalho */}
       <div
         className={`w-screen flex items-center bg-[#164095] py-5 ${className}`}
       >
@@ -86,7 +84,7 @@ const Header = ({ className }) => {
           <div className="flex ml-3">
             <HiMenu
               className="text-2xl cursor-pointer w-10 h-10 text-white"
-              onClick={toggleSidebar} // Abre/fecha a barra lateral ao clicar
+              onClick={toggleSidebar}
             />
           </div>
         ) : (
@@ -100,7 +98,6 @@ const Header = ({ className }) => {
           </div>
         )}
 
-        {/* Seção de Usuário */}
         <div className="flex justify-end ml-auto mr-5">
           {user ? (
             <div
@@ -126,16 +123,14 @@ const Header = ({ className }) => {
         </div>
       </div>
 
-      {/* Barra Lateral */}
       <div
         className={`fixed top-0 left-0 md:hidden h-full bg-[#164095] text-white w-[260px] z-50 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out`}
       >
-        {/* Ícone de fechar no canto superior direito */}
         <IoMdClose
           className="absolute top-4 right-4 w-6 h-6 cursor-pointer bg-red-600"
-          onClick={() => setIsSidebarOpen(false)} // Supondo que você tenha uma função para fechar
+          onClick={() => setIsSidebarOpen(false)}
         />
         <div className="h-full flex flex-col justify-between">
           <div className="p-5">
@@ -178,7 +173,6 @@ const Header = ({ className }) => {
             </div>
           </div>
 
-          {/* Botão de Deslogar no final */}
           <div className="mb-10">
             <hr className="border-t border-gray-300 mb-4" />
             <ul>
@@ -193,8 +187,6 @@ const Header = ({ className }) => {
           </div>
         </div>
       </div>
-
-      {/* Toasts */}
     </div>
   );
 };

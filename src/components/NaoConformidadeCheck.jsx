@@ -82,7 +82,7 @@ const NaoConformidadeCheck = ({
 NaoConformidadeCheck.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  conformidadesPendentes: PropTypes.array.isRequired, // Adicione esta prop
+  conformidadesPendentes: PropTypes.array.isRequired,
   alterarStatusConformidade: PropTypes.func.isRequired,
   deletarNaoConformidade: PropTypes.func.isRequired,
 };
