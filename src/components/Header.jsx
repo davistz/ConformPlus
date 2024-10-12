@@ -41,7 +41,7 @@ const Header = ({ className }) => {
   useEffect(() => {
     const checkScreenSize = () => {
       const isSmall = window.innerWidth <= 1024;
-      console.log(window.innerWidth);
+
       setIsSmallScreen(isSmall);
     };
 

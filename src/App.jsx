@@ -17,7 +17,7 @@ function App() {
       <div className="">
         <Header />
         <div className="flex">
-          <BarraLateral className="max-sm:hidden" />
+          <BarraLateral className="hidden lg:flex" />
           <div className="">
             <GraficosDetalhados />
           </div>
