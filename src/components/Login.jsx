@@ -39,56 +39,53 @@ const Login = () => {
           },
         }}
       />
-      <img
-        src={Logo}
-        className="max-sm:w-[70%] sm:w-70% max-w-[545px] h-auto md:w-[70%] md:max-w-[446px] md:h-[100px]"
-        alt="logo fsph"
-      />
-      <div className="mt-8 w-[90%] max-w-[430px] h-auto md:h-[600px] lg:w-[630px] lg:h-[500px] max-sm:rounded-b-lg bg-white flex flex-col rounded-[24px]">
-        <div className="flex justify-center my-6 md:mb-10 lg:mb-10">
-          <h1 className="text-3xl font-bold">Login</h1>
-        </div>
-        <div className="pl-4 md:pl-[56px] relative">
-          <Input
-            label="Email"
-            placeholder="Insira seu e-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="max-sm:w-[400px] max-sm:h-[46px] md:w-[316px] md:h-[45px] lg:w-[516px] lg:h-[50px] mb-4 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#A6A6A6] border border-[#A6A6A6]"
-          />
-          <div className="relative">
-            <Input
-              type="password"
-              label="Senha"
-              placeholder="Digite sua senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full max-sm:w-[400px] max-sm:h-[46px] max-w-[516px] h-[56px] md:w-[316px] md:h-[45px] lg:w-[516px] lg:h-[50px] mb-4 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#A6A6A6] border border-[#A6A6A6]"
-            />
-            <a
-              href="#"
-              className="absolute right-14 top-2 font-medium max-sm:right-8 max-sm:top-1 text-sm text-[#404040] hover:text-[#48a7ff] transition-colors"
-            >
-              Esqueceu a senha?
-            </a>
+      <img src={Logo} className="w-[545px] h-auto" alt="logo fsph" />
+      <div className="mt-8 max-sm:w-[420px] max-md:w-[500px] md:w-[600px] h-auto md:h-[460px] lg:w-[590px] justify-between bg-white flex flex-col rounded-[24px]">
+        <div>
+          <div className="flex justify-center my-8 md:mb-10 lg:mb-10">
+            <h1 className="text-3xl font-bold">Login</h1>
           </div>
-          <Checkbox
-            type="login"
-            label="Salvar Senha"
-            name="Salvar"
-            id="Salvar"
-          />
-
+          <div className="pl-6 relative mr-6">
+            <Input
+              label="Nome"
+              placeholder="Insira seu nome"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full h-[45px] mb-4 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#000000] border border-[#A6A6A6]"
+            />
+            <div className="relative">
+              <Input
+                type="password"
+                label="Senha"
+                placeholder="Digite sua senha"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-[45px] mb-4 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#000000] border border-[#A6A6A6]"
+              />
+              <a
+                href="#"
+                className="absolute right-3 top-2 font-medium max-sm:right-8 max-sm:top-1 text-sm text-[#404040] hover:text-[#48a7ff] transition-colors"
+              >
+                Esqueceu a senha?
+              </a>
+            </div>
+            <Checkbox
+              type="login"
+              label="Salvar Senha"
+              name="Salvar"
+              id="Salvar"
+            />
+          </div>
           <div className="flex-col md:mt-[35px]">
             <div className="flex justify-center mb-5 gap-[45px]"></div>
           </div>
         </div>
-        <div className="pb-4 max-sm:pb-0 rounded-b-lg">
+        <div className="rounded-b-lg">
           <div className="flex justify-center mb-2">
             {error && <p className="text-red-500">{error}</p>}
           </div>
           <Botao
-            className="w-full md:w-[418px]  md:rounded-b-md md:h-[60px] lg:ml-[105px] lg:rounded-lg"
+            className="w-full rounded-b-[24px] h-[60px] "
             select="btn"
             onClick={handleLogin}
           >
