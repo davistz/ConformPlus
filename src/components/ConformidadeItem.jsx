@@ -15,7 +15,7 @@ const ConformidadeItem = ({
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsSmallScreen(window.innerWidth <= 640);
+      setIsSmallScreen(window.innerWidth >= 1366);
     };
 
     window.addEventListener("resize", checkScreenSize);
@@ -40,10 +40,10 @@ const ConformidadeItem = ({
   return (
     <div>
       <li
-        className={`${getStatusClasses()} flex w-[1400px] h-[60px] max-sm:w-[500px] items-center ml-[27px] rounded-[10px] mb-4`}
+        className={`${getStatusClasses()} flex w-[1400px] max-xl:w-[1200px] md:w-[580px] lg:w-[590px] xl:w-[1420px] 2xl:w-[1420px] max-md:w-[768px] max-sm:w-[500px] h-[60px] items-center ml-[27px] rounded-[10px] mb-4`}
       >
         <label
-          className={`transition relative ml-[25px] bg-opacity-100 flex h-9 w-12 max-sm:w-9 cursor-pointer items-center justify-center rounded-lg opacity-80 ${color}`}
+          className={`transition relative lg:mr-[65px] xl:mr-14 ml-[25px] md:w-10 bg-opacity-100 flex h-9 w-12 lg:w-10 max-sm:w-9 cursor-pointer items-center justify-center rounded-lg opacity-80 ${color}`}
         >
           <input
             type="checkbox"
@@ -57,22 +57,26 @@ const ConformidadeItem = ({
             <LuLoader2 className="text-white animate-spin w-5 h-5" />
           )}
         </label>
-        <div className="w-screen max-sm:w-[100px] items-center flex">
-          <div className="items-center justify-end flex">
+
+        <div className="w-full flex items-center max-sm:w-[100px]">
+          <div className="flex items-center w-full">
             <ul
               className={`${
                 isSmallScreen
-                  ? "ml-[30px] grid grid-cols-[120px_130px_100px]"
-                  : "grid grid-cols-[100px_240px_150px_260px_100px] gap-x-8 w-full ml-[55px]"
-              } text-base font-normal mr-10 list-none`}
+                  ? "grid lg:grid-cols-[200px_210px_0px] xl:grid-cols-[170px_290px_230px_340px_20px] md:grid-cols-[140px_150px_90px] md:ml-10 xl:ml-0 items-center"
+                  : "grid grid-cols-[100px_240px_150px_260px_100px]  lg:grid-cols-[30px_240px_150px_260px_100px] w-full ml-[55px]"
+              } text-base font-normal list-none`}
             >
-              {!isSmallScreen && <li>{conformidade.id}</li>}
+              {isSmallScreen && <li>{conformidade.id}</li>}{" "}
+              {/* Oculta o ID em telas pequenas */}
               <li>{conformidade.departamento}</li>
               <li>{conformidade.departamento_destino}</li>
-              {!isSmallScreen && <li>{conformidade.data}</li>}
+              {isSmallScreen && <li>{conformidade.data}</li>}{" "}
+              {/* Oculta a data em telas pequenas */}
               <li>{conformidade.grau_severidade}</li>
             </ul>
-            <div className="max-sm:absolute ml-[160px] flex items-center">
+
+            <div className="ml-[160px] lg:mr-[10px] lg:ml-[150px] md:ml-0 max-sm:ml-[30px] flex items-center">
               <button
                 className=""
                 onClick={() => deletarNaoConformidade(conformidade.id)}

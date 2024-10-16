@@ -231,7 +231,7 @@ const UsuariosComponent = () => {
           return (
             <div
               key={profile.id}
-              className="bg-[#dcdcdc] max-sm:mr-30 cursor-pointer hover:scale-[1.02] transform transition-transform shadow-md rounded-lg p-4 flex flex-col relative 
+              className="bg-[#f1f1f1] max-sm:mr-30 cursor-pointer hover:scale-[1.02] 2xl:ml-4 transform transition-transform shadow-lg rounded-lg p-4 flex flex-col relative 
                    w-full"
             >
               <div className="flex justify-between items-start w-full">

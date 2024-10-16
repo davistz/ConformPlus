@@ -40,7 +40,7 @@ const Login = () => {
         }}
       />
       <img src={Logo} className="w-[545px] h-auto" alt="logo fsph" />
-      <div className="mt-8 max-sm:w-[420px] max-md:w-[500px] md:w-[600px] h-auto md:h-[460px] lg:w-[590px] justify-between bg-white flex flex-col rounded-[24px]">
+      <div className="mt-8 max-sm:w-[420px] max-md:w-[500px] md:w-[600px] h-auto md:h-[460px] lg:w-[590px] lg:h-[440px] justify-between bg-white flex flex-col rounded-[24px]">
         <div>
           <div className="flex justify-center my-8 md:mb-10 lg:mb-10">
             <h1 className="text-3xl font-bold">Login</h1>
@@ -75,9 +75,6 @@ const Login = () => {
               name="Salvar"
               id="Salvar"
             />
-          </div>
-          <div className="flex-col md:mt-[35px]">
-            <div className="flex justify-center mb-5 gap-[45px]"></div>
           </div>
         </div>
         <div className="rounded-b-lg">

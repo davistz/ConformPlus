@@ -40,9 +40,9 @@ const BarraLateral = ({ className }) => {
   return (
     <div
       id="geral"
-      className={`${className} bg-[#164095] flex flex-col justify-between pr-3 h-screen`}
+      className={`${className} bg-[#164095] flex flex-col justify-between  h-screen`}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col pr-3">
         <Botao
           onClick={handleDashboard}
           className="w-full sm:w-[160px] md:w-[200px] lg:w-[240px]"
@@ -86,6 +86,7 @@ const BarraLateral = ({ className }) => {
       />
 
       <div className="mt-auto flex flex-col items-center">
+        <div className="border-gray-50 w-full border-b-2"></div>
         <Botao
           onClick={handleLogout}
           className="mt-3 w-full sm:w-[160px] md:w-[200px] lg:w-[240px]"
