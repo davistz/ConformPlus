@@ -202,12 +202,13 @@ const UsuariosComponent = () => {
             text-base text-white 
             rounded-lg 
             hover:bg-blue-700 
-            transition duration-300
+            transition duration-500
             max-sm:w-[190px] max-sm:mr-6 max-sm:h-[36px] max-sm:text-sm max-sm:px-1 ma
             sm:w-[230px] sm:h-[40px] sm:text-base sm:px-2
             md:w-[260px] md:h-[42px] md:text-base md:px-3
             lg:w-[290px] lg:h-[42px] lg:text-lg lg:px-4
             xl:w-[320px] xl:h-[44px] xl:text-lg xl:px-5
+            hover:scale-[1.03]
           "
             >
               Adicionar Usuário

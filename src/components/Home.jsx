@@ -104,6 +104,7 @@ const NaoConformidades = () => {
             <Botao
               select="btn_check"
               onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
+              className="hover:scale-[1.05] transition"
             >
               Conformidades Pendentes{" "}
               {conformidadesPendentes.length > 0
@@ -114,6 +115,7 @@ const NaoConformidades = () => {
           <Botao
             onClick={() => setAddConformidadeDialogIsOpen(true)}
             select="btn_add"
+            className="hover:scale-[1.05] transition"
           >
             Adicionar Não Conformidade
             <IoMdAdd className="h-5 w-5 ml-2" />

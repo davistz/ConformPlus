@@ -1,13 +1,6 @@
 import { useState } from "react";
 
-import {
-  FaPlus,
-  FaLock,
-  FaLockOpen,
-  FaTrash,
-  FaBuilding,
-  FaLaptopCode,
-} from "react-icons/fa";
+import { FaPlus, FaTrash, FaBuilding, FaLaptopCode } from "react-icons/fa";
 import { GiHumanPyramid, GiTakeMyMoney } from "react-icons/gi";
 import Botao from "./Botao";
 import { toast } from "sonner";
@@ -36,8 +29,10 @@ function DepartamentosPage() {
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDepartment, setEditingDepartment] = useState(null);
   const [departamento, setDepartamento] = useState("");
   const [gestor, setGestor] = useState("");
+  const [status, setStatus] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -46,21 +41,28 @@ function DepartamentosPage() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const toggleDepartmentStatus = (id) => {
+  const openEditModal = (dept) => {
+    setEditingDepartment(dept);
+    setDepartamento(dept.name);
+    setGestor(dept.manager);
+    setStatus(dept.status);
+    setIsModalOpen(true);
+  };
+
+  const saveEditDepartment = (event) => {
+    event.preventDefault();
+
     setDepartments((prevDepartments) =>
       prevDepartments.map((dept) =>
-        dept.id === id
-          ? { ...dept, status: dept.status === "active" ? "blocked" : "active" }
+        dept.id === editingDepartment.id
+          ? { ...dept, name: departamento, manager: gestor, status }
           : dept
       )
     );
-  };
 
-  const removeDepartment = (id) => {
-    toast.success("Departamento Removido com Sucesso!");
-    setDepartments((prevDepartments) =>
-      prevDepartments.filter((dept) => dept.id !== id)
-    );
+    toast.success("Departamento Editado com Sucesso!");
+    closeModal();
+    setEditingDepartment(null);
   };
 
   const addDepartment = (event) => {
@@ -73,11 +75,19 @@ function DepartamentosPage() {
       status: "active",
     };
 
-    setDepartments([...departments, newDepartment]);
+    setDepartments((prevDepartments) => [...prevDepartments, newDepartment]);
+
     toast.success("Departamento Adicionado com Sucesso!");
     closeModal();
     setDepartamento("");
     setGestor("");
+  };
+
+  const removeDepartment = (id) => {
+    toast.success("Departamento Removido com Sucesso!");
+    setDepartments((prevDepartments) =>
+      prevDepartments.filter((dept) => dept.id !== id)
+    );
   };
 
   return (
@@ -114,7 +124,7 @@ function DepartamentosPage() {
                   ) : dept.name === "Tecnologia da Informação" ? (
                     <FaLaptopCode className="inline-block w-5 h-5 ml-2" />
                   ) : (
-                    <FaBuilding className="inline-block w-5 h-5 ml-2" /> // Ícone padrão se nenhum nome for correspondente
+                    <FaBuilding className="inline-block w-5 h-5 ml-2" />
                   )}
                 </h3>
 
@@ -129,17 +139,6 @@ function DepartamentosPage() {
                   {canChangeDepartament && (
                     <div className="flex">
                       <button
-                        onClick={() => toggleDepartmentStatus(dept.id)}
-                        className="mr-3"
-                      >
-                        {dept.status === "active" ? (
-                          <FaLock className="w-5 h-5" />
-                        ) : (
-                          <FaLockOpen className="w-5 h-5" />
-                        )}
-                      </button>
-
-                      <button
                         onClick={() => removeDepartment(dept.id)}
                         className=""
                       >
@@ -149,19 +148,31 @@ function DepartamentosPage() {
                   )}
                 </div>
               </div>
-              <div>
-                <div className="border-[#a7a7a7] border-b-[1px] mb-5"></div>
-                <div className="flex items-center mt-2">
-                  <div className="bg-gray-300 rounded-full w-14 h-14 flex items-center justify-center">
-                    {dept.manager
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .toUpperCase()}
-                  </div>
-                  <div className="ml-4">
-                    <div className="font-medium text-xl">{dept.manager}</div>
-                    <div className="text-base text-gray-600">Gestor</div>
+              <div className="justify-end  flex flex-col">
+                <button
+                  onClick={() => openEditModal(dept)}
+                  className="ml-auto font-medium text-lg hover:scale-[1.05]  transition"
+                >
+                  Editar
+                </button>
+                <div className="flex justify-between items-center">
+                  <div className="flex-1">
+                    <div className="border-[#a7a7a7] border-b-[1px] mb-5"></div>
+                    <div className="flex items-center mt-2">
+                      <div className="bg-gray-300 rounded-full w-14 h-14 flex items-center justify-center">
+                        {dept.manager
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                          .toUpperCase()}
+                      </div>
+                      <div className="ml-4">
+                        <div className="font-medium text-xl">
+                          {dept.manager}
+                        </div>
+                        <div className="text-base text-gray-600">Gestor</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -170,11 +181,13 @@ function DepartamentosPage() {
         </div>
 
         {isModalOpen && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 w-[450px] rounded shadow-lg">
+          <div className="fixed inset-0 bg-gray-600 bg-opacity-20 backdrop-blur-sm flex justify-center items-center">
+            <div className="bg-white p-6 w-[450px] rounded-lg shadow-lg">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold mx-auto">
-                  Adicionar Departamento
+                  {editingDepartment
+                    ? "Editar Departamento"
+                    : "Adicionar Departamento"}
                 </h2>
                 <button
                   className="text-2xl hover:scale-[1.05] transition hover:text-red-500"
@@ -185,7 +198,11 @@ function DepartamentosPage() {
               </div>
 
               <div>
-                <form onSubmit={addDepartment}>
+                <form
+                  onSubmit={
+                    editingDepartment ? saveEditDepartment : addDepartment
+                  }
+                >
                   <div className="mb-4">
                     <Input
                       type="text"
@@ -206,19 +223,31 @@ function DepartamentosPage() {
                       onChange={(e) => setGestor(e.target.value)}
                     />
                   </div>
-                  <div className="w-full grid grid-cols-2 gap-2 mt-4">
-                    <button
-                      type="button"
-                      onClick={closeModal}
-                      className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 hover:scale-[1.03] transition"
-                    >
-                      Cancelar
-                    </button>
+
+                  {editingDepartment && (
+                    <div className="mb-4">
+                      <label className="block text-md font-medium mb-2">
+                        Status do Departamento
+                      </label>
+                      <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                      >
+                        <option value="active">Ativo</option>
+                        <option value="blocked">Bloqueado</option>
+                      </select>
+                    </div>
+                  )}
+
+                  <div className="w-full text-center mt-6">
                     <button
                       type="submit"
-                      className="bg-[#164095] text-white px-4 py-2 rounded-lg hover:bg-blue-700 hover:scale-[1.03] transition"
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg"
                     >
-                      Adicionar
+                      {editingDepartment
+                        ? "Salvar Alterações"
+                        : "Adicionar Departamento"}
                     </button>
                   </div>
                 </form>
