@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import Botao from "./Botao.jsx";
 import { IoMdAdd } from "react-icons/io";
-import { GiHamburgerMenu } from "react-icons/gi";
+
 import CONFORMIDADES from "../../src/constants/nao_conformidades";
 import ConformidadeItem from "./ConformidadeItem";
 import { toast } from "sonner";
 import AddConformidadeDialog from "./AddConformidadeDialog";
 import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
+import ModalConformidadeInfo from "./ModalConformidadeInfo";
 
 const NaoConformidades = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -16,6 +17,8 @@ const NaoConformidades = () => {
     checkNaoConformidadeDialogIsOpen,
     setCheckNaoConformidadeDialogIsOpen,
   ] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedConformidade, setSelectedConformidade] = useState(null);
   const [addConformidadeDialogIsOpen, setAddConformidadeDialogIsOpen] =
     useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -31,6 +34,22 @@ const NaoConformidades = () => {
 
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
+
+  const handleInfoClick = (conformidade) => {
+    setSelectedConformidade(conformidade);
+    setIsModalOpen(true);
+  };
+  const handleEditConformidadeSubmit = (conformidadeEditada) => {
+    setConformidades((prevConformidades) =>
+      prevConformidades.map((conformidade) =>
+        conformidade.id === conformidadeEditada.id
+          ? { ...conformidade, ...conformidadeEditada }
+          : conformidade
+      )
+    );
+    toast.success("Não conformidade alterada com sucesso!");
+    setIsModalOpen(false);
+  };
 
   const canViewConformidadesPendente =
     user?.permission === "Admin" || user?.permission === "Gestor";
@@ -127,6 +146,12 @@ const NaoConformidades = () => {
         </div>
       </div>
 
+      <ModalConformidadeInfo
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        conformidade={selectedConformidade || null}
+        onSave={handleEditConformidadeSubmit}
+      />
       <AddConformidadeDialog
         isOpen={addConformidadeDialogIsOpen}
         handleClose={() => setAddConformidadeDialogIsOpen(false)}
@@ -140,12 +165,8 @@ const NaoConformidades = () => {
         deletarNaoConformidade={deletarNaoConformidade}
       />
 
-      {/* Conteúdo principal */}
       <div className="pl-[50px] max-sm:pl-[20px]">
         <div className="bg-[#e1e1e1] rounded-xl xl:w-[1480px] sm:w-[540px] md:w-[650px] lg:w-[640px] max-sm:w-full">
-          {/* Diálogos de conformidades */}
-
-          {/* Seção: Em Aberto */}
           <div className="flex items-center justify-between  max-sm:flex-col  max-sm:w-full">
             <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
               Em Aberto
@@ -154,13 +175,9 @@ const NaoConformidades = () => {
               <a onClick={() => setAddConformidadeDialogIsOpen(true)} href="#">
                 <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
               </a>
-              <a href="#">
-                <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
-              </a>
             </div>
           </div>
 
-          {/* Colunas e itens de conformidade */}
           {isSmallScreen ? (
             <div className="font-bold mb-1 flex text-xs gap-[100px] ml-[150px] md:ml-[120px] md:gap-[50px]">
               <h1>Departamento</h1>
@@ -176,10 +193,9 @@ const NaoConformidades = () => {
               <ConformidadeItem
                 key={conformidade.id}
                 conformidade={conformidade}
-                btn_status="Em aberto"
-                color="bg-[#b1b1b1] text-[#3a3a3a]"
                 alterarStatusConformidade={alterarStatusConformidade}
                 deletarNaoConformidade={deletarNaoConformidade}
+                onInfoClick={handleInfoClick}
               />
             ))}
           </div>
@@ -191,14 +207,6 @@ const NaoConformidades = () => {
             <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
               Em Andamento
             </h1>
-            <div className="flex items-center gap-5 pr-[30px]">
-              <a href="#">
-                <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
-              </a>
-              <a href="#">
-                <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
-              </a>
-            </div>
           </div>
 
           {isSmallScreen ? (
@@ -216,10 +224,9 @@ const NaoConformidades = () => {
               <ConformidadeItem
                 key={conformidade.id}
                 conformidade={conformidade}
-                btn_status="Em andamento"
-                color="bg-[#FFAA04] text-[#3d331d]"
                 alterarStatusConformidade={alterarStatusConformidade}
                 deletarNaoConformidade={deletarNaoConformidade}
+                onInfoClick={handleInfoClick}
               />
             ))}
           </div>
@@ -231,14 +238,6 @@ const NaoConformidades = () => {
             <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
               Concluídas
             </h1>
-            <div className="flex items-center gap-5 pr-[30px]">
-              <a href="#">
-                <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
-              </a>
-              <a href="#">
-                <GiHamburgerMenu className="w-5 h-5 hover:scale-110 transition-all duration-300" />
-              </a>
-            </div>
           </div>
 
           {isSmallScreen ? (
@@ -256,10 +255,9 @@ const NaoConformidades = () => {
               <ConformidadeItem
                 key={conformidade.id}
                 conformidade={conformidade}
-                btn_status="Concluída"
-                color="bg-[#00ADB5] text-black"
                 alterarStatusConformidade={alterarStatusConformidade}
                 deletarNaoConformidade={deletarNaoConformidade}
+                onInfoClick={handleInfoClick}
               />
             ))}
           </div>

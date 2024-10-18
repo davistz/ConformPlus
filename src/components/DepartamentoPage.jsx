@@ -149,12 +149,14 @@ function DepartamentosPage() {
                 </div>
               </div>
               <div className="justify-end  flex flex-col">
-                <button
-                  onClick={() => openEditModal(dept)}
-                  className="ml-auto font-medium text-lg hover:scale-[1.05]  transition"
-                >
-                  Editar
-                </button>
+                {canChangeDepartament && (
+                  <button
+                    onClick={() => openEditModal(dept)}
+                    className="ml-auto font-medium text-lg hover:scale-[1.05]  transition"
+                  >
+                    Editar
+                  </button>
+                )}
                 <div className="flex justify-between items-center">
                   <div className="flex-1">
                     <div className="border-[#a7a7a7] border-b-[1px] mb-5"></div>

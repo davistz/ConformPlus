@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
+import miniLogo from "../img/mini_logo.png";
 
 const GraficosDetalhados = () => {
   const trendChartRef = useRef(null);
@@ -260,11 +261,17 @@ const GraficosDetalhados = () => {
   return (
     <div className="container mx-auto px-4">
       <div className="flex flex-col ml-10 gap-6 mt-10">
-        <div className="mb-6">
-          <p className="text-xl">
-            Seja Bem vindo(a) <b className="font-semibold">{user.name}</b> ao
-            painel de controle das não conformidades.
-          </p>
+        <div className="mb-6 ">
+          <div className="flex justify-between">
+            <p className="text-xl">
+              Seja Bem vindo(a) <b className="font-semibold">{user.name}</b> ao
+              painel de controle das não conformidades.
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="mt-0 text-sm">Fundação Parreiras Horta, 2024 </p>
+              <img src={miniLogo} alt="logo do FPH" className="w-8 h-auto" />
+            </div>
+          </div>
           <div className="border-b mt-2 border-[#bdbdbd] " />
         </div>
         <div className="grid max-xl:grid-cols-2 xl:grid-cols-3 gap-5 max-lg:gap-2 ml-3">

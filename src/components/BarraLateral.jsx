@@ -86,6 +86,10 @@ const BarraLateral = ({ className }) => {
       />
 
       <div className="mt-auto flex flex-col items-center">
+        <p className="text-[#ebebeb] text-[10px] mb-2 font-thin">
+          Todos os direitos reservados à <br /> Fundação de Saúde Parreiras
+          Horta © 2024.
+        </p>
         <div className="border-gray-50 w-full border-b-2"></div>
         <Botao
           onClick={handleLogout}

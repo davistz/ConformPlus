@@ -13,6 +13,7 @@ const AddConformidadeDialog = ({
   const [title, setTitle] = useState("");
   const [origem, setOrigem] = useState("Processos / Insumos");
   const [descricao, setDescricao] = useState("");
+  const [departamento, setDepartamento] = useState("");
   const [enquadramento, setEnquadramento] = useState("");
   const [acao_imediata, setAcaoImediata] = useState("");
   const [investigacao, setInvestigacao] = useState("");
@@ -29,6 +30,7 @@ const AddConformidadeDialog = ({
       title,
       origem,
       descricao,
+      departamento,
       enquadramento,
       acao_imediata,
       investigacao,
@@ -41,6 +43,7 @@ const AddConformidadeDialog = ({
     setTitle("");
     setOrigem("Processos / Insumos");
     setDescricao("");
+    setDepartamento("");
     setEnquadramento("");
     setAcaoImediata("");
     setInvestigacao("");
@@ -105,17 +108,35 @@ const AddConformidadeDialog = ({
                   onChange={(e) => setDescricao(e.target.value)}
                 />
               </div>
-              <div className="w-full lg:w-[100%]">
-                <label className="pl-5 text-2xl ">
-                  Anexar a evidência da não conformidade
-                  <input
-                    type="file"
-                    name="anexo"
-                    id="anexo"
-                    className="block mt-[14px] w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:cursor-pointer file:text-white hover:file:bg-blue-600"
-                    multiple
-                  />
-                </label>
+              <div className="w-full flex lg:w-[100%]">
+                <div className=" w-[50%] pr-4">
+                  <label className="pl-5 text-2xl ">
+                    Anexar um evidência
+                    <input
+                      type="file"
+                      name="anexo"
+                      id="anexo"
+                      className="block mt-[14px] w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:cursor-pointer file:text-white hover:file:bg-blue-600"
+                      multiple
+                    />
+                  </label>
+                </div>
+                <div className=" w-[50%] pl-4">
+                  <label className="ml-5 text-2xl">
+                    Departamento de Origem
+                  </label>
+                  <select
+                    value={departamento}
+                    onChange={(e) => setDepartamento(e.target.value)}
+                    className="w-full mt-[14px] h-[40px] rounded-[20px] pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                  >
+                    <option>Laboratorio</option>
+                    <option>Recursos Humanos</option>
+                    <option>Financeiro</option>
+                    <option>TI</option>
+                    <option>Coleta de Sangue</option>
+                  </select>
+                </div>
               </div>
               <div className="w-full lg:w-[48%]">
                 <label className="ml-5  text-2xl">Enquadramento</label>
@@ -127,7 +148,7 @@ const AddConformidadeDialog = ({
                   <option>ABNT NBR ISO 15189:2015</option>
                   <option>ABNT NBR ISO 9001:2015</option>
                   <option>ABNT NBR ISO/IEC 17025:2017</option>
-                  <option>PORTARIA DE CONSOLIDAÇÃO</option>
+                  <option>Portaria de Consolidação</option>
                   <option>RDC Nº 34:2014</option>
                   <option>RDC Nº 399:2020</option>
                 </select>
@@ -161,7 +182,7 @@ const AddConformidadeDialog = ({
               <Botao
                 className="desktop:text-xl justify-center desktop:w-[400px] mr-5 desktop:ml-auto laptop:w-[280px] mobile:w-[280px] mt-7"
                 select="btn_cancel"
-                onClick={handleSaveClick}
+                onClick={handleClose}
               >
                 Cancelar
               </Botao>
