@@ -5,6 +5,7 @@ import { GiHumanPyramid, GiTakeMyMoney } from "react-icons/gi";
 import Botao from "./Botao";
 import { toast } from "sonner";
 import Input from "./Input";
+import miniLogo from "../img/mini_logo.png";
 
 function DepartamentosPage() {
   const [departments, setDepartments] = useState([
@@ -95,6 +96,14 @@ function DepartamentosPage() {
       <main className="flex-1 p-8">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-4xl font-bold">Gerenciamento de Departamentos</h2>
+          <div className="flex justify-between">
+            {!canChangeDepartament && (
+              <div className="flex items-center gap-2">
+                <p className="mt-0 text-sm">Fundação Parreiras Horta, 2024 </p>
+                <img src={miniLogo} alt="logo do FPH" className="w-8 h-auto" />
+              </div>
+            )}
+          </div>
           {canChangeDepartament && (
             <Botao
               onClick={openModal}

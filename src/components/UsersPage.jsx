@@ -5,6 +5,7 @@ import Logo from "../img/logo.png";
 import LOGINS from "../constants/logins";
 import Input from "./Input";
 import { toast } from "sonner";
+import miniLogo from "../img/mini_logo.png";
 
 const UsuariosComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -178,19 +179,27 @@ const UsuariosComponent = () => {
               </div>
             </div>
           </div>
-          <div className="md:mr-[100px] sm:mr-6 lg:mr-3">
+          {/* <div className="md:mr-[100px] sm:mr-6 lg:mr-3">
             <button className="bg-[#164095] hidden sm:block md:block justify-center items-center w-[200px] h-[40px] px-2 font-bold text-base text-white rounded-lg hover:bg-blue-700 transition duration-300">
               Editar Perfil
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
       <div className="ml-10 max-sm:mt-5 max-sm:ml-0 ">
         <div className="flex max-sm:w-screen justify-between items-center mt-6">
-          <h1 className="text-2xl font-medium max-sm:text-xl max-sm:ml-5 sm:text-lg md:text-xl lg:text-2xl">
+          <h1 className="text-2xl ml-4 font-semibold max-sm:text-xl max-sm:ml-5 sm:text-lg md:text-xl lg:text-2xl">
             Usuários Existentes
           </h1>
+          <div className="flex justify-between">
+            {!canAddUser && (
+              <div className="flex items-center gap-2">
+                <p className="mt-0 text-sm">Fundação Parreiras Horta, 2024 </p>
+                <img src={miniLogo} alt="logo do FPH" className="w-8 h-auto" />
+              </div>
+            )}
+          </div>
           {canAddUser && (
             <button
               onClick={() => openModal()}
