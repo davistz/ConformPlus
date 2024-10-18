@@ -25,12 +25,12 @@ const NaoConformidadeCheck = ({
         {conformidadesPendentes.length > 0 ? (
           <div className="mt-10 ml-2">
             <div
-              className={`grid grid-cols-[50px_180px_200px_150px_170px] ml-4 mb-2 w-full font-bold`}
+              className={`grid grid-cols-[130px_230px_260px_170px] ml-4 mb-2 w-full font-bold`}
             >
               <h1 className="pl-2">Id</h1>
-              <h1>Departamento</h1>
-              <h1>Setor Destino</h1>
-              <h1>Data</h1>
+              <h1>Origem</h1>
+              <h1>Enquadramento</h1>
+
               <h1>Grau de Severidade</h1>
             </div>
             <ul className="w-full">
@@ -46,11 +46,11 @@ const NaoConformidadeCheck = ({
                       : ""
                   } py-4  flex items-center`}
                 >
-                  <div className=" ml-4 grid grid-cols-[80px_180px_120px_250px_140px]">
+                  <div className=" ml-4 text-[15px] grid grid-cols-[80px_250px_340px_120px]">
                     <p className="pl-2">{conformidade.id}</p>
-                    <p>{conformidade.departamento}</p>
-                    <p>{conformidade.departamento_destino}</p>
-                    <p>{conformidade.data}</p>
+                    <p>{conformidade.origem}</p>
+                    <p>{conformidade.enquadramento}</p>
+
                     <p>{conformidade.grau_severidade}</p>
                   </div>
                   <div className="ml-3">

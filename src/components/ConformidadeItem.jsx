@@ -63,14 +63,14 @@ const ConformidadeItem = ({
             <ul
               className={`${
                 isSmallScreen
-                  ? "grid lg:grid-cols-[200px_210px_0px] xl:grid-cols-[170px_290px_230px_340px_20px] md:grid-cols-[140px_150px_90px] md:ml-10 xl:ml-0 items-center"
+                  ? "grid lg:grid-cols-[200px_210px_0px] xl:grid-cols-[150px_270px_300px_280px_55px] md:grid-cols-[140px_150px_90px] xl:ml-0 items-center"
                   : "grid grid-cols-[100px_240px_150px_260px_100px]  lg:grid-cols-[30px_240px_150px_260px_100px] w-full ml-[55px]"
               } text-base font-normal list-none`}
             >
               {isSmallScreen && <li>{conformidade.id}</li>}{" "}
               {/* Oculta o ID em telas pequenas */}
-              <li>{conformidade.departamento}</li>
-              <li>{conformidade.departamento_destino}</li>
+              <li>{conformidade.origem}</li>
+              <li>{conformidade.enquadramento}</li>
               {isSmallScreen && <li>{conformidade.data}</li>}{" "}
               {/* Oculta a data em telas pequenas */}
               <li>{conformidade.grau_severidade}</li>

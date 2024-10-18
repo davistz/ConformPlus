@@ -78,11 +78,15 @@ const NaoConformidades = () => {
         return conformidade;
       }
 
+      if (conformidade.status === "pendente") {
+        toast.success("Não conformidade alterada para em andamento!");
+        return { ...conformidade, status: "aberto" };
+      }
       if (conformidade.status === "aberto") {
         toast.success("Não conformidade alterada para em andamento!");
         return { ...conformidade, status: "andamento" };
       }
-      if (conformidade.status === "pendente") {
+      if (conformidade.status === "concluida") {
         toast.success("Não conformidade alterada para em andamento!");
         setCheckNaoConformidadeDialogIsOpen(false);
         return { ...conformidade, status: "aberto" };

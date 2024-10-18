@@ -9,6 +9,8 @@ const GraficosDetalhados = () => {
   const histogramChartRef = useRef(null);
   const effectivenessChartRef = useRef(null);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
     const createChart = (ctx, type, data, options, chartRef) => {
       destroyChart(chartRef);
@@ -257,15 +259,21 @@ const GraficosDetalhados = () => {
   }, []);
   return (
     <div className="container mx-auto px-4">
-      <div className="flex flex-col gap-4 mt-4">
-        {/* Grid com 3 colunas quando xl */}
-        <div className="grid max-xl:grid-cols-2 xl:grid-cols-3 gap-5 max-lg:gap-2 ml-5">
+      <div className="flex flex-col ml-10 gap-6 mt-10">
+        <div className="mb-6">
+          <p className="text-xl">
+            Seja Bem vindo(a) <b className="font-semibold">{user.name}</b> ao
+            painel de controle das não conformidades.
+          </p>
+          <div className="border-b mt-2 border-[#bdbdbd] " />
+        </div>
+        <div className="grid max-xl:grid-cols-2 xl:grid-cols-3 gap-5 max-lg:gap-2 ml-3">
           {/* Causa Raiz das Não Conformidades */}
           <div
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px" }}
+            style={{ height: "300px" }}
           >
-            <h2 className="chart-title  max-lg:text-sm  text-lg mt-2 font-semibold">
+            <h2 className="chart-title  max-lg:text-sm  text-lg mt-2 font-medium">
               Causa Raiz das Não Conformidades
             </h2>
             <canvas
@@ -277,9 +285,9 @@ const GraficosDetalhados = () => {
           {/* Tendência das Não Conformidades */}
           <div
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px" }}
+            style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base max-lg:text-sm xl:text-lg mt-2 mb-1 font-semibold">
+            <h2 className="chart-title max-xl:text-base max-lg:text-sm xl:text-lg mt-2 mb-1 font-medium">
               Tendência das Não Conformidades
             </h2>
             <canvas
@@ -291,9 +299,9 @@ const GraficosDetalhados = () => {
           {/* Eficácia das Ações Corretivas */}
           <div
             className="chart-container max-lg:hidden flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px" }}
+            style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base text-lg mt-2 mb-1 font-semibold">
+            <h2 className="chart-title max-xl:text-base text-lg mt-2 mb-1 font-medium">
               Eficácia das Ações Corretivas
             </h2>
             <canvas
@@ -305,9 +313,9 @@ const GraficosDetalhados = () => {
           {/* Classificação por Severidade */}
           <div
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px" }}
+            style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base max-lg:text-sm  text-lg mt-2 mb-1 font-semibold">
+            <h2 className="chart-title max-xl:text-base max-lg:text-sm  text-lg mt-2 mb-1 font-medium">
               Classificação por Severidade
             </h2>
             <canvas
@@ -319,9 +327,9 @@ const GraficosDetalhados = () => {
           {/* Conformidades Totais */}
           <div
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px" }}
+            style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base max-lg:text-sm  text-lg mt-2 mb-1 font-semibold">
+            <h2 className="chart-title max-xl:text-base max-lg:text-sm  text-lg mt-2 mb-1 font-medium">
               Conformidades Totais
             </h2>
             <canvas
@@ -333,9 +341,9 @@ const GraficosDetalhados = () => {
           {/* Gráfico de Histogramas */}
           <div
             className="chart-container flex max-xl:hidden flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
-            style={{ height: "400px" }}
+            style={{ height: "300px" }}
           >
-            <h2 className="chart-title text-lg mt-2 mb-1 font-semibold">
+            <h2 className="chart-title text-lg mt-2 mb-1 font-medium">
               Gráfico de Histogramas
             </h2>
             <canvas
