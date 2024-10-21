@@ -32,7 +32,7 @@ Este projeto tem como objetivo desenvolver uma interface intuitiva e responsiva 
 ## 🛠️ Tecnologias Utilizadas
 
 - **Frontend:** React.js 
-- **Backend:** (a definir)
+- **Backend:** Java
 - **Banco de Dados:**  (a definir)
 - **Design:** Figma para prototipagem
 - **Controle de Versão:** Git e GitHub
