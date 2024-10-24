@@ -8,6 +8,7 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
   const [editConformidade, setEditConformidade] = useState(
     () => conformidade || {}
   );
+  const [fileEvidencia, setFileEvidencia] = useState([]);
 
   useEffect(() => {
     setEditConformidade(conformidade || {});
@@ -26,16 +27,31 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
     onClose();
   };
 
+  const handleRemoveFile = (index) => {
+    const updatedFiles = fileEvidencia.filter((_, i) => i !== index);
+    setFileEvidencia(updatedFiles);
+  };
+
+  const handlePreviewFile = (file) => {
+    const fileURL = URL.createObjectURL(file);
+    window.open(fileURL); // Abre o arquivo em uma nova aba
+  };
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFileEvidencia((prev) => [...prev, ...files]);
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-      <div className="bg-white w-[650px] h-[600px] p-6 rounded-lg shadow-lg flex flex-col">
-        <div>
+      <div className="bg-white w-[650px] h-[640px] p-6 rounded-lg shadow-lg flex flex-col">
+        <div className="">
           <h2 className="text-2xl font-bold mb-6 text-gray-700">
             Detalhes da Não Conformidade
           </h2>
           <div className="space-y-4">
             <div className="flex flex-col">
-              <label className="font-medium text-lg">Título:</label>
+              <label className="font-medium text-lg">Descrição:</label>
               <input
                 type="text"
                 name="titulo"
@@ -45,7 +61,9 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
               />
             </div>
             <div className="flex flex-col">
-              <label className="font-medium text-lg">Departamento:</label>
+              <label className="font-medium text-lg">
+                Departamento de Origem:
+              </label>
               <select
                 name="origem"
                 value={editConformidade.origem || ""}
@@ -88,20 +106,67 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
                 <option>Alto</option>
               </select>
             </div>
+
+            {/* Input para anexar arquivos */}
+            <div className="flex flex-col">
+              <label className="font-medium text-lg">Anexar Arquivos:</label>
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="mt-[14px] border border-[#000000] rounded-md pl-2 bg-[#F1F4F9]"
+              />
+              {fileEvidencia.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="font-medium text-lg">Arquivos Anexados:</h3>
+                  <table className="min-w-full mt-2 border border-gray-300">
+                    <thead>
+                      <tr>
+                        <th className="border border-gray-300 p-2">Arquivo</th>
+                        <th className="border border-gray-300 p-2">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {fileEvidencia.map((file, index) => (
+                        <tr key={index}>
+                          <td className="border border-gray-300 p-2">
+                            {file.name}
+                          </td>
+                          <td className="border border-gray-300 p-2">
+                            <button
+                              onClick={() => handlePreviewFile(file)}
+                              className="text-blue-500 hover:underline mr-2"
+                            >
+                              Visualizar
+                            </button>
+                            <button
+                              onClick={() => handleRemoveFile(index)}
+                              className="text-red-500 hover:underline"
+                            >
+                              Excluir
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        <div className="w-full mt-6">
-          <button
-            onClick={handleSave}
-            className="bg-blue-500 text-white w-full px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 shadow-md"
-          >
-            Salvar
-          </button>
+        <div className="w-full items-center gap-2 flex mt-6">
           <button
             onClick={onClose}
-            className="bg-gray-400 w-full mt-3 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-300 shadow-md"
+            className="bg-gray-400 w-full text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition duration-300 shadow-md"
           >
             Fechar
+          </button>
+          <button
+            onClick={handleSave}
+            className="bg-blue-500 h-10 text-white w-full px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 shadow-md"
+          >
+            Salvar
           </button>
         </div>
       </div>

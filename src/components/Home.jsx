@@ -9,6 +9,7 @@ import AddConformidadeDialog from "./AddConformidadeDialog";
 import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
 import Id from "./Id";
 import ModalConformidadeInfo from "./ModalConformidadeInfo";
+import KanbanBoard from "./KanbanBoard.jsx";
 
 const NaoConformidades = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -145,7 +146,6 @@ const NaoConformidades = () => {
           </Botao>
         </div>
       </div>
-
       <ModalConformidadeInfo
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -164,9 +164,9 @@ const NaoConformidades = () => {
         alterarStatusConformidade={alterarStatusConformidade}
         deletarNaoConformidade={deletarNaoConformidade}
       />
-
       <div className="pl-[50px] max-sm:pl-[20px]">
         <div className="bg-[#e1e1e1] rounded-xl xl:w-[1480px] sm:w-[540px] md:w-[650px] lg:w-[640px] max-sm:w-full">
+          {/* <KanbanBoard /> */}
           <div className="flex items-center justify-between  max-sm:flex-col  max-sm:w-full">
             <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
               Em Aberto

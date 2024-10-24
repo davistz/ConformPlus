@@ -18,6 +18,12 @@ const AddConformidadeDialog = ({
   const [acao_imediata, setAcaoImediata] = useState("");
   const [investigacao, setInvestigacao] = useState("");
   const [grau_severidade, setgrauSeveridade] = useState("Baixo");
+  const [fileEvidencia, setFileEvidencia] = useState([]);
+
+  const handleFileChange = (event) => {
+    const files = Array.from(event.target.files);
+    setFileEvidencia(files);
+  };
 
   const handleSaveClick = () => {
     const dataAtual = new Date().toLocaleDateString("pt-BR", {
@@ -39,7 +45,6 @@ const AddConformidadeDialog = ({
       status: "aberto",
     });
 
-    // Reset dos campos
     setTitle("");
     setOrigem("Processos / Insumos");
     setDescricao("");
@@ -111,11 +116,12 @@ const AddConformidadeDialog = ({
               <div className="w-full flex lg:w-[100%]">
                 <div className=" w-[50%] pr-4">
                   <label className="pl-5 text-2xl ">
-                    Anexar um evidência
+                    Anexar uma evidência
                     <input
                       type="file"
                       name="anexo"
                       id="anexo"
+                      onChange={handleFileChange}
                       className="block mt-[14px] w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:cursor-pointer file:text-white hover:file:bg-blue-600"
                       multiple
                     />
