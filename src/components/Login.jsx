@@ -30,6 +30,10 @@ const Login = () => {
     }
   };
 
+  const handleRegister = () => {
+    navigate("/register");
+  };
+
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center bg-[#164095]">
       <Toaster
@@ -90,6 +94,12 @@ const Login = () => {
           </Botao>
         </div>
       </div>
+      <p
+        className="text-white mt-4 hover:scale-[1.03] transition cursor-pointer"
+        onClick={handleRegister}
+      >
+        Não possui login? Se Cadastre!
+      </p>
     </div>
   );
 };

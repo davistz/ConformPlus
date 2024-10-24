@@ -14,6 +14,7 @@ const UsuariosComponent = () => {
   const [userName, setUserName] = useState("");
   const [userDepartment, setUserDepartment] = useState("");
   const [userManager, setUserManager] = useState("");
+  const [userPermission, setUserPermission] = useState("");
   const [userPhoto, setUserPhoto] = useState(null);
   const [profiles, setProfiles] = useState(LOGINS);
 
@@ -49,12 +50,14 @@ const UsuariosComponent = () => {
       setUserDepartment(profile.department);
       setUserManager(profile.manager);
       setUserPhoto(profile.photo);
+      setUserPermission(profile.userPermission);
     } else {
       setIsEditMode(false);
       setUserName("");
       setUserDepartment("");
       setUserManager("");
       setUserPhoto(null);
+      setUserPermission("");
     }
     setIsModalOpen(true);
   };
@@ -70,14 +73,18 @@ const UsuariosComponent = () => {
       case "Gestor":
         return "text-[#ff9f2a]";
       case "Usuario":
-        return "text-[#bebebe]";
+        return "text-[#919191]";
       default:
-        return "text-[#bebebe]";
+        return "text-[#919191]";
     }
   };
 
   const updateManager = (department) => {
     setUserManager(departments[department] || "");
+  };
+
+  const handlePermissionChange = (e) => {
+    setUserPermission(e.target.value);
   };
 
   const handleFormSubmit = (e) => {
@@ -98,6 +105,8 @@ const UsuariosComponent = () => {
                 department: userDepartment,
                 manager: userManager,
                 photo: userPhoto || profile.photo || initials,
+                userPermission: userPermission || profile.userPermission,
+                status: profile.status,
               }
             : profile
         )
@@ -110,22 +119,13 @@ const UsuariosComponent = () => {
         manager: userManager,
         status: "active",
         photo: userPhoto || initials,
+        userPermission: userPermission || "Usuario",
       };
       setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
       toast.success("Adicionado com sucesso");
     }
-    closeModal();
-  };
 
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUserPhoto(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    closeModal();
   };
 
   const toggleProfileStatus = (id) => {
@@ -267,15 +267,24 @@ const UsuariosComponent = () => {
                 <p className="text-xs sm:text-sm text-gray-500">
                   {profile.manager}
                 </p>
-                <span
-                  className={`status-badge ${
-                    profile.status === "active"
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
-                >
-                  {profile.status === "active" ? "Ativo" : "Bloqueado"}
-                </span>
+                <div className="flex gap-2 mt-2">
+                  <p
+                    className={`permission-text font-semibold border-r-2 border-gray pr-2 ${getPermissionColor(
+                      profile.permission || profile.userPermission
+                    )}`}
+                  >
+                    {profile.permission || profile.userPermission}
+                  </p>
+                  <span
+                    className={`status-badge ${
+                      profile.status === "active"
+                        ? "text-green-500"
+                        : "text-red-500"
+                    }`}
+                  >
+                    {profile.status === "active" ? "Ativo" : "Bloqueado"}
+                  </span>
+                </div>
               </div>
               {canAddUser && (
                 <div className="flex mt-2 space-x-2 ml-auto">
@@ -301,22 +310,25 @@ const UsuariosComponent = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-bold mb-4 flex justify-center items-center">
+            <h2 className="text-xl font-bold mb-10 flex justify-center items-center">
               {isEditMode ? "Editar Usuário" : "Adicionar Usuário"}
             </h2>
             <form onSubmit={handleFormSubmit}>
-              <div className="mb-4">
+              <div className="mb-4 ">
                 <Input
                   type="text"
                   label="Nome Completo"
                   value={userName}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                  labelClass="text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
+                  labelClass="text-sm font-bold"
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="department" className="block text-sm">
+                <label
+                  htmlFor="department"
+                  className="block text-sm mb-2 font-bold"
+                >
                   Departamento:
                 </label>
                 <select
@@ -335,8 +347,11 @@ const UsuariosComponent = () => {
                   ))}
                 </select>
               </div>
-              <div className="mb-4">
-                <label htmlFor="manager" className="block text-sm">
+              <div className="mb-6">
+                <label
+                  htmlFor="manager"
+                  className="block text-sm mb-2 font-bold"
+                >
                   Gestor:
                 </label>
                 <input
@@ -347,16 +362,26 @@ const UsuariosComponent = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                   disabled
                 />
+                <label
+                  htmlFor="permission"
+                  className="block text-sm mt-4 font-bold"
+                >
+                  Permissão:
+                </label>
+                <select
+                  id="permission"
+                  name="permission"
+                  className="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                  value={userPermission}
+                  onChange={handlePermissionChange}
+                >
+                  <option value="">Selecione uma permissão</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Usuário">Usuário</option>
+                  <option value="Gestor">Gestor</option>
+                </select>
               </div>
-              <div className="mb-4">
-                <label className="block text-sm">Foto do Usuário:</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoChange}
-                  className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer"
-                />
-              </div>
+
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"

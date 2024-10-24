@@ -4,15 +4,45 @@ import Logo from "../img/logo.png";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
+import { IoMdNotifications } from "react-icons/io";
 import { AiFillDashboard } from "react-icons/ai";
 import { IoIosGitNetwork, IoMdClose } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
+import { IoIosClose } from "react-icons/io";
 import { MdLogout } from "react-icons/md";
 import { toast } from "sonner";
+import daviAvatar from "../img/img_users/davi.png";
+import lucasAvatar from "../img/img_users/lucas.png";
+import userAvatar from "../img/img_users/user_default.png";
 
 const Header = ({ className }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 755);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const notificacoes = [
+    {
+      responsavel: "Davi",
+      avataResponsavel: daviAvatar,
+      processoOrigem: "Não Conformidades",
+      msg: "Criou uma nova não conformidade",
+      nomeAutor: "Maria Santos",
+
+      isNew: true,
+    },
+    {
+      responsavel: "Lucas",
+      avataResponsavel: lucasAvatar,
+      processoOrigem: "Departamentos",
+      msg: "Criou um novo departamento",
+      nomeAutor: "Carlos Ferreira",
+
+      isNew: false,
+    },
+  ];
 
   const handleLogout = () => {
     toast.success("Deslogado com sucesso!");
@@ -35,8 +65,31 @@ const Header = ({ className }) => {
     navigate("/conformidades");
   };
 
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 755);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const renderizarNotificacoes = () => {
+    return notificacoes.map((notificacao) => (
+      <div
+        className={`flex items-start p-4 border-b border-gray-200 ${
+          notificacao.isNew ? "bg-blue-100" : "bg-white"
+        }`}
+        key={notificacao.processoOrigem}
+      >
+        <img
+          className="w-12 h-11 rounded-full mr-3"
+          src={notificacao.avataResponsavel}
+          alt="Avatar"
+        />
+        <div className="flex-1">
+          <strong>{notificacao.responsavel}</strong>
+          <div className="mt-2 gap-1 flex flex-col">
+            <p className="text-sm text-gray-500">
+              Origem: {notificacao.processoOrigem}
+            </p>
+            <p className="text-sm">{notificacao.msg}</p>
+          </div>
+        </div>
+      </div>
+    ));
+  };
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -98,7 +151,40 @@ const Header = ({ className }) => {
           </div>
         )}
 
-        <div className="flex justify-end ml-auto mr-5">
+        <div className="flex justify-end items-center ml-auto mr-5">
+          <div>
+            <IoMdNotifications
+              className="text-white w-8 h-8 mr-4 cursor-pointer"
+              onClick={() => setIsDrawerOpen(true)}
+            />
+            <div
+              className={`fixed inset-0 flex items-end justify-end h-screen z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${
+                isDrawerOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            >
+              <div
+                className={`bg-white rounded-lg shadow-lg w-96 h-full transform transition-transform duration-300 ${
+                  isDrawerOpen ? "translate-x-0" : "translate-x-full"
+                }`}
+              >
+                <div className="flex justify-between items-center py-6 px-4 bg-[#0E5EBA] border-b">
+                  <h2 className="text-lg font-semibold text-white">
+                    Notificações
+                  </h2>
+                  <IoIosClose
+                    onClick={() => setIsDrawerOpen(false)}
+                    className="cursor-pointer w-7 h-7 text-white"
+                  />
+                </div>
+                <div
+                  id="notificacoesLista"
+                  className="overflow-y-auto h-[calc(100%-64px)]"
+                >
+                  {renderizarNotificacoes()}
+                </div>
+              </div>
+            </div>
+          </div>
           {user ? (
             <div
               className="flex items-center cursor-pointer"
