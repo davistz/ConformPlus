@@ -1,3 +1,11 @@
+* {
+    margin: 0;
+}
+
+body {
+    display: flex;
+}
+
 h1 {
     text-align: center;
     padding-top: 10px;
@@ -14,8 +22,16 @@ h1 {
 .lista {
     position: absolute;
     top: 10px; 
-    left: 5px; 
-    padding: 10px; 
+
+}
+dl {
+    display: flex;
+    flex-direction: column;
+    
+    width: 75px;
+    padding: 2px;
+    
+    
 }
 
 footer {
@@ -23,4 +39,14 @@ footer {
     bottom: 10px; 
     left: 5px; 
     padding: 10px; 
+}
+.bloco {
+    height: 900px;
+    width: 200px;
+    background-color: #164095;
+    
+}
+
+dd{
+    margin: 5px;
 }
