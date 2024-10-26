@@ -12,6 +12,22 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [RecuperarSenha, setRecuperarSenha] = useState(true);
+
+  const handleRecuperarSenha = () => {
+    setRecuperarSenha(false)
+  }
+  const handleSenhaOn = () => {
+    setRecuperarSenha(true)
+  }
+  const handleSenhaNova = () => {
+    toast.success("Link de redefinir enviado com sucesso!")
+    
+    setTimeout(() => {
+      setRecuperarSenha(true)
+    }, 3000);
+  }
+
 
   const handleLogin = () => {
     const user = LOGINS.find(
@@ -44,6 +60,8 @@ const Login = () => {
         }}
       />
       <img src={Logo} className="w-[545px] h-auto" alt="logo fsph" />
+      {RecuperarSenha ?
+      <div className="flex flex-col items-center"> 
       <div className="mt-8 max-sm:w-[420px] max-md:w-[500px] md:w-[600px] h-auto md:h-[460px] lg:w-[590px] lg:h-[440px] justify-between bg-white flex flex-col rounded-[24px]">
         <div>
           <div className="flex justify-center my-8 md:mb-10 lg:mb-10">
@@ -67,8 +85,9 @@ const Login = () => {
                 className="w-full h-[45px] mb-4 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#000000] border border-[#A6A6A6]"
               />
               <a
-                href="#"
-                className="absolute right-3 top-2 font-medium max-sm:right-8 max-sm:top-1 text-sm text-[#404040] hover:text-[#48a7ff] transition-colors"
+                onClick={() => handleRecuperarSenha()}
+                value={RecuperarSenha}
+                className="absolute right-3 top-2 hover:scale-[1.03] transition font-medium max-sm:right-8 max-sm:top-1 text-sm text-[#404040] hover:text-[#48a7ff] transition-colors"
               >
                 Esqueceu a senha?
               </a>
@@ -94,12 +113,49 @@ const Login = () => {
           </Botao>
         </div>
       </div>
-      <p
-        className="text-white mt-4 hover:scale-[1.03] transition cursor-pointer"
-        onClick={handleRegister}
-      >
-        Não possui login? Se Cadastre!
-      </p>
+      <p className="text-white hover:scale-[1.03] transition cursor-pointer mt-5" onClick={() => handleRegister()}>Não possui login? Clique Aqui!</p>
+      </div>
+
+      : 
+      <div className="flex flex-col items-center justify-center">
+      <div className="mt-8 max-sm:w-[420px] max-md:w-[500px] md:w-[600px] h-auto md:h-[460px] lg:w-[590px] lg:h-[240px] justify-between bg-white flex flex-col rounded-[24px]">
+        <div>
+          <div className="flex justify-center my-8 md:mb-10 lg:mb-10">
+            <h1 className="text-3xl font-bold">Recuperar Senha</h1>
+          </div>
+          <div className="pl-6 relative mr-6">
+            <div className="relative">
+              <Input
+                type="password"
+                label="Insira Seu E-mail de Recuperação"
+                placeholder="E-mail de recuperação"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-[45px] mb-4 font-medium rounded-lg pl-5 bg-[#F1F4F9] text-[#000000] border border-[#A6A6A6]"
+              />
+
+            </div>
+           
+          </div>
+        </div>
+        <div className="rounded-b-lg">
+          <div className="flex justify-center mb-2">
+            {error && <p className="text-red-500">{error}</p>}
+          </div>
+          <Botao
+            className="w-full rounded-b-[24px] h-[60px] "
+            select="btn"
+            onClick={() => handleSenhaNova()}
+          >
+            Enviar Link de Redefinição
+          </Botao>
+        </div>
+
+      </div>
+      <p className="text-white hover:scale-[1.03] transition cursor-pointer mt-[50px]" onClick={() => handleSenhaOn()}>Já possui login? Clique Aqui!</p>
+      </div>
+      }
+      
     </div>
   );
 };
