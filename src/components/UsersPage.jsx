@@ -148,7 +148,7 @@ const UsuariosComponent = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex mt-[120px] ml-2 flex-col">
       <div className="flex bg-[#10254f] max-sm:hidden 2xl:w-[1500px] xl:w-[930px] lg:w-[690px] md:w-full max-lg:w-[100px] sm:w-[520px] max-sm:w-[450px] h-[250px] max-sm:ml-[25px] max-md:ml-[40px] ml-[60px] md:ml-[30px] justify-end mt-[30px] rounded-xl relative">
         <div className="w-full flex flex-col items-end gap-8">
           <div className="flex bg-[#164095] rounded-t-xl h-[135px] w-full items-center justify-between text-xl">

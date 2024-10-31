@@ -1,8 +1,7 @@
 import { Toaster } from "sonner";
 
-import BarraLateral from "./components/BarraLateral";
-import Header from "./components/Header";
-import GraficosDetalhados from "./components/Graficos";
+import Header from "./components/Header/Header";
+import GraficosDetalhados from "./components/Graficos/Graficos";
 
 function App() {
   return (
@@ -14,14 +13,9 @@ function App() {
           },
         }}
       />
-      <div className="">
+      <div className="flex">
         <Header />
-        <div className="flex">
-          <BarraLateral className="hidden lg:flex" />
-          <div className="">
-            <GraficosDetalhados />
-          </div>
-        </div>
+        <GraficosDetalhados />
       </div>
     </>
   );

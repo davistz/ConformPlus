@@ -1,15 +1,11 @@
-import BarraLateral from "../components/BarraLateral";
 import DepartamentosPage from "../components/DepartamentoPage";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 
 const DepartamentoPage = () => {
   return (
-    <div className="flex-col">
+    <div className="flex">
       <Header />
-      <div className="flex">
-        <BarraLateral className="hidden lg:flex" />
-        <DepartamentosPage />
-      </div>
+      <DepartamentosPage />
     </div>
   );
 };

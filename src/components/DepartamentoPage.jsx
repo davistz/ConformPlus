@@ -92,8 +92,8 @@ function DepartamentosPage() {
   };
 
   return (
-    <div className="flex h-screen w-full">
-      <main className="flex-1 p-8">
+    <div className="flex mt-[130px] ml-[30px]">
+      <main className="flex-1 p-8 w-[1550px]">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-4xl font-bold">Gerenciamento de Departamentos</h2>
           <div className="flex justify-between">

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import Botao from "./Botao.jsx";
+import Botao from "../Botao.jsx";
 import { IoMdAdd } from "react-icons/io";
 
-import CONFORMIDADES from "../../src/constants/nao_conformidades";
-import ConformidadeItem from "./ConformidadeItem";
+import * as s from "./Home.styled.jsx";
+import CONFORMIDADES from "../../constants/nao_conformidades.js";
+import ConformidadeItem from "../ConformidadeItem/ConformidadeItem.jsx";
 import { toast } from "sonner";
-import AddConformidadeDialog from "./AddConformidadeDialog";
-import NaoConformidadeCheck from "./NaoConformidadeCheck.jsx";
-import Id from "./Id";
-import ModalConformidadeInfo from "./ModalConformidadeInfo";
-import KanbanBoard from "./KanbanBoard.jsx";
+import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
+import NaoConformidadeCheck from "../NaoConformidadeCheck.jsx";
+import Id from "../Id.jsx";
+import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 
 const NaoConformidades = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -121,73 +121,67 @@ const NaoConformidades = () => {
   };
 
   return (
-    <div className="flex flex-col desktop:h-[829px]">
-      <div className="flex ml-12 mobile:flex-col flex-row px-4 mt-[25px]">
-        <div className="flex mb-10 gap-4 max-sm:w-full xl:w-full justify-end">
+    <s.Container>
+      <s.Row>
+        <s.ButtonGroup>
           {canViewConformidadesPendente && (
-            <Botao
-              select="btn_check"
+            <s.BtnCheck
               onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
-              className="hover:scale-[1.05] transition"
             >
               Conformidades Pendentes{" "}
               {conformidadesPendentes.length > 0
                 ? conformidadesPendentes.length
                 : ""}
-            </Botao>
+            </s.BtnCheck>
           )}
-          <Botao
-            onClick={() => setAddConformidadeDialogIsOpen(true)}
-            select="btn_add"
-            className="hover:scale-[1.05] transition"
-          >
+          <s.BtnAdd onClick={() => setAddConformidadeDialogIsOpen(true)}>
             Adicionar Não Conformidade
-            <IoMdAdd className="h-5 w-5 ml-2" />
-          </Botao>
-        </div>
-      </div>
-      <ModalConformidadeInfo
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        conformidade={selectedConformidade || null}
-        onSave={handleEditConformidadeSubmit}
-      />
-      <AddConformidadeDialog
-        isOpen={addConformidadeDialogIsOpen}
-        handleClose={() => setAddConformidadeDialogIsOpen(false)}
-        addConformidadeFunction={handleAddConformidadeSubmit}
-      />
-      <NaoConformidadeCheck
-        isOpen={checkNaoConformidadeDialogIsOpen}
-        handleClose={() => setCheckNaoConformidadeDialogIsOpen(false)}
-        conformidadesPendentes={conformidadesPendentes}
-        alterarStatusConformidade={alterarStatusConformidade}
-        deletarNaoConformidade={deletarNaoConformidade}
-      />
-      <div className="pl-[50px] max-sm:pl-[20px]">
-        <div className="bg-[#e1e1e1] rounded-xl xl:w-[1480px] sm:w-[540px] md:w-[650px] lg:w-[640px] max-sm:w-full">
-          {/* <KanbanBoard /> */}
+            <IoMdAdd
+              style={{ marginLeft: "8px", width: "20px", height: "20px" }}
+            />
+          </s.BtnAdd>
+        </s.ButtonGroup>
+      </s.Row>
+
+      <s.Panel>
+        <s.Box>
           <div className="flex items-center justify-between  max-sm:flex-col  max-sm:w-full">
-            <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
-              Em Aberto
-            </h1>
-            <div className="flex items-center gap-5 pr-[30px]">
+            <s.SectionTitle>Em Aberto</s.SectionTitle>
+            <s.IconWrapper>
               <a onClick={() => setAddConformidadeDialogIsOpen(true)} href="#">
                 <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
               </a>
-            </div>
+            </s.IconWrapper>
           </div>
 
+          <ModalConformidadeInfo
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            conformidade={selectedConformidade || null}
+            onSave={handleEditConformidadeSubmit}
+          />
+          <AddConformidadeDialog
+            isOpen={addConformidadeDialogIsOpen}
+            handleClose={() => setAddConformidadeDialogIsOpen(false)}
+            addConformidadeFunction={handleAddConformidadeSubmit}
+          />
+          <NaoConformidadeCheck
+            isOpen={checkNaoConformidadeDialogIsOpen}
+            handleClose={() => setCheckNaoConformidadeDialogIsOpen(false)}
+            conformidadesPendentes={conformidadesPendentes}
+            alterarStatusConformidade={alterarStatusConformidade}
+            deletarNaoConformidade={deletarNaoConformidade}
+          />
+
           {isSmallScreen ? (
-            <div className="font-bold mb-1 flex text-xs gap-[100px] ml-[150px] md:ml-[120px] md:gap-[50px]">
+            <s.StatusHeader>
               <h1>Departamento</h1>
               <h1>Setor Destino</h1>
               <h1>Grau de Severidade</h1>
-            </div>
+            </s.StatusHeader>
           ) : (
             <Id className="ml-[140px]" />
           )}
-
           <div className="pb-4 pr-4">
             {conformidadesAberto.map((conformidade) => (
               <ConformidadeItem
@@ -199,22 +193,20 @@ const NaoConformidades = () => {
               />
             ))}
           </div>
-        </div>
+        </s.Box>
 
         {/* Seção: Em Andamento */}
-        <div className="mt-6 bg-[#ffe589] sm:w-[540px]  xl:w-[1480px] md:w-[650px] lg:w-[640px] max-sm:w-full rounded-xl">
+        <s.Box style={{ backgroundColor: "#ffe589", marginTop: "24px" }}>
           <div className="flex items-center justify-between">
-            <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
-              Em Andamento
-            </h1>
+            <s.SectionTitle>Em Andamento</s.SectionTitle>
           </div>
 
           {isSmallScreen ? (
-            <div className="font-bold mb-1 flex text-xs gap-[100px] ml-[150px] md:ml-[120px] md:gap-[50px]">
+            <s.StatusHeader>
               <h1>Departamento</h1>
               <h1>Setor Destino</h1>
               <h1>Grau de Severidade</h1>
-            </div>
+            </s.StatusHeader>
           ) : (
             <Id className="ml-[140px]" />
           )}
@@ -230,22 +222,20 @@ const NaoConformidades = () => {
               />
             ))}
           </div>
-        </div>
+        </s.Box>
 
         {/* Seção: Concluídas */}
-        <div className="mt-6 bg-[#00969e64] lg:w-[640px] xl:w-[1480px]  sm:w-[540px] md:w-[650px] max-sm:w-full rounded-xl">
+        <s.Box style={{ backgroundColor: "#00969e64", marginTop: "24px" }}>
           <div className="flex items-center justify-between">
-            <h1 className="py-[20px] pl-[20px] text-2xl font-bold">
-              Concluídas
-            </h1>
+            <s.SectionTitle>Concluídas</s.SectionTitle>
           </div>
 
           {isSmallScreen ? (
-            <div className="font-bold mb-1 flex text-xs gap-[100px] ml-[150px] md:ml-[120px] md:gap-[50px]">
+            <s.StatusHeader>
               <h1>Departamento</h1>
               <h1>Setor Destino</h1>
               <h1>Grau de Severidade</h1>
-            </div>
+            </s.StatusHeader>
           ) : (
             <Id className="ml-[140px]" />
           )}
@@ -261,9 +251,9 @@ const NaoConformidades = () => {
               />
             ))}
           </div>
-        </div>
-      </div>
-    </div>
+        </s.Box>
+      </s.Panel>
+    </s.Container>
   );
 };
 

@@ -1,0 +1,149 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Logo from "../../img/logo.png";
+import * as s from "./Register.styled";
+import { toast, Toaster } from "sonner";
+import { useForm } from "react-hook-form";
+
+const Register = () => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const handleRegister = (data) => {
+    const { name, email, password, confirmPassword, permission } = data;
+
+    if (password !== confirmPassword) {
+      setError("As senhas não correspondem");
+      return;
+    }
+
+    const existingUser = JSON.parse(localStorage.getItem("LOGINS")) || [];
+    const isUserExist = existingUser.find((user) => user.email === email);
+
+    if (isUserExist) {
+      setError("Email já cadastrado.");
+      return;
+    }
+
+    const newUser = {
+      name,
+      email,
+      password,
+      permission,
+    };
+
+    const updatedLogins = [...existingUser, newUser];
+    localStorage.setItem("LOGINS", JSON.stringify(updatedLogins));
+
+    toast.success("Registro efetuado com sucesso!");
+
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  };
+
+  const handleLogin = () => {
+    navigate("/");
+  };
+
+  return (
+    <s.Container>
+      <Toaster toastOptions={{ style: { color: "black" } }} />
+      <s.LogoImg src={Logo} alt="logo fsph" />
+
+      <s.AuthContainer>
+        <form onSubmit={handleSubmit(handleRegister)}>
+          <s.FormContainer>
+            <div>
+              <s.Title>Registrar</s.Title>
+              <s.InputContainer>
+                <s.Label>Digite seu Nome</s.Label>
+                <s.StyledInput
+                  placeholder="Insira seu nome"
+                  {...register("name", {
+                    required: "Informe um nome",
+                  })}
+                />
+                {errors.name && (
+                  <s.ErrorMesage>{errors.name.message}</s.ErrorMesage>
+                )}
+
+                <s.Label>Digite seu Email</s.Label>
+                <s.StyledInput
+                  type="email"
+                  placeholder="Insira seu email"
+                  {...register("email", {
+                    required: "Informe um email",
+                  })}
+                />
+                {errors.email && (
+                  <s.ErrorMesage>{errors.email.message}</s.ErrorMesage>
+                )}
+
+                <s.Label>Digite sua Senha</s.Label>
+                <s.StyledInput
+                  type="password"
+                  placeholder="Digite sua senha"
+                  {...register("senha", {
+                    required: "Informe uma senha",
+                  })}
+                />
+                {errors.senha && (
+                  <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
+                )}
+
+                <s.Label>Digite sua Senha Novamente</s.Label>
+
+                <s.StyledInput
+                  type="password"
+                  placeholder="Confirme sua senha"
+                  {...register("senhaConfirm", {
+                    required: "Informe uma senha novamente",
+                  })}
+                />
+                {errors.senhaConfirm && (
+                  <s.ErrorMesage>{errors.senhaConfirm.message}</s.ErrorMesage>
+                )}
+                <s.SelectContainer>
+                  <s.SelectorLabelDiv>
+                    <s.Label>Escolha seu cargo</s.Label>
+                    {errors.cargo && (
+                      <s.ErrorMesage>{errors.cargo.message}</s.ErrorMesage>
+                    )}
+                  </s.SelectorLabelDiv>
+                  <s.StyledSelect
+                    {...register("cargo", {
+                      required: "Informe um cargo",
+                    })}
+                  >
+                    <option value="" disabled>
+                      Selecione uma opção
+                    </option>
+                    <option value="Usuario">Usuário</option>
+                    <option value="Gestor">Gestor</option>
+                    <option value="Admin">Admin</option>
+                  </s.StyledSelect>
+                </s.SelectContainer>
+              </s.InputContainer>
+            </div>
+            {error && <s.ErrorMesage>{error}</s.ErrorMesage>}
+            <s.ButtonWrapper>
+              <s.StyledButton type="submit">Registrar</s.StyledButton>
+            </s.ButtonWrapper>
+          </s.FormContainer>
+        </form>
+      </s.AuthContainer>
+      <s.SwitchAuthLink onClick={handleLogin}>
+        Já possui login? Clique Aqui!
+      </s.SwitchAuthLink>
+    </s.Container>
+  );
+};
+
+export default Register;

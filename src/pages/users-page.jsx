@@ -1,19 +1,12 @@
-import BarraLateral from "../components/BarraLateral";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import Users from "../components/UsersPage";
 
 const UsersPage = () => {
   return (
-    <div className="flex-col ">
+    <div className="flex ">
       <Header />
 
-      <div className="flex">
-        <BarraLateral className="hidden lg:flex" />
-
-        <div className="">
-          <Users />
-        </div>
-      </div>
+      <Users />
     </div>
   );
 };

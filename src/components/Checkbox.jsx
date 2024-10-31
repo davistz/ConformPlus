@@ -7,7 +7,7 @@ const Checkbox = ({ label, name, id, type }) => {
     variants: {
       type: {
         login:
-          "mr-2 w-6 h-6 rounded-md appearance-none border border-gray-300 bg-gray-200 checked:bg-[#164095] checked:border-transparent checked:after:content-['✔'] checked:after:text-white checked:after:text-sm checked:after:block checked:after:text-center",
+          "mr-2 w-6 h-6 rounded-md appearance-none border ml-6 border-gray-300 bg-gray-200 checked:bg-[#164095] checked:border-transparent checked:after:content-['✔'] checked:after:text-white checked:after:text-sm checked:after:block checked:after:text-center",
         conformidade: `w-7 h-7  appearance-none border rounded-xl checked:bg-[#164095] cursor-pointer `,
       },
     },
@@ -15,13 +15,13 @@ const Checkbox = ({ label, name, id, type }) => {
   return (
     <div className={`flex items-center`}>
       <input
-        type="checkbox"
-        name={name}
-        id={id}
-        className={checkbox({ type })}
+        type="login"
+        name={checkbox}
+        id={login}
+        className={checkbox({ login })}
       />
       <label
-        htmlFor={id}
+        htmlFor={login}
         className="text-sm font-bold md:text-base text-[#2022249b]"
       >
         {label}
