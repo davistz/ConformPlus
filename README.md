@@ -33,7 +33,7 @@ Este projeto tem como objetivo desenvolver uma interface intuitiva e responsiva 
 
 - **Frontend:** React.js 
 - **Backend:** Java
-- **Banco de Dados:**  (a definir)
+- **Banco de Dados:**  MySQL
 - **Design:** Figma para prototipagem
 - **Controle de Versão:** Git e GitHub
 
