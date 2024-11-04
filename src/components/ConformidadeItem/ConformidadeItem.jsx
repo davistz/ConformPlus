@@ -44,13 +44,13 @@ const ConformidadeItem = ({
   };
   const getColor = () => {
     if (conformidade.status === "aberto") {
-      return "bg-[#afaeae] text-[#202224]";
+      return "background-color: #afaeae; color: #202224;";
     }
     if (conformidade.status === "andamento") {
-      return "bg-[#e5a54c] text-[#202224]";
+      return "background-color: #e5a54c; color: #202224;";
     }
     if (conformidade.status === "concluida") {
-      return "bg-[#27aeb564] text-[#202224]";
+      return "background-color: #27aeb564; color: #202224;";
     }
   };
 

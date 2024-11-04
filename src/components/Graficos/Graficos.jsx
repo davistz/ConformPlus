@@ -259,7 +259,7 @@ const GraficosDetalhados = () => {
     };
   }, []);
   return (
-    <div className="container mx-auto">
+    <div className="container mt-[90px] mx-auto">
       <div className="flex flex-col gap-6 mt-16">
         <div className="mb-6 ">
           <div className="flex justify-between">

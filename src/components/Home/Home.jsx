@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Botao from "../Botao.jsx";
+
 import { IoMdAdd } from "react-icons/io";
 
 import * as s from "./Home.styled.jsx";
@@ -8,7 +8,7 @@ import ConformidadeItem from "../ConformidadeItem/ConformidadeItem.jsx";
 import { toast } from "sonner";
 import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
 import NaoConformidadeCheck from "../NaoConformidadeCheck.jsx";
-import Id from "../Id.jsx";
+import Id from "../Id/Id.jsx";
 import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 
 const NaoConformidades = () => {
@@ -143,6 +143,25 @@ const NaoConformidades = () => {
         </s.ButtonGroup>
       </s.Row>
 
+      <ModalConformidadeInfo
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        conformidade={selectedConformidade || null}
+        onSave={handleEditConformidadeSubmit}
+      />
+      <AddConformidadeDialog
+        isOpen={addConformidadeDialogIsOpen}
+        handleClose={() => setAddConformidadeDialogIsOpen(false)}
+        addConformidadeFunction={handleAddConformidadeSubmit}
+      />
+      <NaoConformidadeCheck
+        isOpen={checkNaoConformidadeDialogIsOpen}
+        handleClose={() => setCheckNaoConformidadeDialogIsOpen(false)}
+        conformidadesPendentes={conformidadesPendentes}
+        alterarStatusConformidade={alterarStatusConformidade}
+        deletarNaoConformidade={deletarNaoConformidade}
+      />
+
       <s.Panel>
         <s.Box>
           <div className="flex items-center justify-between  max-sm:flex-col  max-sm:w-full">
@@ -153,25 +172,6 @@ const NaoConformidades = () => {
               </a>
             </s.IconWrapper>
           </div>
-
-          <ModalConformidadeInfo
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            conformidade={selectedConformidade || null}
-            onSave={handleEditConformidadeSubmit}
-          />
-          <AddConformidadeDialog
-            isOpen={addConformidadeDialogIsOpen}
-            handleClose={() => setAddConformidadeDialogIsOpen(false)}
-            addConformidadeFunction={handleAddConformidadeSubmit}
-          />
-          <NaoConformidadeCheck
-            isOpen={checkNaoConformidadeDialogIsOpen}
-            handleClose={() => setCheckNaoConformidadeDialogIsOpen(false)}
-            conformidadesPendentes={conformidadesPendentes}
-            alterarStatusConformidade={alterarStatusConformidade}
-            deletarNaoConformidade={deletarNaoConformidade}
-          />
 
           {isSmallScreen ? (
             <s.StatusHeader>

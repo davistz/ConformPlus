@@ -136,6 +136,7 @@ export const StatusHeader = styled.div`
   font-weight: bold;
   margin-bottom: 4px;
   display: flex;
+  flex-direction: row;
   font-size: 0.75rem;
   gap: 100px;
   margin-left: 150px;
