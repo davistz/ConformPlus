@@ -44,14 +44,12 @@ const Login = () => {
     );
 
     if (usuario) {
-      // Se o usuário foi encontrado, armazena os dados no localStorage e navega para o dashboard
       localStorage.setItem("user", JSON.stringify(usuario));
       toast.success("Login efetuado com sucesso!");
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
     } else {
-      // Se o login falhar, exibe uma mensagem de erro
       setError("Email ou senha incorretos");
       toast.error("Erro de login: Email ou senha incorretos");
     }

@@ -37,10 +37,10 @@ export const TaskList = styled.div`
 
 export const TaskItem = styled.div`
   background-color: ${(props) => {
-    if (props.backgroundColor === "#a8e6a0") return "#39953e5a";
+    if (props.backgroundColor === "#e4e3e3") return "#bababa";
     if (props.backgroundColor === "#f1e0a0") return "#e7bf45a8";
     if (props.backgroundColor === "#46bab8") return "#1e7c7a8f";
-    return "#bababa";
+    return "#f55b5b";
   }};
   border-radius: 5px;
   padding: 10px;

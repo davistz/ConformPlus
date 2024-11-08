@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DragDropContext } from "@hello-pangea/dnd";
 import * as S from "./KanbanBoard.styled";
 import KanbanColumn from "./KanbanColumn";
-import CONFORMIDADES from "../../constants/nao_conformidades.js"; // importando as conformidades
+import CONFORMIDADES from "../../constants/nao_conformidades.js";
 
 const KanbanBoard = () => {
   const [conformidadesPendentes, setConformidadesPendentes] = useState(

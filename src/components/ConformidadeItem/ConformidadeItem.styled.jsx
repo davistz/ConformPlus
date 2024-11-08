@@ -63,7 +63,7 @@ export const StyledDiv = styled.div`
   @media (max-width: 640px) {
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 10px; /* Ajuste de margem */
+    margin-left: 10px;
   }
 `;
 
@@ -83,10 +83,10 @@ export const StyledUl = styled.ul`
     grid-template-columns: 150px 260px 300px 240px 10px;
   }
   @media (max-width: 1024px) {
-    grid-template-columns: 90px 170px 150px 250px 60px; /* Ajusta as colunas para telas menores */
+    grid-template-columns: 90px 170px 150px 250px 60px;
   }
   @media (min-width: 1280px) {
-    grid-template-columns: 150px 260px 300px 290px 0px; /* Ajusta as colunas para telas menores */
+    grid-template-columns: 150px 260px 300px 290px 0px;
   }
 `;
 
