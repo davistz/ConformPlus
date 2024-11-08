@@ -9,19 +9,23 @@ Este projeto tem como objetivo desenvolver uma interface intuitiva e responsiva 
 ## ⚙️ Funcionalidades Principais
 
 - **Gerenciamento de Departamentos:**
+
   - Listagem, adição, edição e remoção de departamentos.
   - Associação de não conformidades a departamentos.
   - Visualização do número de não conformidades abertas e autuadas por departamento.
 
 - **Gerenciamento de Perfis de Acesso:**
+
   - Criação e configuração de diferentes perfis de acesso (Admin, Usuário).
   - Definição de permissões específicas para cada perfil.
 
 - **Gerenciamento de Usuários:**
+
   - Listagem, adição, edição e remoção de usuários.
   - Associação de usuários a departamentos e perfis de acesso.
 
 - **Gerenciamento de Tipos de Não Conformidades (RNC):**
+
   - Cadastro e gerenciamento de tipos de não conformidades (ex: Qualidade, Segurança, Conformidade Legal).
   - Contagem de não conformidades registradas por tipo.
 
@@ -31,9 +35,9 @@ Este projeto tem como objetivo desenvolver uma interface intuitiva e responsiva 
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **Frontend:** React.js 
+- **Frontend:** React.js
 - **Backend:** Java
-- **Banco de Dados:**  MySQL
+- **Banco de Dados:** MySQL
 - **Design:** Figma para prototipagem
 - **Controle de Versão:** Git e GitHub
 
@@ -42,7 +46,6 @@ Este projeto tem como objetivo desenvolver uma interface intuitiva e responsiva 
 **Este projeto está em desenvolvimento** 🚧
 
 Atualmente, estamos trabalhando na criação das telas de gerenciamento e na implementação das funcionalidades principais do sistema. O projeto está sujeito a mudanças conforme o desenvolvimento avança.
-
 
 ## 📜 Licença
 

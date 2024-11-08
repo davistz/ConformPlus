@@ -3,7 +3,6 @@ import Logo from "../../img/logo.png";
 
 import * as s from "./Login.styled";
 import LOGINS from "../../constants/logins";
-import axios from "axios";
 
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
@@ -35,28 +34,26 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleLogin = async (data) => {
-    try {
-      const response = await axios.post("http://localhost:8080/login", {
-        username: data.nome,
-        password: data.senha,
-      });
+  const handleLogin = (data) => {
+    const { nome, senha } = data;
 
-      console.log("User Found:", response.data);
-      localStorage.setItem("user", JSON.stringify(response.data));
+    const usuario = LOGINS.find(
+      (user) =>
+        user.name.toLocaleLowerCase() === nome.toLocaleLowerCase() &&
+        user.password === senha
+    );
+
+    if (usuario) {
+      // Se o usuário foi encontrado, armazena os dados no localStorage e navega para o dashboard
+      localStorage.setItem("user", JSON.stringify(usuario));
       toast.success("Login efetuado com sucesso!");
-
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setError("Email ou senha incorretos");
-        toast.error("Erro de login: Email ou senha incorretos");
-      } else {
-        setError("Ocorreu um erro. Tente novamente mais tarde.");
-        toast.error("Erro de login: Ocorreu um problema inesperado");
-      }
+    } else {
+      // Se o login falhar, exibe uma mensagem de erro
+      setError("Email ou senha incorretos");
+      toast.error("Erro de login: Email ou senha incorretos");
     }
   };
 
@@ -77,8 +74,8 @@ const Login = () => {
                 <s.InputContainer>
                   <s.Label>Digite seu Nome</s.Label>
                   <s.StyledInput
-                    type="name"
-                    placeholder="Insira seu email"
+                    type="text"
+                    placeholder="Insira seu nome"
                     {...register("nome", {
                       required: "Informe seu nome",
                     })}
@@ -89,7 +86,6 @@ const Login = () => {
                   <s.Label>Digite sua Senha</s.Label>
                   <s.StyledInput
                     type="password"
-                    label="Senha"
                     placeholder="Digite sua senha"
                     {...register("senha", {
                       required: "Informe uma senha",
@@ -98,7 +94,7 @@ const Login = () => {
                   {errors.senha && (
                     <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
                   )}
-                  <s.ForgotPasswordLink onClick={() => handleRecuperarSenha()}>
+                  <s.ForgotPasswordLink onClick={handleRecuperarSenha}>
                     Esqueceu a senha?
                   </s.ForgotPasswordLink>
                 </s.InputContainer>
@@ -114,7 +110,7 @@ const Login = () => {
                 </s.StyledButton>
               </s.ButtonWrapper>
             </s.FormContainer>
-            <s.SwitchAuthLink onClick={() => handleRegister()}>
+            <s.SwitchAuthLink onClick={handleRegister}>
               Não possui login? Clique Aqui!
             </s.SwitchAuthLink>
           </s.AuthContainer>
@@ -123,22 +119,19 @@ const Login = () => {
             <s.FormContainerSenha>
               <s.Title>Recuperar Senha</s.Title>
               <s.InputContainerSenha>
-                <s.Label>Digite sua Senha</s.Label>
+                <s.Label>Digite seu E-mail de Recuperação</s.Label>
                 <s.StyledInput
-                  type="password"
-                  label="Insira Seu E-mail de Recuperação"
+                  type="email"
                   placeholder="E-mail de recuperação"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                 />
               </s.InputContainerSenha>
               <s.ButtonWrapper>
-                <s.StyledButton select="btn" onClick={() => handleSenhaNova()}>
+                <s.StyledButton select="btn" onClick={handleSenhaNova}>
                   Enviar Link de Redefinição
                 </s.StyledButton>
               </s.ButtonWrapper>
             </s.FormContainerSenha>
-            <s.SwitchAuthLink onClick={() => handleSenhaOn()}>
+            <s.SwitchAuthLink onClick={handleSenhaOn}>
               Já possui login? Clique Aqui!
             </s.SwitchAuthLink>
           </s.AuthContainer>

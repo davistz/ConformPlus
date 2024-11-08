@@ -220,6 +220,16 @@ const NaoConformidades = () => {
                 <s.SectionTitle>Em Andamento</s.SectionTitle>
               </div>
 
+              {isSmallScreen ? (
+                <s.StatusHeader>
+                  <h1>Departamento</h1>
+                  <h1>Setor Destino</h1>
+                  <h1>Grau de Severidade</h1>
+                </s.StatusHeader>
+              ) : (
+                <Id className="ml-[140px]" />
+              )}
+
               <div className="pb-4">
                 {conformidadesAndamento.map((conformidade) => (
                   <ConformidadeItem
@@ -238,6 +248,16 @@ const NaoConformidades = () => {
               <div className="flex items-center justify-between">
                 <s.SectionTitle>Concluídas</s.SectionTitle>
               </div>
+
+              {isSmallScreen ? (
+                <s.StatusHeader>
+                  <h1>Departamento</h1>
+                  <h1>Setor Destino</h1>
+                  <h1>Grau de Severidade</h1>
+                </s.StatusHeader>
+              ) : (
+                <Id className="ml-[140px]" />
+              )}
 
               <div className="pb-4">
                 {conformidadesConcluida.map((conformidade) => (

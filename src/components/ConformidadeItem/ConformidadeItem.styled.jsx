@@ -86,7 +86,7 @@ export const StyledUl = styled.ul`
     grid-template-columns: 90px 170px 150px 250px 60px; /* Ajusta as colunas para telas menores */
   }
   @media (min-width: 1280px) {
-    grid-template-columns: 100px 250px 300px 250px 0px; /* Ajusta as colunas para telas menores */
+    grid-template-columns: 150px 260px 300px 290px 0px; /* Ajusta as colunas para telas menores */
   }
 `;
 
