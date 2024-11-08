@@ -4,6 +4,7 @@
 
 * {
   box-sizing: border-box;
+  /* background-color: #202020; */
 }
 
 body {
@@ -11,4 +12,8 @@ body {
   padding: 0;
   @apply bg-[#f8f8f8];
   font-family: "Poppins", sans-serif;
+}
+
+.dark-bg {
+  @apply bg-[#202020];
 }

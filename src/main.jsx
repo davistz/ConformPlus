@@ -9,6 +9,7 @@ import UsersPage from "./pages/users-page.jsx";
 import DepartamentoPage from "./pages/departamentos-page.jsx";
 
 import NaoConformidadePage from "./pages/naoconformidades-page.jsx";
+import { ThemeProvider } from "./ThemeContext";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>
 );

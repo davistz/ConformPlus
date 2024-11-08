@@ -6,14 +6,15 @@ import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { IoMdNotifications } from "react-icons/io";
 import { AiFillDashboard } from "react-icons/ai";
-import { IoIosGitNetwork, IoMdClose } from "react-icons/io";
+import { IoIosGitNetwork } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
 import { IoIosClose } from "react-icons/io";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdLightMode, MdDarkMode } from "react-icons/md";
 import { toast } from "sonner";
 import daviAvatar from "../../img/img_users/davi.png";
 import lucasAvatar from "../../img/img_users/lucas.png";
 import * as s from "./Header.styled";
+import { useTheme } from "../../ThemeContext";
 
 const Header = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -21,6 +22,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("home");
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const handleButtonClick = (button) => {
     setActiveButton(button);
@@ -90,10 +92,6 @@ const Header = () => {
     navigate("/departamentos");
   };
 
-  const handleConformidades = () => {
-    navigate("/conformidades");
-  };
-
   const renderizarNotificacoes = () => {
     return notificacoes.map((notificacao) => (
       <div
@@ -159,9 +157,15 @@ const Header = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const [isOn, setIsOn] = useState(false);
+
+  const toggleSwitch = () => {
+    setIsOn((prev) => !prev);
+  };
+
   return (
     <s.Layout>
-      <s.HeaderContainer>
+      <s.HeaderContainer isOn={isDarkMode}>
         {isSmallScreen ? (
           <HiMenu
             className="w-10 h-10 text-white ml-4"
@@ -172,6 +176,11 @@ const Header = () => {
         )}
 
         <s.UserInfoContainer>
+          <MdLightMode className="w-8 h-8 mr-2 text-[#ffffffdb]" />
+          <s.SwitchContainer isOn={isDarkMode} onClick={toggleTheme}>
+            <s.SwitchCircle isOn={isOn} />
+          </s.SwitchContainer>
+          <MdDarkMode className="w-8 h-8 ml-2 mr-6 text-[#ffffffdb]" />
           <s.NotificationsButton onClick={() => setIsNotificationOpen(true)}>
             <IoMdNotifications />
           </s.NotificationsButton>
@@ -228,7 +237,7 @@ const Header = () => {
       </s.HeaderContainer>
 
       <s.MainContent>
-        <s.GeralContainer>
+        <s.GeralContainer isOn={isDarkMode}>
           <s.ButtonContainer>
             <s.StyledButton
               active={activeButton === "dashboard"}
