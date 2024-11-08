@@ -19,6 +19,7 @@
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
     "@tailwindcss/forms": "^0.5.9",
+    "axios": "^1.7.7",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.4",
     "prop-types": "^15.8.1",

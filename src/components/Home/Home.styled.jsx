@@ -4,6 +4,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 829px;
+  margin-top: 1rem;
+  width: 80%;
 
   @media (max-width: 640px) {
     height: auto;
@@ -12,6 +14,7 @@ export const Container = styled.div`
 
 export const Row = styled.div`
   display: flex;
+  width: 100%;
   margin-left: 12px;
   margin-top: 130px;
 
@@ -19,6 +22,31 @@ export const Row = styled.div`
     flex-direction: column;
     margin-left: 0;
     align-items: center;
+  }
+`;
+export const DivSelector = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 50px;
+  margin-left: 60px;
+
+  h1 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+
+  select {
+    width: 140px;
+    height: 40px;
+
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    background-color: #fff;
+    cursor: pointer;
   }
 `;
 

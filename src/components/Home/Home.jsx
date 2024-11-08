@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
 import NaoConformidadeCheck from "../NaoConformidadeCheck.jsx";
 import Id from "../Id/Id.jsx";
+import KanbanBoard from "../KanbanBoard/KanbanBoard.jsx";
 import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 
 const NaoConformidades = () => {
@@ -23,6 +24,10 @@ const NaoConformidades = () => {
   const [addConformidadeDialogIsOpen, setAddConformidadeDialogIsOpen] =
     useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [viewMode, setViewMode] = useState("Lista");
+  const handleChangeViewMode = (event) => {
+    setViewMode(event.target.value);
+  };
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -123,6 +128,13 @@ const NaoConformidades = () => {
   return (
     <s.Container>
       <s.Row>
+        <s.DivSelector>
+          <h1>Escolher modo de Visualizar</h1>
+          <select name="" id="" onChange={handleChangeViewMode}>
+            <option value="Lista">Lista</option>
+            <option value="Quadro">Quadro</option>
+          </select>
+        </s.DivSelector>
         <s.ButtonGroup>
           {canViewConformidadesPendente && (
             <s.BtnCheck
@@ -163,95 +175,84 @@ const NaoConformidades = () => {
       />
 
       <s.Panel>
-        <s.Box>
-          <div className="flex items-center justify-between  max-sm:flex-col  max-sm:w-full">
-            <s.SectionTitle>Em Aberto</s.SectionTitle>
-            <s.IconWrapper>
-              <a onClick={() => setAddConformidadeDialogIsOpen(true)} href="#">
-                <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
-              </a>
-            </s.IconWrapper>
+        {viewMode === "Quadro" ? (
+          <KanbanBoard />
+        ) : (
+          <div>
+            <s.Box>
+              <div className="flex items-center justify-between max-sm:flex-col max-sm:w-full">
+                <s.SectionTitle>Em Aberto</s.SectionTitle>
+                <s.IconWrapper>
+                  <a
+                    onClick={() => setAddConformidadeDialogIsOpen(true)}
+                    href="#"
+                  >
+                    <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
+                  </a>
+                </s.IconWrapper>
+              </div>
+
+              {isSmallScreen ? (
+                <s.StatusHeader>
+                  <h1>Departamento</h1>
+                  <h1>Setor Destino</h1>
+                  <h1>Grau de Severidade</h1>
+                </s.StatusHeader>
+              ) : (
+                <Id className="ml-[140px]" />
+              )}
+              <div className="pb-4 pr-4">
+                {conformidadesAberto.map((conformidade) => (
+                  <ConformidadeItem
+                    key={conformidade.id}
+                    conformidade={conformidade}
+                    alterarStatusConformidade={alterarStatusConformidade}
+                    deletarNaoConformidade={deletarNaoConformidade}
+                    onInfoClick={handleInfoClick}
+                  />
+                ))}
+              </div>
+            </s.Box>
+
+            {/* Seções: Em Andamento e Concluídas */}
+            <s.Box style={{ backgroundColor: "#ffe589", marginTop: "24px" }}>
+              <div className="flex items-center justify-between">
+                <s.SectionTitle>Em Andamento</s.SectionTitle>
+              </div>
+
+              <div className="pb-4">
+                {conformidadesAndamento.map((conformidade) => (
+                  <ConformidadeItem
+                    key={conformidade.id}
+                    conformidade={conformidade}
+                    alterarStatusConformidade={alterarStatusConformidade}
+                    deletarNaoConformidade={deletarNaoConformidade}
+                    onInfoClick={handleInfoClick}
+                  />
+                ))}
+              </div>
+            </s.Box>
+
+            {/* Seção Concluídas */}
+            <s.Box style={{ backgroundColor: "#00969e64", marginTop: "24px" }}>
+              <div className="flex items-center justify-between">
+                <s.SectionTitle>Concluídas</s.SectionTitle>
+              </div>
+
+              <div className="pb-4">
+                {conformidadesConcluida.map((conformidade) => (
+                  <ConformidadeItem
+                    key={conformidade.id}
+                    conformidade={conformidade}
+                    alterarStatusConformidade={alterarStatusConformidade}
+                    deletarNaoConformidade={deletarNaoConformidade}
+                    onInfoClick={handleInfoClick}
+                  />
+                ))}
+              </div>
+            </s.Box>
           </div>
-
-          {isSmallScreen ? (
-            <s.StatusHeader>
-              <h1>Departamento</h1>
-              <h1>Setor Destino</h1>
-              <h1>Grau de Severidade</h1>
-            </s.StatusHeader>
-          ) : (
-            <Id className="ml-[140px]" />
-          )}
-          <div className="pb-4 pr-4">
-            {conformidadesAberto.map((conformidade) => (
-              <ConformidadeItem
-                key={conformidade.id}
-                conformidade={conformidade}
-                alterarStatusConformidade={alterarStatusConformidade}
-                deletarNaoConformidade={deletarNaoConformidade}
-                onInfoClick={handleInfoClick}
-              />
-            ))}
-          </div>
-        </s.Box>
-
-        {/* Seção: Em Andamento */}
-        <s.Box style={{ backgroundColor: "#ffe589", marginTop: "24px" }}>
-          <div className="flex items-center justify-between">
-            <s.SectionTitle>Em Andamento</s.SectionTitle>
-          </div>
-
-          {isSmallScreen ? (
-            <s.StatusHeader>
-              <h1>Departamento</h1>
-              <h1>Setor Destino</h1>
-              <h1>Grau de Severidade</h1>
-            </s.StatusHeader>
-          ) : (
-            <Id className="ml-[140px]" />
-          )}
-
-          <div className="pb-4">
-            {conformidadesAndamento.map((conformidade) => (
-              <ConformidadeItem
-                key={conformidade.id}
-                conformidade={conformidade}
-                alterarStatusConformidade={alterarStatusConformidade}
-                deletarNaoConformidade={deletarNaoConformidade}
-                onInfoClick={handleInfoClick}
-              />
-            ))}
-          </div>
-        </s.Box>
-
-        {/* Seção: Concluídas */}
-        <s.Box style={{ backgroundColor: "#00969e64", marginTop: "24px" }}>
-          <div className="flex items-center justify-between">
-            <s.SectionTitle>Concluídas</s.SectionTitle>
-          </div>
-
-          {isSmallScreen ? (
-            <s.StatusHeader>
-              <h1>Departamento</h1>
-              <h1>Setor Destino</h1>
-              <h1>Grau de Severidade</h1>
-            </s.StatusHeader>
-          ) : (
-            <Id className="ml-[140px]" />
-          )}
-
-          <div className="pb-4">
-            {conformidadesConcluida.map((conformidade) => (
-              <ConformidadeItem
-                key={conformidade.id}
-                conformidade={conformidade}
-                alterarStatusConformidade={alterarStatusConformidade}
-                deletarNaoConformidade={deletarNaoConformidade}
-                onInfoClick={handleInfoClick}
-              />
-            ))}
-          </div>
-        </s.Box>
+        )}
       </s.Panel>
     </s.Container>
   );

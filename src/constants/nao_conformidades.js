@@ -42,7 +42,7 @@ const CONFORMIDADES = [
     origem: "Laboratório",
     enquadramento: "ABNT/NBR/500",
     data: data,
-    grau_severidade: "Alto",
+    grau_severidade: "Baixo",
     status: "concluida",
   },
 ];

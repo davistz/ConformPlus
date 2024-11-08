@@ -90,10 +90,14 @@ const UsuariosComponent = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const initials = userName
-      .split(" ")
-      .map((n) => n[0])
-      .join("");
+    const initials = user?.name
+      ? user.name
+          .split(" ")
+          .slice(0, 2)
+          .map((n) => n[0])
+          .join("")
+          .toUpperCase()
+      : "";
 
     if (isEditMode && currentProfile) {
       setProfiles((prevProfiles) =>
@@ -162,11 +166,13 @@ const UsuariosComponent = () => {
               <div
                 className={`flex-shrink-0 bg-[#0E5EBA] text-white w-[70px] h-[70px] rounded-full text-3xl flex items-center justify-center`}
               >
-                {user.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()}{" "}
+                {user?.name
+                  ? user.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()
+                  : ""}
               </div>
 
               <div>

@@ -13,14 +13,14 @@ import { MdLogout } from "react-icons/md";
 import { toast } from "sonner";
 import daviAvatar from "../../img/img_users/davi.png";
 import lucasAvatar from "../../img/img_users/lucas.png";
-import * as s from "./Header.styled"; // ajuste o caminho se necessário
+import * as s from "./Header.styled";
 
 const Header = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const location = useLocation(); // Hook para pegar a localização atual
+  const location = useLocation();
   const navigate = useNavigate();
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false); // Estado para controlar o modal de notificações
-  const [activeButton, setActiveButton] = useState("home"); // Estado para o botão ativo
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [activeButton, setActiveButton] = useState("home");
 
   const handleButtonClick = (button) => {
     setActiveButton(button);
@@ -29,7 +29,6 @@ const Header = () => {
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  // const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const telaPequena = () => {
     setIsSidebarOpen(true);
@@ -49,11 +48,9 @@ const Header = () => {
       }
     };
 
-    // Executa a verificação inicial e adiciona o event listener
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
 
-    // Remove o event listener ao desmontar o componente
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
@@ -83,7 +80,7 @@ const Header = () => {
     }, 2000);
   };
   const handleHome = () => {
-    navigate("/home");
+    navigate("/dashboard");
   };
   const handleUsers = () => {
     navigate("/users");
@@ -139,22 +136,24 @@ const Header = () => {
   const getPermissionColor = (permission) => {
     switch (permission) {
       case "Admin":
-        return "#ff0000"; // Vermelho
+        return "#ff0000";
       case "Gestor":
-        return "#ff9f2a"; // Laranja
+        return "#ff9f2a";
       case "Usuario":
-        return "#bebebe"; // Cinza
+        return "#bebebe";
       default:
         return "#bebebe";
     }
   };
 
-  const initials = user.name
-    .split(" ")
-    .slice(0, 2)
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
+  const initials = user?.name
+    ? user.name
+        .split(" ")
+        .slice(0, 2)
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : "";
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -208,7 +207,7 @@ const Header = () => {
         <s.SidebarContainer isSidebarOpen={isSidebarOpen}>
           <s.CloseSidebarButton onClick={() => setIsSidebarOpen(false)} />
           <s.MenuList>
-            <s.MenuItem onClick={() => handleButtonClick("home")}>
+            <s.MenuItem onClick={() => handleButtonClick("dashboard")}>
               Dashboard
               <RiDashboardHorizontalFill />
             </s.MenuItem>
@@ -232,8 +231,8 @@ const Header = () => {
         <s.GeralContainer>
           <s.ButtonContainer>
             <s.StyledButton
-              active={activeButton === "home"}
-              onClick={() => handleButtonClick("home")}
+              active={activeButton === "dashboard"}
+              onClick={() => handleButtonClick("dashboard")}
             >
               <RiDashboardHorizontalFill />
               Dashboard

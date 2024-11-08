@@ -3,6 +3,8 @@ import Logo from "../../img/logo.png";
 
 import * as s from "./Login.styled";
 import LOGINS from "../../constants/logins";
+import axios from "axios";
+
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import { useForm } from "react-hook-form";
@@ -33,27 +35,28 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleLogin = (data) => {
-    console.log("LOGINS:", LOGINS);
-    console.log("Data:", data);
+  const handleLogin = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:8080/login", {
+        username: data.nome,
+        password: data.senha,
+      });
 
-    const user = LOGINS.find(
-      (user) =>
-        user.name.trim().toLowerCase() === data.nome.trim().toLowerCase() &&
-        user.password === data.senha
-    );
-
-    console.log("User Found:", user);
-
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      console.log("User Found:", response.data);
+      localStorage.setItem("user", JSON.stringify(response.data));
       toast.success("Login efetuado com sucesso!");
 
       setTimeout(() => {
-        navigate("/home");
+        navigate("/dashboard");
       }, 2000);
-    } else {
-      setError("Email ou senha incorretos");
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setError("Email ou senha incorretos");
+        toast.error("Erro de login: Email ou senha incorretos");
+      } else {
+        setError("Ocorreu um erro. Tente novamente mais tarde.");
+        toast.error("Erro de login: Ocorreu um problema inesperado");
+      }
     }
   };
 
