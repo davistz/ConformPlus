@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../../img/logo.png";
 
 import * as s from "./Login.styled";
-import LOGINS from "../../constants/logins";
 
 import { useState } from "react";
+import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { useForm } from "react-hook-form";
 
@@ -34,23 +34,32 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleLogin = (data) => {
+  const handleLogin = async (data) => {
     const { nome, senha } = data;
 
-    const usuario = LOGINS.find(
-      (user) =>
-        user.name.toLocaleLowerCase() === nome.toLocaleLowerCase() &&
-        user.password === senha
-    );
+    try {
+      const response = await axios.get("http://localhost:3001/logins");
+      const usuarios = response.data;
 
-    if (usuario) {
-      localStorage.setItem("user", JSON.stringify(usuario));
-      toast.success("Login efetuado com sucesso!");
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 2000);
-    } else {
-      setError("Email ou senha incorretos");
+      const usuario = usuarios.find(
+        (user) =>
+          user.name.toLocaleLowerCase() === nome.toLocaleLowerCase() &&
+          user.password === senha
+      );
+
+      if (usuario) {
+        localStorage.setItem("user", JSON.stringify(usuario));
+        toast.success("Login efetuado com sucesso!");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      } else {
+        setError("Email ou senha incorretos");
+        toast.error("Erro de login: Email ou senha incorretos");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setError("Erro ao fazer login");
       toast.error("Erro de login: Email ou senha incorretos");
     }
   };
