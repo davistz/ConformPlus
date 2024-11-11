@@ -1,34 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { FaPlus, FaTrash, FaBuilding, FaLaptopCode } from "react-icons/fa";
 import { GiHumanPyramid, GiTakeMyMoney } from "react-icons/gi";
 import Botao from "./Botao";
+import axios from "axios";
 import { toast } from "sonner";
 import Input from "./Input";
 import miniLogo from "../img/mini_logo.png";
 
 function DepartamentosPage() {
-  const [departments, setDepartments] = useState([
-    {
-      id: 1,
-      name: "Recursos Humanos",
-      manager: "Davi Souza",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Tecnologia da Informação",
-      manager: "João Almeida",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Financeiro",
-      manager: "Felipe Barros",
-      status: "blocked",
-    },
-  ]);
-
+  const [departments, setDepartments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDepartment, setEditingDepartment] = useState(null);
   const [departamento, setDepartamento] = useState("");
@@ -36,8 +17,19 @@ function DepartamentosPage() {
   const [status, setStatus] = useState("");
 
   const user = JSON.parse(localStorage.getItem("user"));
-
   const canChangeDepartament = user?.permission === "Admin";
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/departamentos")
+      .then((response) => {
+        setDepartments(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao carregar departamentos:", error);
+        toast.error("Erro ao carregar departamentos");
+      });
+  }, []);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

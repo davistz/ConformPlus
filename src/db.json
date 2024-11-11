@@ -72,5 +72,25 @@
       "grau_severidade": "Baixo",
       "status": "concluida"
     }
+  ],
+  "departamentos": [
+    {
+      "id": 1,
+      "name": "Recursos Humanos",
+      "manager": "Davi Souza",
+      "status": "active"
+    },
+    {
+      "id": 2,
+      "name": "Tecnologia da Informação",
+      "manager": "João Almeida",
+      "status": "active"
+    },
+    {
+      "id": 3,
+      "name": "Financeiro",
+      "manager": "Felipe Barros",
+      "status": "blocked"
+    }
   ]
 }

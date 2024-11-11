@@ -6,6 +6,7 @@ import * as s from "./Home.styled.jsx";
 import CONFORMIDADES from "../../constants/nao_conformidades.js";
 import ConformidadeItem from "../ConformidadeItem/ConformidadeItem.jsx";
 import { toast } from "sonner";
+import axios from "axios";
 import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
 import NaoConformidadeCheck from "../NaoConformidadeCheck.jsx";
 import Id from "../Id/Id.jsx";
@@ -14,7 +15,7 @@ import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 
 const NaoConformidades = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const [conformidades, setConformidades] = useState(CONFORMIDADES);
+  const [conformidades, setConformidades] = useState([]);
   const [
     checkNaoConformidadeDialogIsOpen,
     setCheckNaoConformidadeDialogIsOpen,
@@ -25,6 +26,7 @@ const NaoConformidades = () => {
     useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [viewMode, setViewMode] = useState("Lista");
+
   const handleChangeViewMode = (event) => {
     setViewMode(event.target.value);
   };
@@ -35,16 +37,30 @@ const NaoConformidades = () => {
     };
 
     window.addEventListener("resize", checkScreenSize);
-
     checkScreenSize();
 
     return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  useEffect(() => {
+    const fetchConformidades = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/conformidades");
+        setConformidades(response.data);
+      } catch (error) {
+        toast.error("Erro ao carregar as não conformidades.");
+        console.error(error);
+      }
+    };
+
+    fetchConformidades();
   }, []);
 
   const handleInfoClick = (conformidade) => {
     setSelectedConformidade(conformidade);
     setIsModalOpen(true);
   };
+
   const handleEditConformidadeSubmit = (conformidadeEditada) => {
     setConformidades((prevConformidades) =>
       prevConformidades.map((conformidade) =>

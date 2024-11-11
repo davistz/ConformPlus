@@ -4,15 +4,58 @@ import Logo from "../../img/logo.png";
 import * as s from "./Login.styled";
 
 import { useState } from "react";
-import axios from "axios";
 import { toast, Toaster } from "sonner";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const handleLogin = async (data) => {
+    const { nome, senha } = data;
 
-  const [error, setError] = useState("");
-  const [RecuperarSenha, setRecuperarSenha] = useState(true);
+    try {
+      const params = new URLSearchParams({
+        username: nome,
+        password: senha,
+      });
+
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        params.toString(),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/json",
+          },
+        }
+      );
+
+      console.log("Requisição concluída:", response);
+
+      const usuario = response.data;
+      if (usuario && usuario.username) {
+        console.log("Usuário encontrado:", usuario);
+
+        localStorage.setItem("user", JSON.stringify(usuario));
+        toast.success("Login efetuado com sucesso!");
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      } else {
+        console.log("Usuário não encontrado ou resposta malformada.");
+        setError("Email ou senha incorretos");
+        toast.error("Erro de login: Email ou senha incorretos");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setError("Erro ao fazer login");
+      toast.error("Erro de login: Email ou senha incorretos");
+    }
+  };
+
+  const handleRegister = () => {
+    navigate("/register");
+  };
 
   const handleRecuperarSenha = () => {
     setRecuperarSenha(false);
@@ -34,39 +77,10 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const handleLogin = async (data) => {
-    const { nome, senha } = data;
+  const navigate = useNavigate();
 
-    try {
-      const response = await axios.get("http://localhost:3001/logins");
-      const usuarios = response.data;
-
-      const usuario = usuarios.find(
-        (user) =>
-          user.name.toLocaleLowerCase() === nome.toLocaleLowerCase() &&
-          user.password === senha
-      );
-
-      if (usuario) {
-        localStorage.setItem("user", JSON.stringify(usuario));
-        toast.success("Login efetuado com sucesso!");
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2000);
-      } else {
-        setError("Email ou senha incorretos");
-        toast.error("Erro de login: Email ou senha incorretos");
-      }
-    } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      setError("Erro ao fazer login");
-      toast.error("Erro de login: Email ou senha incorretos");
-    }
-  };
-
-  const handleRegister = () => {
-    navigate("/register");
-  };
+  const [error, setError] = useState("");
+  const [RecuperarSenha, setRecuperarSenha] = useState(true);
 
   return (
     <s.Container>

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CiCircleInfo } from "react-icons/ci";
 import { IoMdAdd } from "react-icons/io";
 import Logo from "../img/logo.png";
 import LOGINS from "../constants/logins";
 import Input from "./Input";
+import axios from "axios";
 import { toast } from "sonner";
 import miniLogo from "../img/mini_logo.png";
 
@@ -16,7 +17,20 @@ const UsuariosComponent = () => {
   const [userManager, setUserManager] = useState("");
   const [userPermission, setUserPermission] = useState("");
   const [userPhoto, setUserPhoto] = useState(null);
-  const [profiles, setProfiles] = useState(LOGINS);
+  const [profiles, setProfiles] = useState([]); // Inicialmente vazio, dados carregados pelo useEffect
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/logins");
+        setProfiles(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar logins:", error);
+      }
+    };
+
+    fetchProfiles();
+  }, []);
 
   const colors = [
     "bg-blue-500",
