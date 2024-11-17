@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Logo from "../../img/logo.png";
+import Lab from "../../img/cartoon-lab.png";
+import MiniLogo from "../../img/logo-conform.png";
 
 import * as s from "./Login.styled";
 
@@ -79,7 +81,21 @@ const Login = () => {
         {RecuperarSenha ? (
           <s.AuthContainer>
             <s.FormContainer>
-              <div>
+              <s.InfoLogin>
+                <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
+                <h1 className="font-bold text-[40px] mb-2 mt-[50px]">
+                  Conform<span className="text-[#508aff]">Plus</span>
+                </h1>
+
+                <p className="text-center mb-8">
+                  Gerencie e resolva não conformidades
+                  <br /> com eficiência e simplicidade.
+                </p>
+
+                <s.LabImg src={Lab} alt="logo fsph" />
+              </s.InfoLogin>
+
+              <s.InputLogin>
                 <s.Title>Login</s.Title>
                 <s.InputContainer>
                   <s.Label>Digite seu Nome</s.Label>
@@ -90,6 +106,7 @@ const Login = () => {
                       required: "Informe seu nome",
                     })}
                   />
+
                   {errors.nome && (
                     <s.ErrorMesage>{errors.nome.message}</s.ErrorMesage>
                   )}
@@ -112,13 +129,14 @@ const Login = () => {
                   <s.CheckboxInput />
                   <s.CheckboxLabel>Salvar Senha</s.CheckboxLabel>
                 </s.CheckboxContainer>
-              </div>
-              {error && <s.ErrorText>{error}</s.ErrorText>}
-              <s.ButtonWrapper>
-                <s.StyledButton select="btn" type="submit">
-                  Entrar
-                </s.StyledButton>
-              </s.ButtonWrapper>
+
+                {error && <s.ErrorText>{error}</s.ErrorText>}
+                <s.ButtonWrapper>
+                  <s.StyledButton select="btn" type="submit">
+                    Entrar
+                  </s.StyledButton>
+                </s.ButtonWrapper>
+              </s.InputLogin>
             </s.FormContainer>
             <s.SwitchAuthLink onClick={handleRegister}>
               Não possui login? Clique Aqui!

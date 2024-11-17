@@ -3,15 +3,51 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  display: flex;
+  display: flex; /* Flexbox para centralização */
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Alinha o conteúdo verticalmente */
+  align-items: center; /* Alinha o conteúdo horizontalmente */
   background-color: #164095;
 `;
 
 export const LogoImg = styled.img`
   width: 545px;
+  height: auto;
+
+  @media (max-width: 768px) {
+    width: 80%; /* Ajusta a largura para telas menores */
+  }
+`;
+
+export const InfoLogin = styled.div`
+  background-color: #061c48;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  border-top-left-radius: 22px;
+  border-bottom-left-radius: 22px;
+`;
+export const InputLogin = styled.div`
+  width: 50%;
+  height: 100%; /* Já está presente */
+  display: flex; /* Garante alinhamento interno */
+  flex-direction: column; /* Organização vertical dos elementos */
+`;
+
+export const MiniImg = styled.img`
+  width: 80px;
+  height: auto;
+
+  @media (max-width: 768px) {
+    width: 80%; /* Ajusta a largura para telas menores */
+  }
+`;
+export const LabImg = styled.img`
+  width: 250px;
   height: auto;
 
   @media (max-width: 768px) {
@@ -28,17 +64,17 @@ export const AuthContainer = styled.div`
 
 export const FormContainer = styled.div`
   margin-top: 2rem;
-  width: 520px;
+  width: 800px;
 
-  height: 700px;
+  height: 560px;
   background-color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   border-radius: 24px;
 
   @media (max-width: 768px) {
-    height: auto; /* Permite que a altura se ajuste ao conteúdo */
+    height: auto;
     width: 400px;
   }
 `;

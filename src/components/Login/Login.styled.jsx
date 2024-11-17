@@ -3,15 +3,34 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  display: flex;
+  display: flex; /* Flexbox para centralização */
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Alinha o conteúdo verticalmente */
+  align-items: center; /* Alinha o conteúdo horizontalmente */
   background-color: #164095;
 `;
 
 export const LogoImg = styled.img`
-  width: 545px;
+  width: 500px;
+  height: auto;
+  align-items: center;
+  justify-items: center;
+  margin-left: 9rem;
+
+  @media (max-width: 768px) {
+    width: 80%; /* Ajusta a largura para telas menores */
+  }
+`;
+export const LabImg = styled.img`
+  width: 250px;
+  height: auto;
+
+  @media (max-width: 768px) {
+    width: 80%; /* Ajusta a largura para telas menores */
+  }
+`;
+export const MiniImg = styled.img`
+  width: 80px;
   height: auto;
 
   @media (max-width: 768px) {
@@ -28,12 +47,12 @@ export const AuthContainer = styled.div`
 
 export const FormContainer = styled.div`
   margin-top: 2rem;
-  width: 500px;
+  width: 800px;
 
-  height: 430px;
+  height: 560px;
   background-color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   border-radius: 24px;
 
@@ -59,15 +78,34 @@ export const FormContainerSenha = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 1.875rem;
+  font-size: 2.3rem;
   font-weight: bold;
   text-align: center;
-  margin-top: 2rem;
+  margin-top: 1.6rem;
   margin-bottom: 2.5rem;
 
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
+`;
+
+export const InfoLogin = styled.div`
+  background-color: #061c48;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  border-top-left-radius: 22px;
+  border-bottom-left-radius: 22px;
+`;
+export const InputLogin = styled.div`
+  width: 50%;
+  height: 100%; /* Já está presente */
+  display: flex; /* Garante alinhamento interno */
+  flex-direction: column; /* Organização vertical dos elementos */
 `;
 
 export const InputContainer = styled.div`
@@ -76,6 +114,8 @@ export const InputContainer = styled.div`
   padding-left: 1.5rem;
   margin-right: 1.5rem;
   margin-bottom: -1rem;
+  margin-top: 3rem;
+
   position: relative;
 `;
 export const InputContainerSenha = styled.div`
@@ -112,8 +152,8 @@ export const StyledInput = styled.input`
 `;
 
 export const Label = styled.label`
-  margin-bottom: 0.5rem;
-  font-size: 1.3rem;
+  margin-bottom: 0.7rem;
+  font-size: 1.2rem;
   font-weight: 500;
   display: block;
 
@@ -158,8 +198,9 @@ export const StyledButton = styled.button`
   color: white;
   background-color: #104dc9;
   width: 100%;
-  height: 60px;
-  border-radius: 0 0 20px 20px;
+  height: 61px;
+  margin-top: 6.5rem;
+  border-radius: 0 0 20px 0px;
   transition: 0.3s;
 
   @media (max-width: 768px) {

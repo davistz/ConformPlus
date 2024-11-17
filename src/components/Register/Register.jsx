@@ -4,6 +4,8 @@ import Logo from "../../img/logo.png";
 import * as s from "./Register.styled";
 import { toast, Toaster } from "sonner";
 import { useForm } from "react-hook-form";
+import Lab from "../../img/cartoon-lab.png";
+import MiniLogo from "../../img/logo-conform.png";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -60,6 +62,19 @@ const Register = () => {
       <s.AuthContainer>
         <form onSubmit={handleSubmit(handleRegister)}>
           <s.FormContainer>
+            <s.InfoLogin>
+              <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
+              <h1 className="font-bold text-[40px] mb-2 mt-[50px]">
+                Conform<span className="text-[#508aff]">Plus</span>
+              </h1>
+
+              <p className="text-center mb-8">
+                Gerencie e resolva não conformidades
+                <br /> com eficiência e simplicidade.
+              </p>
+
+              <s.LabImg src={Lab} alt="logo fsph" />
+            </s.InfoLogin>
             <div>
               <s.Title>Registrar</s.Title>
               <s.InputContainer>
