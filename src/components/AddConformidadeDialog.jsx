@@ -4,6 +4,7 @@ import Botao from "./Botao";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
 import { useState, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
+import axios from "axios";
 
 const AddConformidadeDialog = ({
   isOpen,
@@ -25,25 +26,51 @@ const AddConformidadeDialog = ({
     setFileEvidencia(files);
   };
 
-  const handleSaveClick = () => {
-    const dataAtual = new Date().toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+  const handleSaveClick = async () => {
+    const dataAtual = new Date().toISOString();
 
-    addConformidadeFunction({
-      title,
-      origem,
-      descricao,
-      departamento,
-      enquadramento,
-      acao_imediata,
-      investigacao,
-      grau_severidade,
-      data: dataAtual,
-      status: "aberto",
-    });
+    try {
+      const responseGet = await axios.get(
+        "http://localhost:3001/conformidades"
+      );
+      const conformidades = responseGet.data;
+
+      const ultimoId = conformidades.reduce(
+        (max, item) => Math.max(max, parseInt(item.id, 10)),
+        0
+      );
+      const novoId = (ultimoId + 1).toString();
+
+      const naoConformidadeData = {
+        id: novoId,
+        titulo: title,
+        origem,
+        descricao,
+        enquadramento,
+        acao_imediata,
+        investigacao,
+        departamento,
+        data: dataAtual,
+        grau_severidade,
+        status: "aberto",
+      };
+
+      const responsePost = await axios.post(
+        "http://localhost:3001/conformidades",
+        naoConformidadeData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Não conformidade criada:", responsePost.data);
+      addConformidadeFunction(responsePost.data);
+      handleClose();
+    } catch (error) {
+      console.error("Erro ao criar a não conformidade:", error);
+    }
 
     setTitle("");
     setOrigem("Processos / Insumos");

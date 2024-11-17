@@ -1,19 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext } from "@hello-pangea/dnd";
+import axios from "axios";
 import * as S from "./KanbanBoard.styled";
 import KanbanColumn from "./KanbanColumn";
-import CONFORMIDADES from "../../constants/nao_conformidades.js";
 
 const KanbanBoard = () => {
-  const [conformidadesPendentes, setConformidadesPendentes] = useState(
-    CONFORMIDADES.filter((conformidade) => conformidade.status === "aberto")
-  );
-  const [conformidadesAndamento, setConformidadesAndamento] = useState(
-    CONFORMIDADES.filter((conformidade) => conformidade.status === "andamento")
-  );
-  const [conformidadesConcluida, setConformidadesConcluida] = useState(
-    CONFORMIDADES.filter((conformidade) => conformidade.status === "concluida")
-  );
+  const [conformidadesPendentes, setConformidadesPendentes] = useState([]);
+  const [conformidadesAndamento, setConformidadesAndamento] = useState([]);
+  const [conformidadesConcluida, setConformidadesConcluida] = useState([]);
+  const [isDragging, setIsDragging] = useState(false); // Para controlar se está arrastando
+  const [draggedConformidade, setDraggedConformidade] = useState(null); // Para armazenar o item sendo arrastado
+
+  const fetchConformidades = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/conformidades");
+      const conformidades = response.data;
+
+      setConformidadesPendentes(
+        conformidades.filter((conformidade) => conformidade.status === "aberto")
+      );
+      setConformidadesAndamento(
+        conformidades.filter(
+          (conformidade) => conformidade.status === "andamento"
+        )
+      );
+      setConformidadesConcluida(
+        conformidades.filter(
+          (conformidade) => conformidade.status === "concluida"
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao buscar as conformidades:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchConformidades();
+  }, []);
 
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
@@ -22,9 +45,24 @@ const KanbanBoard = () => {
     return result;
   };
 
+  const onDragStart = (start) => {
+    setIsDragging(true);
+    const draggedItem = getList(start.source.droppableId)[start.source.index];
+    setDraggedConformidade(draggedItem); // Armazena o item que está sendo arrastado
+  };
+
   const onDragEnd = (result) => {
     const { source, destination } = result;
-    if (!destination) return;
+    if (!destination) {
+      setIsDragging(false); // Caso o arraste não tenha destino, esconder a área de deletação
+      setDraggedConformidade(null); // Limpar item arrastado
+      return;
+    }
+
+    if (destination.droppableId === "delete") {
+      // Deletar item quando solto na área de deletação
+      deleteConformidade(draggedConformidade.id);
+    }
 
     const sourceList = getList(source.droppableId);
     const destinationList = getList(destination.droppableId);
@@ -43,6 +81,17 @@ const KanbanBoard = () => {
       setList(source.droppableId, sourceList);
       setList(destination.droppableId, destinationList);
     }
+    setIsDragging(false); // Após o drag terminar, esconder a área de deletação
+    setDraggedConformidade(null); // Limpar item arrastado
+  };
+
+  const deleteConformidade = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/conformidades/${id}`);
+      fetchConformidades(); // Recarrega as conformidades
+    } catch (error) {
+      console.error("Erro ao deletar a conformidade:", error);
+    }
   };
 
   const getList = (id) => {
@@ -59,7 +108,7 @@ const KanbanBoard = () => {
 
   return (
     <S.Container>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
         <S.KanbanContainer>
           <KanbanColumn
             title="Em Aberta"
@@ -77,6 +126,11 @@ const KanbanBoard = () => {
             tasks={conformidadesConcluida}
           />
         </S.KanbanContainer>
+        {isDragging && (
+          <S.DeleteArea droppableId="delete">
+            <S.DeleteAreaText>Solte aqui para deletar</S.DeleteAreaText>
+          </S.DeleteArea>
+        )}
       </DragDropContext>
     </S.Container>
   );

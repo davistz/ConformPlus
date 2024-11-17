@@ -46,7 +46,9 @@ const NaoConformidades = () => {
     const fetchConformidades = async () => {
       try {
         const response = await axios.get("http://localhost:3001/conformidades");
-        setConformidades(response.data);
+
+        const data = Array.isArray(response.data) ? response.data : [];
+        setConformidades(data);
       } catch (error) {
         toast.error("Erro ao carregar as não conformidades.");
         console.error(error);
@@ -89,12 +91,24 @@ const NaoConformidades = () => {
     (conformidade) => conformidade.status === "concluida"
   );
 
-  const deletarNaoConformidade = (conformidadeId) => {
-    const novasConformidades = conformidades.filter(
-      (conformidade) => conformidade.id !== conformidadeId
-    );
-    setConformidades(novasConformidades);
-    toast.success("Não conformidade removida com sucesso!");
+  const deletarNaoConformidade = async (conformidadeId) => {
+    const conformidadeIdStr = String(conformidadeId);
+    console.log("Deletando conformidade com ID:", conformidadeIdStr);
+
+    try {
+      await axios.delete(
+        `http://localhost:3001/conformidades/${conformidadeIdStr}`
+      );
+      const novasConformidades = conformidades.filter(
+        (conformidade) => String(conformidade.id) !== conformidadeIdStr
+      );
+      setConformidades(novasConformidades);
+
+      toast.success("Não conformidade removida com sucesso!");
+    } catch (error) {
+      console.error("Erro ao remover a não conformidade:", error);
+      toast.error("Erro ao remover a não conformidade.");
+    }
   };
 
   const handleAddConformidadeSubmit = (novaConformidade) => {

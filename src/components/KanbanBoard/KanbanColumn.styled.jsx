@@ -11,9 +11,12 @@ export const Column = styled.div`
   background-color: ${(props) => props.backgroundColor || "#e4e3e3bc"};
   border-radius: 5px;
   width: 500px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
 
   @media (max-width: 768px) {
-    height: 100%;
+    width: 100%;
   }
 `;
 
@@ -33,6 +36,10 @@ export const ColumnTitle = styled.h3`
 
 export const TaskList = styled.div`
   padding: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export const TaskItem = styled.div`

@@ -65,3 +65,22 @@ export const Article = styled.article`
 export const ProcessoStatus = styled.button`
   background-color: white;
 `;
+
+export const DeleteArea = styled.div`
+  background-color: #ff6b6bc6;
+  width: 102%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  margin-left: -30px;
+  border-radius: 5px;
+  border: 2px dashed #f1f1f1;
+`;
+
+export const DeleteAreaText = styled.p`
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+`;

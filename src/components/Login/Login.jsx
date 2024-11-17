@@ -13,26 +13,17 @@ const Login = () => {
     const { nome, senha } = data;
 
     try {
-      const params = new URLSearchParams({
-        username: nome,
-        password: senha,
+      const response = await axios.get("http://localhost:3001/logins", {
+        params: {
+          name: nome,
+          password: senha,
+        },
       });
 
-      const response = await axios.post(
-        "http://localhost:8080/login",
-        params.toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Accept: "application/json",
-          },
-        }
-      );
+      const usuarios = response.data;
 
-      console.log("Requisição concluída:", response);
-
-      const usuario = response.data;
-      if (usuario && usuario.username) {
+      if (usuarios.length > 0) {
+        const usuario = usuarios[0];
         console.log("Usuário encontrado:", usuario);
 
         localStorage.setItem("user", JSON.stringify(usuario));
@@ -42,13 +33,11 @@ const Login = () => {
           navigate("/dashboard");
         }, 2000);
       } else {
-        console.log("Usuário não encontrado ou resposta malformada.");
-        setError("Email ou senha incorretos");
-        toast.error("Erro de login: Email ou senha incorretos");
+        throw new Error("Usuário ou senha incorretos");
       }
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      setError("Erro ao fazer login");
+      console.error("Erro ao fazer login:", error.message);
+      setError("Email ou senha incorretos");
       toast.error("Erro de login: Email ou senha incorretos");
     }
   };
