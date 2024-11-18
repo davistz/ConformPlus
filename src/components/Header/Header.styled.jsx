@@ -60,6 +60,7 @@ export const Layout = styled.div`
 `;
 
 export const Logo = styled.img`
+  margin-left: 1rem;
   width: 120px;
   cursor: pointer;
 
@@ -70,7 +71,7 @@ export const Logo = styled.img`
     width: 250px;
   }
   @media (min-width: 1024px) {
-    width: 330px;
+    width: 306px;
   }
 `;
 

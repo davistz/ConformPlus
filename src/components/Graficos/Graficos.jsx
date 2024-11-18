@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-import miniLogo from "../../assets/icons/mini_logo.png";
+import miniLogo from "../../img/mini_logo.png";
 
 const GraficosDetalhados = () => {
   const trendChartRef = useRef(null);

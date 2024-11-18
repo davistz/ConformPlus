@@ -11,6 +11,10 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 
 const Login = () => {
+  const [modeLogin, setModeLogin] = useState(true);
+
+  const toggleMode = () => setModeLogin((prevMode) => !prevMode);
+
   const handleLogin = async (data) => {
     const { nome, senha } = data;
 
@@ -75,96 +79,143 @@ const Login = () => {
 
   return (
     <s.Container>
-      <form onSubmit={handleSubmit(handleLogin)}>
-        <Toaster toastOptions={{ style: { color: "black" } }} />
-        <s.LogoImg src={Logo} alt="logo fsph" />
-        {RecuperarSenha ? (
-          <s.AuthContainer>
-            <s.FormContainer>
-              <s.InfoLogin>
-                <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
-                <h1 className="font-bold text-[40px] mb-2 mt-[50px]">
-                  Conform<span className="text-[#508aff]">Plus</span>
-                </h1>
+      <Toaster toastOptions={{ style: { color: "black" } }} />
+      <s.LogoImg src={Logo} alt="logo fsph" />
+      <s.AuthContainer>
+        <s.FormWrapper className={modeLogin ? "slide-in" : "slide-out"}>
+          {modeLogin ? (
+            <form onSubmit={handleSubmit(handleLogin)}>
+              <s.FormContainer>
+                <s.InfoLogin
+                  className={modeLogin ? "slide-left" : "slide-right"}
+                >
+                  <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
+                  <h1 className="font-bold text-[40px] mb-2 mt-[50px]">
+                    Conform<span className="text-[#508aff]">Plus</span>
+                  </h1>
+                  <p className="text-center mb-8">
+                    Gerencie e resolva não conformidades
+                    <br /> com eficiência e simplicidade.
+                  </p>
+                  <s.LabImg src={Lab} alt="logo fsph" />
+                </s.InfoLogin>
 
-                <p className="text-center mb-8">
-                  Gerencie e resolva não conformidades
-                  <br /> com eficiência e simplicidade.
-                </p>
+                <s.InputLogin>
+                  <s.Title>Login</s.Title>
+                  <s.InputContainer>
+                    <s.Label>Digite seu Nome</s.Label>
+                    <s.StyledInput
+                      type="text"
+                      placeholder="Insira seu nome"
+                      {...register("nome", {
+                        required: "Informe seu nome",
+                      })}
+                    />
+                    {errors.nome && (
+                      <s.ErrorMesage>{errors.nome.message}</s.ErrorMesage>
+                    )}
 
-                <s.LabImg src={Lab} alt="logo fsph" />
-              </s.InfoLogin>
+                    <s.Label>Digite sua Senha</s.Label>
+                    <s.StyledInput
+                      type="password"
+                      placeholder="Digite sua senha"
+                      {...register("senha", {
+                        required: "Informe uma senha",
+                      })}
+                    />
+                    {errors.senha && (
+                      <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
+                    )}
+                    <s.ForgotPasswordLink onClick={handleRecuperarSenha}>
+                      Esqueceu a senha?
+                    </s.ForgotPasswordLink>
+                  </s.InputContainer>
+                  <s.CheckboxContainer>
+                    <s.CheckboxInput />
+                    <s.CheckboxLabel>Salvar Senha</s.CheckboxLabel>
+                  </s.CheckboxContainer>
 
-              <s.InputLogin>
-                <s.Title>Login</s.Title>
-                <s.InputContainer>
-                  <s.Label>Digite seu Nome</s.Label>
-                  <s.StyledInput
-                    type="text"
-                    placeholder="Insira seu nome"
-                    {...register("nome", {
-                      required: "Informe seu nome",
-                    })}
-                  />
+                  {error && <s.ErrorText>{error}</s.ErrorText>}
+                  <s.ButtonWrapper>
+                    <s.StyledButton select="btn" type="submit">
+                      Entrar
+                    </s.StyledButton>
+                  </s.ButtonWrapper>
+                </s.InputLogin>
+              </s.FormContainer>
+            </form>
+          ) : (
+            <form onSubmit={handleSubmit(handleRegister)}>
+              <s.FormContainer>
+                <s.InputRegister>
+                  <s.TitleRegister>Registrar</s.TitleRegister>
+                  <s.RegisterContainer>
+                    <s.Label>Digite seu Nome</s.Label>
+                    <s.StyledInput
+                      placeholder="Insira seu nome"
+                      {...register("name", {
+                        required: "Informe um nome",
+                      })}
+                    />
+                    {errors.name && (
+                      <s.ErrorMesage>{errors.name.message}</s.ErrorMesage>
+                    )}
 
-                  {errors.nome && (
-                    <s.ErrorMesage>{errors.nome.message}</s.ErrorMesage>
-                  )}
-                  <s.Label>Digite sua Senha</s.Label>
-                  <s.StyledInput
-                    type="password"
-                    placeholder="Digite sua senha"
-                    {...register("senha", {
-                      required: "Informe uma senha",
-                    })}
-                  />
-                  {errors.senha && (
-                    <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
-                  )}
-                  <s.ForgotPasswordLink onClick={handleRecuperarSenha}>
-                    Esqueceu a senha?
-                  </s.ForgotPasswordLink>
-                </s.InputContainer>
-                <s.CheckboxContainer>
-                  <s.CheckboxInput />
-                  <s.CheckboxLabel>Salvar Senha</s.CheckboxLabel>
-                </s.CheckboxContainer>
+                    <s.Label>Digite seu Email</s.Label>
+                    <s.StyledInput
+                      type="email"
+                      placeholder="Insira seu email"
+                      {...register("email", {
+                        required: "Informe um email",
+                      })}
+                    />
+                    {errors.email && (
+                      <s.ErrorMesage>{errors.email.message}</s.ErrorMesage>
+                    )}
 
-                {error && <s.ErrorText>{error}</s.ErrorText>}
-                <s.ButtonWrapper>
-                  <s.StyledButton select="btn" type="submit">
-                    Entrar
-                  </s.StyledButton>
-                </s.ButtonWrapper>
-              </s.InputLogin>
-            </s.FormContainer>
-            <s.SwitchAuthLink onClick={handleRegister}>
-              Não possui login? Clique Aqui!
-            </s.SwitchAuthLink>
-          </s.AuthContainer>
-        ) : (
-          <s.AuthContainer>
-            <s.FormContainerSenha>
-              <s.Title>Recuperar Senha</s.Title>
-              <s.InputContainerSenha>
-                <s.Label>Digite seu E-mail de Recuperação</s.Label>
-                <s.StyledInput
-                  type="email"
-                  placeholder="E-mail de recuperação"
-                />
-              </s.InputContainerSenha>
-              <s.ButtonWrapper>
-                <s.StyledButton select="btn" onClick={handleSenhaNova}>
-                  Enviar Link de Redefinição
-                </s.StyledButton>
-              </s.ButtonWrapper>
-            </s.FormContainerSenha>
-            <s.SwitchAuthLink onClick={handleSenhaOn}>
-              Já possui login? Clique Aqui!
-            </s.SwitchAuthLink>
-          </s.AuthContainer>
-        )}
-      </form>
+                    <s.Label>Digite sua Senha</s.Label>
+                    <s.StyledInput
+                      type="password"
+                      placeholder="Digite sua senha"
+                      {...register("senha", {
+                        required: "Informe uma senha",
+                      })}
+                    />
+                    {errors.senha && (
+                      <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
+                    )}
+                  </s.RegisterContainer>
+                  {error && <s.ErrorMesage>{error}</s.ErrorMesage>}
+                  <s.ButtonWrapper>
+                    <s.StyledButtonRegister type="submit">
+                      Registrar
+                    </s.StyledButtonRegister>
+                  </s.ButtonWrapper>
+                </s.InputRegister>
+                <s.InfoRegister
+                  className={modeLogin ? "slide-left" : "slide-right"}
+                >
+                  <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
+                  <h1 className="font-bold text-[40px] mb-2 mt-[50px]">
+                    Conform<span className="text-[#508aff]">Plus</span>
+                  </h1>
+                  <p className="text-center mb-8">
+                    Gerencie e resolva não conformidades
+                    <br /> com eficiência e simplicidade.
+                  </p>
+                  <s.LabImg src={Lab} alt="logo fsph" />
+                </s.InfoRegister>
+              </s.FormContainer>
+            </form>
+          )}
+        </s.FormWrapper>
+        <s.SwitchAuthLink onClick={() => toggleMode()}>
+          {modeLogin
+            ? "Não possui login? Clique Aqui!"
+            : "Já possui login? Clique Aqui!"}
+        </s.SwitchAuthLink>
+      </s.AuthContainer>
+      ;
     </s.Container>
   );
 };

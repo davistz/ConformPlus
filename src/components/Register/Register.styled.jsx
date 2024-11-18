@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  display: flex; /* Flexbox para centralização */
+  display: flex;
   flex-direction: column;
-  justify-content: center; /* Alinha o conteúdo verticalmente */
-  align-items: center; /* Alinha o conteúdo horizontalmente */
+  justify-content: center;
+  align-items: center;
   background-color: #164095;
 `;
 
@@ -15,7 +15,7 @@ export const LogoImg = styled.img`
   height: auto;
 
   @media (max-width: 768px) {
-    width: 80%; /* Ajusta a largura para telas menores */
+    width: 80%;
   }
 `;
 
@@ -33,9 +33,9 @@ export const InfoLogin = styled.div`
 `;
 export const InputLogin = styled.div`
   width: 50%;
-  height: 100%; /* Já está presente */
-  display: flex; /* Garante alinhamento interno */
-  flex-direction: column; /* Organização vertical dos elementos */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const MiniImg = styled.img`
@@ -43,7 +43,7 @@ export const MiniImg = styled.img`
   height: auto;
 
   @media (max-width: 768px) {
-    width: 80%; /* Ajusta a largura para telas menores */
+    width: 80%;
   }
 `;
 export const LabImg = styled.img`
@@ -51,7 +51,7 @@ export const LabImg = styled.img`
   height: auto;
 
   @media (max-width: 768px) {
-    width: 80%; /* Ajusta a largura para telas menores */
+    width: 80%;
   }
 `;
 
@@ -89,7 +89,7 @@ export const FormContainerSenha = styled.div`
   border-radius: 24px;
 
   @media (max-width: 768px) {
-    height: auto; /* Permite que a altura se ajuste ao conteúdo */
+    height: auto;
     width: 400px;
   }
 `;
@@ -102,7 +102,7 @@ export const Title = styled.h1`
   margin-bottom: 2.5rem;
 
   @media (max-width: 768px) {
-    font-size: 1.5rem; /* Ajusta o tamanho da fonte */
+    font-size: 1.5rem;
   }
 `;
 
@@ -136,7 +136,7 @@ export const StyledInput = styled.input`
   border-radius: 0.5rem;
 
   @media (max-width: 768px) {
-    height: 40px; /* Ajusta a altura para telas menores */
+    height: 40px;
   }
 `;
 
@@ -147,7 +147,7 @@ export const Label = styled.label`
   display: block;
 
   @media (max-width: 768px) {
-    font-size: 1rem; /* Ajusta o tamanho da fonte */
+    font-size: 1rem;
   }
 `;
 
@@ -162,7 +162,7 @@ export const ForgotPasswordLink = styled.a`
   transition: color 0.3s ease, transform 0.3s ease;
 
   @media (max-width: 768px) {
-    top: 6.2rem; /* Ajusta a posição para telas menores */
+    top: 6.2rem;
   }
 
   &:hover {
@@ -192,7 +192,7 @@ export const StyledButton = styled.button`
   transition: 0.3s;
 
   @media (max-width: 768px) {
-    height: 50px; /* Ajusta a altura para telas menores */
+    height: 50px;
   }
 
   &:hover {
@@ -207,7 +207,7 @@ export const SwitchAuthLink = styled.p`
   transition: transform 0.3s ease;
 
   @media (max-width: 768px) {
-    font-size: 0.875rem; /* Ajusta o tamanho da fonte */
+    font-size: 0.875rem;
   }
 
   &:hover {
@@ -252,8 +252,8 @@ export const SelectContainer = styled.div`
 `;
 export const SelectorLabelDiv = styled.div`
   display: flex;
-  flex-direction: column; /* Mudança para permitir que o label e a mensagem de erro fiquem um abaixo do outro */
-  align-items: flex-start; /* Alinha os itens à esquerda */
+  flex-direction: column;
+  align-items: flex-start;
   gap: 1rem;
 `;
 
@@ -265,7 +265,7 @@ export const StyledSelect = styled.select`
   background-color: #f1f4f9;
   color: #000;
   font-size: 1rem;
-  appearance: none; /* Remove a seta padrão */
+  appearance: none;
 
   background-repeat: no-repeat;
   background-position: right 1rem center;
@@ -273,7 +273,7 @@ export const StyledSelect = styled.select`
 
   &:focus {
     outline: none;
-    border-color: #164095; /* Altera a cor da borda ao focar */
-    box-shadow: 0 0 0 3px rgba(22, 64, 149, 0.3); /* Adiciona um efeito de sombra ao focar */
+    border-color: #164095;
+    box-shadow: 0 0 0 3px rgba(22, 64, 149, 0.3);
   }
 `;

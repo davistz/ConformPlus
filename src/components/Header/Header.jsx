@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
-import Logo from "../../img/logo.png";
+import Logo from "../../img/logo-conform-white.png";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
