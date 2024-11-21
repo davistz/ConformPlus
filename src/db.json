@@ -2,34 +2,37 @@
   "logins": [
     {
       "id": "1",
-      "name": "Davi",
-      "email": "davi",
+      "name": "Davi Souza",
+      "email": "davi@email.com",
+      "telefone": "(79) 99983-6358",
       "password": "1234",
       "permission": "Admin",
       "status": "active",
-      "department": "TI",
+      "department": "TI - Tecnologia",
       "manager": "Julio Mendes",
       "photo": "../src/img/img_users/davi.png"
     },
     {
       "id": "2",
-      "name": "Lucas",
-      "email": "Lucas",
+      "name": "Lucas Melo",
+      "email": "Lucas@email.com",
+      "telefone": "(79) 98543-2351",
       "password": "1234",
       "permission": "Gestor",
       "status": "active",
-      "department": "RH",
+      "department": "RH - Recursos Humanos",
       "manager": "Aline Machado",
       "photo": "../img/img_users/lucas.png"
     },
     {
       "id": "3",
-      "name": "Felipe",
-      "email": "Felipe",
+      "name": "Felipe Andrade",
+      "email": "Felipe@email.com",
+      "telefone": "(79) 99943-2332",
       "password": "1234",
       "permission": "Usuário",
       "status": "active",
-      "department": "Ambulatorio",
+      "department": "Ambulatório",
       "manager": "Carlos Almeida",
       "photo": "../img/img_users/user_default.png"
     }
@@ -58,6 +61,19 @@
       "investigacao": "",
       "departamento": "",
       "data": "2024-11-17T01:20:35.370Z",
+      "grau_severidade": "Baixo",
+      "status": "aberto"
+    },
+    {
+      "id": "3",
+      "titulo": "",
+      "origem": "Processos / Insumos",
+      "descricao": "",
+      "enquadramento": "",
+      "acao_imediata": "",
+      "investigacao": "",
+      "departamento": "",
+      "data": "2024-11-18T15:38:56.495Z",
       "grau_severidade": "Baixo",
       "status": "aberto"
     }

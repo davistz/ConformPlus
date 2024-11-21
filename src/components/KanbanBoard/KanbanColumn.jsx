@@ -1,20 +1,66 @@
 import * as S from "./KanbanColumn.styled";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
+import { useTheme } from "../../ThemeContext"; // Importando o hook do seu contexto
 
 const KanbanColumn = ({ title, droppableId, tasks }) => {
-  const getColumnColor = () => {
-    if (title === "Em Aberta") return "#e4e3e3";
-    if (title === "Em Andamento") return "#f1e0a0";
-    if (title === "Concluídas") return "#46bab8";
+  const { isDarkMode } = useTheme(); // Obtendo o estado do dark mode
 
-    return "#46bab8";
+  const getColumnColors = () => {
+    switch (title) {
+      case "Em Aberta":
+        return {
+          backgroundColorLight: "#e4e3e3",
+          backgroundColorDark: "#333",
+          backgroundColorLightTitle: "#9b9b9b",
+          backgroundColorDarkTitle: "#444",
+          backgroundColorTaskLight: "#bababa",
+          backgroundColorTaskDark: "#535353",
+        };
+      case "Em Andamento":
+        return {
+          backgroundColorLight: "#f1e0a0",
+          backgroundColorDark: "#b38f25",
+          backgroundColorLightTitle: "#e7be45",
+          backgroundColorDarkTitle: "#895e1a",
+          backgroundColorTaskLight: "#f1e0a0",
+          backgroundColorTaskDark: "#cda100",
+        };
+      case "Concluídas":
+        return {
+          backgroundColorLight: "#23f0ecaa",
+          backgroundColorDark: "#1e7c7b",
+          backgroundColorLightTitle: "#46bab8",
+          backgroundColorDarkTitle: "#0c4d4c",
+          backgroundColorTaskLight: "#46bab8",
+          backgroundColorTaskDark: "#0c4d4c",
+        };
+      default:
+        return {
+          backgroundColorLight: "#e4e3e3",
+          backgroundColorDark: "#333",
+          backgroundColorLightTitle: "#bababa",
+          backgroundColorDarkTitle: "#444",
+          backgroundColorTaskLight: "#f1e0a0",
+          backgroundColorTaskDark: "#333",
+        };
+    }
   };
 
-  const columnColor = getColumnColor();
+  const columnColors = getColumnColors();
 
   return (
-    <S.Column backgroundColor={columnColor}>
-      <S.ColumnTitle backgroundColor={columnColor}>{title}</S.ColumnTitle>
+    <S.Column
+      isDarkMode={isDarkMode}
+      backgroundColorLight={columnColors.backgroundColorLight}
+      backgroundColorDark={columnColors.backgroundColorDark}
+    >
+      <S.ColumnTitle
+        isDarkMode={isDarkMode}
+        backgroundColorLightTitle={columnColors.backgroundColorLightTitle}
+        backgroundColorDarkTitle={columnColors.backgroundColorDarkTitle}
+      >
+        {title}
+      </S.ColumnTitle>
       <Droppable droppableId={droppableId}>
         {(provided) => (
           <S.TaskList ref={provided.innerRef} {...provided.droppableProps}>
@@ -26,7 +72,9 @@ const KanbanColumn = ({ title, droppableId, tasks }) => {
               >
                 {(provided, snapshot) => (
                   <S.TaskItem
-                    backgroundColor={snapshot.isDragging || columnColor}
+                    isDarkMode={isDarkMode}
+                    backgroundColorLight={columnColors.backgroundColorTaskLight}
+                    backgroundColorDark={columnColors.backgroundColorTaskDark}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}

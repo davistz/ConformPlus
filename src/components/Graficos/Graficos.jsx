@@ -1,16 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import miniLogo from "../../img/mini_logo.png";
+import { useTheme } from "../../ThemeContext"; // Importando o hook
 
 const GraficosDetalhados = () => {
+  const { isDarkMode } = useTheme(); // Acessando o estado de isDarkMode
   const trendChartRef = useRef(null);
   const rootCauseChartRef = useRef(null);
   const pieChartRef = useRef(null);
   const severityChartRef = useRef(null);
   const histogramChartRef = useRef(null);
   const effectivenessChartRef = useRef(null);
-
-  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const createChart = (ctx, type, data, options, chartRef) => {
@@ -78,7 +78,30 @@ const GraficosDetalhados = () => {
           {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: isDarkMode ? "#a7a7a7" : "black", // Cor das marcações no eixo Y
+                },
+              },
+              x: {
+                ticks: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor das marcações no eixo X
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                },
+              },
+              tooltip: {
+                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
+                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+              },
+            },
           },
           trendChartRef
         );
@@ -121,7 +144,30 @@ const GraficosDetalhados = () => {
           {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: isDarkMode ? "#a7a7a7" : "black", // Cor das marcações no eixo Y
+                },
+              },
+              x: {
+                ticks: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor das marcações no eixo X
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                },
+              },
+              tooltip: {
+                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
+                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+              },
+            },
           },
           rootCauseChartRef
         );
@@ -154,6 +200,17 @@ const GraficosDetalhados = () => {
           {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                },
+              },
+              tooltip: {
+                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
+                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+              },
+            },
           },
           pieChartRef
         );
@@ -186,6 +243,17 @@ const GraficosDetalhados = () => {
           {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                },
+              },
+              tooltip: {
+                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
+                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+              },
+            },
           },
           severityChartRef
         );
@@ -210,7 +278,30 @@ const GraficosDetalhados = () => {
           {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: isDarkMode ? "#a7a7a7" : "black", // Cor das marcações no eixo Y
+                },
+              },
+              x: {
+                ticks: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor das marcações no eixo X
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                labels: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                },
+              },
+              tooltip: {
+                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
+                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+              },
+            },
           },
           histogramChartRef
         );
@@ -238,6 +329,17 @@ const GraficosDetalhados = () => {
           {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                },
+              },
+              tooltip: {
+                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
+                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+              },
+            },
           },
           effectivenessChartRef
         );
@@ -257,16 +359,45 @@ const GraficosDetalhados = () => {
       destroyChart(histogramChartRef);
       destroyChart(effectivenessChartRef);
     };
+  }, [isDarkMode]);
+
+  const [personState, setPersonState] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Ao carregar o componente, tenta obter o usuário do localStorage
+    const storedPerson = localStorage.getItem("person");
+
+    if (storedPerson) {
+      setPersonState(JSON.parse(storedPerson)); // Atualiza o estado com as informações do usuário
+    }
+    setIsLoading(false); // Finaliza o carregamento
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="container mt-[90px] mx-auto">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="container mt-[90px] mx-auto">
       <div className="flex flex-col gap-6 mt-16">
         <div className="mb-6 ">
           <div className="flex justify-between">
-            <p className="text-xl">
-              Seja Bem vindo(a) <b className="font-semibold">{user.name}</b> ao
-              painel de controle das não conformidades.
-            </p>
+            {personState ? (
+              <p className="text-xl">
+                Seja Bem-vindo(a),{" "}
+                <b className="font-semibold">{personState.name}</b> ao painel de
+                controle das não conformidades.
+              </p>
+            ) : (
+              <p className="text-xl">
+                Seja Bem-vindo(a) ao painel de controle das não conformidades.
+              </p>
+            )}
             <div className="flex items-center gap-2">
               <p className="mt-0 text-sm">Fundação Parreiras Horta, 2024 </p>
               <img src={miniLogo} alt="logo do FPH" className="w-8 h-auto" />
@@ -285,7 +416,7 @@ const GraficosDetalhados = () => {
             </h2>
             <canvas
               id="rootCauseChart"
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "100%", width: "100%", color: "white" }}
             ></canvas>
           </div>
 

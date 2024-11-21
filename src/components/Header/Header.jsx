@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import Logo from "../../img/logo-conform-white.png";
 import PropTypes from "prop-types";
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { IoMdNotifications } from "react-icons/io";
@@ -17,7 +18,6 @@ import * as s from "./Header.styled";
 import { useTheme } from "../../ThemeContext";
 
 const Header = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
   const navigate = useNavigate();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -29,8 +29,21 @@ const Header = () => {
     navigate(`/${button}`);
   };
 
+  const [personState, setPersonState] = useState(null);
+
+  useEffect(() => {
+    const storedPerson = localStorage.getItem("person");
+
+    if (storedPerson) {
+      setPersonState(JSON.parse(storedPerson));
+    }
+  }, []);
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const PermView =
+    personState?.permission === "Admin" || personState?.permission === "Gestor";
 
   const telaPequena = () => {
     setIsSidebarOpen(true);
@@ -76,7 +89,10 @@ const Header = () => {
   ];
 
   const handleLogout = () => {
+    localStorage.clear();
+
     toast.success("Deslogado com sucesso!");
+
     setTimeout(() => {
       navigate("/");
     }, 2000);
@@ -144,8 +160,8 @@ const Header = () => {
     }
   };
 
-  const initials = user?.name
-    ? user.name
+  const initials = personState?.name
+    ? personState.name
         .split(" ")
         .slice(0, 2)
         .map((n) => n[0])
@@ -184,13 +200,15 @@ const Header = () => {
           <s.NotificationsButton onClick={() => setIsNotificationOpen(true)}>
             <IoMdNotifications />
           </s.NotificationsButton>
-          {user ? (
+          {personState ? (
             <s.UserDetails onClick={handleUsers}>
               <s.UserInitials>{initials}</s.UserInitials>
               <s.UserInfo>
-                <s.UserName>{user.name}</s.UserName>
-                <s.UserPermission color={getPermissionColor(user.permission)}>
-                  {user.permission}
+                <s.UserName>{personState.name}</s.UserName>
+                <s.UserPermission
+                  color={getPermissionColor(personState.permission)}
+                >
+                  {personState.permission}
                 </s.UserPermission>
               </s.UserInfo>
             </s.UserDetails>
@@ -239,6 +257,7 @@ const Header = () => {
       <s.MainContent>
         <s.GeralContainer isOn={isDarkMode}>
           <s.ButtonContainer>
+            {PermView ?? <h1>teste</h1>}
             <s.StyledButton
               active={activeButton === "dashboard"}
               onClick={() => handleButtonClick("dashboard")}

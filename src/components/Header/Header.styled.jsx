@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.isOn ? "#0e1f32" : "#164095")};
+  background-color: ${(props) => (props.isOn ? "#010102" : "#164095")};
   color: ${(props) => (props.isOn ? "#ffffff" : "#cccccc")};
   transition: background-color 0.3s ease;
   padding: 1.25rem;
@@ -38,7 +38,7 @@ export const SwitchContainer = styled.div`
   justify-content: ${(props) => (props.isOn ? "flex-end" : "flex-start")};
   width: 50px;
   height: 25px;
-  background-color: ${(props) => (props.isOn ? "#red" : "#ccc")};
+  background-color: ${(props) => (props.isOn ? "#646464" : "#ccc")};
   border-radius: 25px;
   padding: 3px;
   cursor: pointer;
@@ -135,8 +135,9 @@ export const MenuList = styled.ul`
 `;
 
 export const GeralContainer = styled.div`
-  background-color: ${(props) => (props.isOn ? "#0e1f32" : "#164095")};
+  background-color: ${(props) => (props.isOn ? "#010102" : "#164095")};
   transition: background-color 0.3s ease;
+  width: 325px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

@@ -12,9 +12,9 @@ import NaoConformidadeCheck from "../NaoConformidadeCheck.jsx";
 import Id from "../Id/Id.jsx";
 import KanbanBoard from "../KanbanBoard/KanbanBoard.jsx";
 import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
+import { useTheme } from "../../ThemeContext.jsx";
 
 const NaoConformidades = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
   const [conformidades, setConformidades] = useState([]);
   const [
     checkNaoConformidadeDialogIsOpen,
@@ -30,6 +30,8 @@ const NaoConformidades = () => {
   const handleChangeViewMode = (event) => {
     setViewMode(event.target.value);
   };
+
+  const { isDarkMode } = useTheme(); // Obtém o estado do tema
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -75,8 +77,18 @@ const NaoConformidades = () => {
     setIsModalOpen(false);
   };
 
+  const [personState, setPersonState] = useState(null);
+
+  useEffect(() => {
+    const storedPerson = localStorage.getItem("person");
+
+    if (storedPerson) {
+      setPersonState(JSON.parse(storedPerson));
+    }
+  }, []);
+
   const canViewConformidadesPendente =
-    user?.permission === "Admin" || user?.permission === "Gestor";
+    personState?.permission === "Admin" || personState?.permission === "Gestor";
 
   const conformidadesPendentes = conformidades.filter(
     (conformidade) => conformidade.status === "pendente"
@@ -158,13 +170,14 @@ const NaoConformidades = () => {
   return (
     <s.Container>
       <s.Row>
-        <s.DivSelector>
+        <s.DivSelector isDarkMode={isDarkMode}>
           <h1>Escolher modo de Visualizar</h1>
           <select name="" id="" onChange={handleChangeViewMode}>
             <option value="Lista">Lista</option>
             <option value="Quadro">Quadro</option>
           </select>
         </s.DivSelector>
+
         <s.ButtonGroup>
           {canViewConformidadesPendente && (
             <s.BtnCheck
@@ -209,7 +222,7 @@ const NaoConformidades = () => {
           <KanbanBoard />
         ) : (
           <div>
-            <s.Box>
+            <s.Box section="aberto" isDarkMode={isDarkMode}>
               <div className="flex items-center justify-between max-sm:flex-col max-sm:w-full">
                 <s.SectionTitle>Em Aberto</s.SectionTitle>
                 <s.IconWrapper>
@@ -245,7 +258,11 @@ const NaoConformidades = () => {
             </s.Box>
 
             {/* Seções: Em Andamento e Concluídas */}
-            <s.Box style={{ backgroundColor: "#ffe589", marginTop: "24px" }}>
+            <s.Box
+              section="andamento"
+              isDarkMode={isDarkMode}
+              style={{ marginTop: "24px" }}
+            >
               <div className="flex items-center justify-between">
                 <s.SectionTitle>Em Andamento</s.SectionTitle>
               </div>
@@ -272,9 +289,13 @@ const NaoConformidades = () => {
                 ))}
               </div>
             </s.Box>
-
+            {/* 00969e64 */}
             {/* Seção Concluídas */}
-            <s.Box style={{ backgroundColor: "#00969e64", marginTop: "24px" }}>
+            <s.Box
+              section="concluido"
+              isDarkMode={isDarkMode}
+              style={{ marginTop: "24px" }}
+            >
               <div className="flex items-center justify-between">
                 <s.SectionTitle>Concluídas</s.SectionTitle>
               </div>

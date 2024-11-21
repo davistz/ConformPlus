@@ -32,8 +32,11 @@ const Login = () => {
         const usuario = usuarios[0];
         console.log("Usuário encontrado:", usuario);
 
-        localStorage.setItem("user", JSON.stringify(usuario));
-        toast.success("Login efetuado com sucesso!");
+        localStorage.setItem("person", JSON.stringify(usuario));
+
+        toast.success("Login realizado com sucesso!", {
+          style: { color: "black" },
+        });
 
         setTimeout(() => {
           navigate("/dashboard");
@@ -42,12 +45,11 @@ const Login = () => {
         throw new Error("Usuário ou senha incorretos");
       }
     } catch (error) {
-      console.error("Erro ao fazer login:", error.message);
-      setError("Email ou senha incorretos");
-      toast.error("Erro de login: Email ou senha incorretos");
+      toast.error("Email ou senha incorreta!", {
+        style: { color: "red" },
+      });
     }
   };
-
   const handleRegister = () => {
     navigate("/register");
   };
@@ -79,7 +81,23 @@ const Login = () => {
 
   return (
     <s.Container>
-      <Toaster toastOptions={{ style: { color: "black" } }} />
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "14px",
+          },
+          success: {
+            style: {
+              color: "black",
+            },
+          },
+          error: {
+            style: {
+              color: "red",
+            },
+          },
+        }}
+      />
       <s.LogoImg src={Logo} alt="logo fsph" />
       <s.AuthContainer>
         <s.FormWrapper className={modeLogin ? "slide-in" : "slide-out"}>

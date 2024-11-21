@@ -5,6 +5,7 @@ import { LuLoader2 } from "react-icons/lu";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import * as s from "./ConformidadeItem.styled";
+import { useTheme } from "../../ThemeContext"; // Importando o useTheme
 
 const ConformidadeItem = ({
   conformidade,
@@ -13,6 +14,7 @@ const ConformidadeItem = ({
   onInfoClick,
 }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const { isDarkMode } = useTheme(); // Obtém o valor de isDarkMode do contexto global
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -33,24 +35,38 @@ const ConformidadeItem = ({
 
   const getStatusClasses = () => {
     if (conformidade.status === "aberto") {
-      return "bg-[#c0c0c0] text-[#202224]";
+      return isDarkMode
+        ? "bg-[#707070] text-[#e2e2e2]" // Escuro no modo dark
+        : "bg-[#c0c0c0] text-[#202224]"; // Claro no modo light
     }
     if (conformidade.status === "andamento") {
-      return "bg-[#f5d872] text-[#202224]";
+      return isDarkMode
+        ? "bg-[#906c00] text-[#e2e2e2]" // Escuro no modo dark
+        : "bg-[#edc533] text-[#202224]"; // Claro no modo light
     }
+    s;
     if (conformidade.status === "concluida") {
-      return "bg-[#27aeb564] text-[#202224]";
+      return isDarkMode
+        ? "bg-[#0c5256] text-[#e2e2e2]" // Escuro no modo dark
+        : "bg-[#26d2db64] text-[#202224]"; // Claro no modo light
     }
   };
+
   const getColor = () => {
     if (conformidade.status === "aberto") {
-      return "background-color: #afaeae; color: #202224;";
+      return isDarkMode
+        ? "background-color: #afaeae; color: #c0c0c0;" // Escuro no modo dark
+        : "background-color: #afaeae; color: #202224;"; // Claro no modo light
     }
     if (conformidade.status === "andamento") {
-      return "background-color: #e5a54c; color: #202224;";
+      return isDarkMode
+        ? "background-color: #c78d3d; color: #fff;" // Escuro no modo dark
+        : "background-color: #ffb752; color: #202224;"; // Claro no modo light
     }
     if (conformidade.status === "concluida") {
-      return "background-color: #27aeb564; color: #202224;";
+      return isDarkMode
+        ? "background-color: #15b0b862; color: #fff;" // Escuro no modo dark
+        : "background-color: #27aeb564; color: #202224;"; // Claro no modo light
     }
   };
 
@@ -87,7 +103,11 @@ const ConformidadeItem = ({
                 <FaTrashAlt className="text-[#ff4848] h-[20px] w-[20px]" />
               </s.ActionButton>
               <s.ActionButton onClick={() => onInfoClick(conformidade)}>
-                <CiCircleInfo className="h-[35px] w-[35px] text-[#6c6c6c]" />
+                <CiCircleInfo
+                  className={`h-[35px] w-[35px] ${
+                    isDarkMode ? "text-[#e2e2e2]" : "text-[#6c6c6c]"
+                  }`}
+                />
               </s.ActionButton>
             </s.ActionButtonWrapper>
           )}
@@ -99,7 +119,6 @@ const ConformidadeItem = ({
 
 ConformidadeItem.propTypes = {
   conformidade: PropTypes.object.isRequired,
-  color: PropTypes.string,
   alterarStatusConformidade: PropTypes.func,
   deletarNaoConformidade: PropTypes.func,
   onInfoClick: PropTypes.func,

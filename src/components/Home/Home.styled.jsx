@@ -35,18 +35,29 @@ export const DivSelector = styled.div`
     font-size: 1.1rem;
     font-weight: 500;
     margin-right: 10px;
+    color: ${({ isDarkMode }) =>
+      isDarkMode ? "#fff" : "#000"}; /* Cor do texto do título */
   }
 
   select {
     width: 140px;
     height: 40px;
-
     font-size: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid ${({ isDarkMode }) => (isDarkMode ? "#666" : "#ccc")}; /* Cor da borda */
     border-radius: 5px;
     outline: none;
-    background-color: #fff;
+    background-color: ${({ isDarkMode }) =>
+      isDarkMode ? "#333" : "#fff"}; /* Cor de fundo */
+    color: ${({ isDarkMode }) =>
+      isDarkMode ? "#fff" : "#000"}; /* Cor do texto */
     cursor: pointer;
+
+    option {
+      background-color: ${({ isDarkMode }) =>
+        isDarkMode ? "#444" : "#fff"}; /* Cor de fundo das opções */
+      color: ${({ isDarkMode }) =>
+        isDarkMode ? "#fff" : "#000"}; /* Cor das opções */
+    }
   }
 `;
 
@@ -121,7 +132,26 @@ export const Panel = styled.div`
 `;
 
 export const Box = styled.div`
-  background-color: #e1e1e1;
+  background-color: ${({ section, isDarkMode }) => {
+    switch (section) {
+      case "andamento":
+        return isDarkMode
+          ? "#967001c1" // Amarelo mais escuro no dark mode
+          : "#eac623b8"; // Amarelo normal no light mode
+      case "aberto":
+        return isDarkMode
+          ? "#454545" // Verde mais escuro no dark mode
+          : "#e1e1e1"; // Verde normal no light mode
+      case "concluido":
+        return isDarkMode
+          ? "#073a3d" // Azul mais escuro no dark mode
+          : "#15b6bf"; // Azul normal no light mode
+      default:
+        return "#e1e1e1"; // Cor padrão para os outros Boxes
+    }
+  }};
+
+  color: ${({ isDarkMode }) => (isDarkMode ? "#cecece" : "#000")};
   border-radius: 16px;
   padding: 20px;
   width: 100%;

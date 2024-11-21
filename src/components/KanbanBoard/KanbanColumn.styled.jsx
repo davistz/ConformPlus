@@ -8,7 +8,10 @@ export const KanbanBoard = styled.div`
 `;
 
 export const Column = styled.div`
-  background-color: ${(props) => props.backgroundColor || "#e4e3e3bc"};
+  background-color: ${(props) =>
+    props.isDarkMode
+      ? props.backgroundColorDark || "#333" // Cor para o modo escuro
+      : props.backgroundColorLight || "#e4e3e3"}; // Cor para o modo claro
   border-radius: 5px;
   width: 500px;
   display: flex;
@@ -23,15 +26,29 @@ export const Column = styled.div`
 export const ColumnTitle = styled.h3`
   padding: 10px;
   font-weight: 600;
-  background-color: ${(props) => {
-    if (props.backgroundColor === "#e4e3e3") return "#bababa";
-    if (props.backgroundColor === "#f1e0a0") return "#e7be45";
-    if (props.backgroundColor === "#46bab8") return "#1e7c7b";
-    return "#bababa";
-  }};
-  color: white;
+  background-color: ${(props) =>
+    props.isDarkMode
+      ? props.backgroundColorDarkTitle || "#444" // Cor para o título no modo escuro
+      : props.backgroundColorLightTitle ||
+        "#bababa"}; // Cor para o título no modo claro
+  color: ${(props) => (props.isDarkMode ? "white" : "black")};
+
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+`;
+
+export const TaskItem = styled.div`
+  background-color: ${(props) =>
+    props.isDarkMode
+      ? props.backgroundColorDark || "#333" // Cor para o item no modo escuro
+      : props.backgroundColorLight ||
+        "#f1e0a0"}; // Cor para o item no modo claro
+  border-radius: 5px;
+  padding: 10px;
+  padding-right: 50px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  position: relative;
 `;
 
 export const TaskList = styled.div`
@@ -40,21 +57,6 @@ export const TaskList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`;
-
-export const TaskItem = styled.div`
-  background-color: ${(props) => {
-    if (props.backgroundColor === "#e4e3e3") return "#bababa";
-    if (props.backgroundColor === "#f1e0a0") return "#e7bf45a8";
-    if (props.backgroundColor === "#46bab8") return "#1e7c7a8f";
-    return "#f55b5b";
-  }};
-  border-radius: 5px;
-  padding: 10px;
-  padding-right: 50px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  position: relative;
 `;
 
 export const TitleProcesso = styled.div`

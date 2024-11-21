@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { CiCircleInfo } from "react-icons/ci";
 import { IoMdAdd } from "react-icons/io";
-import Logo from "../img/logo.png";
-import LOGINS from "../constants/logins";
+
+import Cookies from "js-cookie";
 import Input from "./Input";
 import axios from "axios";
 import { toast } from "sonner";
 import miniLogo from "../img/mini_logo.png";
+import { useTheme } from "../ThemeContext";
 
 const UsuariosComponent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,12 +18,15 @@ const UsuariosComponent = () => {
   const [userManager, setUserManager] = useState("");
   const [userPermission, setUserPermission] = useState("");
   const [userPhoto, setUserPhoto] = useState(null);
+
   const [profiles, setProfiles] = useState([]); // Inicialmente vazio, dados carregados pelo useEffect
+
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/logins");
+        const response = await axios.get("http://localhost:3001/logins");
         setProfiles(response.data);
       } catch (error) {
         console.error("Erro ao buscar logins:", error);
@@ -76,9 +80,25 @@ const UsuariosComponent = () => {
     setIsModalOpen(true);
   };
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [personState, setPersonState] = useState(null);
 
-  const canAddUser = user?.permission === "Admin";
+  useEffect(() => {
+    // Ao carregar o componente, tenta obter o usuário do localStorage
+    const storedPerson = localStorage.getItem("person");
+
+    if (storedPerson) {
+      setPersonState(JSON.parse(storedPerson)); // Atualiza o estado com as informações do usuário
+    }
+  }, []); // O useEffect será executado apenas uma vez, após o componente ser montado
+
+  // Verifica se personState é null antes de tentar acessar seus dados
+  if (!personState) {
+    return <p>Carregando informações do usuário...</p>; // Ou qualquer outro fallback enquanto os dados não são carregados
+  }
+
+  // console.log(personState.name);
+
+  const canAddUser = personState?.permission === "Admin";
 
   const getPermissionColor = (permission) => {
     switch (permission) {
@@ -104,8 +124,8 @@ const UsuariosComponent = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const initials = user?.name
-      ? user.name
+    const initials = personState?.name
+      ? personState.name
           .split(" ")
           .slice(0, 2)
           .map((n) => n[0])
@@ -167,43 +187,147 @@ const UsuariosComponent = () => {
 
   return (
     <div className="flex mt-[120px] ml-2 flex-col">
-      <div className="flex bg-[#10254f] max-sm:hidden 2xl:w-[1500px] xl:w-[930px] lg:w-[690px] md:w-full max-lg:w-[100px] sm:w-[520px] max-sm:w-[450px] h-[250px] max-sm:ml-[25px] max-md:ml-[40px] ml-[60px] md:ml-[30px] justify-end mt-[30px] rounded-xl relative">
-        <div className="w-full flex flex-col items-end gap-8">
-          <div className="flex bg-[#164095] rounded-t-xl h-[135px] w-full items-center justify-between text-xl">
-            <img
-              className="hidden lg:block w-[400px] lg:w-[300px] cursor-pointer"
-              src={Logo}
-              alt="Logo"
-            />
+      <div
+        className={`flex ml-[30px] ${
+          isDarkMode ? "bg-[#050c1a]" : "bg-[#2051b3]"
+        } max-sm:hidden w-[1500px] h-auto justify-start mt-[30px] rounded-xl relative`}
+      >
+        <div className="bg-[#10254f] flex justify-center items-center rounded-tl-xl rounded-bl-xl p-6">
+          <div className="flex flex-col items-center gap-4">
+            <div
+              className={`flex ${
+                isDarkMode ? "bg-[#10254f]" : "bg-[#10254f]"
+              } rounded-t-xl h-[135px] w-full items-center justify-center text-xl`}
+            >
+              <div className="flex flex-col items-center">
+                <div className="bg-[#0E5EBA] text-white w-[200px] h-[200px] rounded-full text-3xl flex items-center justify-center">
+                  {personState?.name
+                    ? personState.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .toUpperCase()
+                    : ""}
+                </div>
 
-            <div className="mr-[60px] md:ml-[100px] max-sm:ml-[120px] flex items-center gap-3">
-              <div
-                className={`flex-shrink-0 bg-[#0E5EBA] text-white w-[70px] h-[70px] rounded-full text-3xl flex items-center justify-center`}
-              >
-                {user?.name
-                  ? user.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .toUpperCase()
-                  : ""}
-              </div>
-
-              <div>
-                <h1 className="font-bold text-white">{user.name}</h1>
-                <p
-                  className={`${getPermissionColor(user.permission)} text-base`}
-                >
-                  {user.permission}
-                </p>
+                <div className="text-center mt-4">
+                  <h1 className="font-bold text-white">{personState?.name}</h1>
+                  <p
+                    className={`${getPermissionColor(
+                      personState.permission
+                    )} text-base`}
+                  >
+                    {personState.permission}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          {/* <div className="md:mr-[100px] sm:mr-6 lg:mr-3">
-            <button className="bg-[#164095] hidden sm:block md:block justify-center items-center w-[200px] h-[40px] px-2 font-bold text-base text-white rounded-lg hover:bg-blue-700 transition duration-300">
+        </div>
+
+        <div className="p-6 rounded-xl w-full">
+          <h1 className="text-xl text-white mb-6">Suas Informações</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/** Campos de Input */}
+            <div>
+              <label
+                htmlFor="nome"
+                className={`block text-sm font-medium text-gray-300`}
+              >
+                Nome Completo
+              </label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                placeholder={personState.name}
+                className={`${
+                  isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
+                } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
+              />
+              {/* ${
+                  isDarkMode ? "text-gray-300 " : "text-black"
+                } */}
+            </div>
+
+            <div>
+              <label
+                htmlFor="telefone"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Telefone
+              </label>
+              <input
+                type="tel"
+                id="telefone"
+                name="telefone"
+                placeholder={personState.telefone}
+                className={`${
+                  isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
+                } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder={personState.email}
+                className={`${
+                  isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
+                } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="departamento"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Departamento
+              </label>
+              <input
+                type="text"
+                id="departamento"
+                name="departamento"
+                placeholder={personState.department}
+                className={`${
+                  isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
+                } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
+              />
+            </div>
+          </div>
+
+          {/** Botões */}
+          <div className="flex justify-end gap-4 mt-8">
+            <button
+              type="button"
+              className={`font-semibold w-[200px] h-[50px] px-4 rounded-lg text-white ${
+                isDarkMode
+                  ? "bg-[#164095] hover:bg-[#1a3578]"
+                  : "bg-[#0E5EBA] hover:bg-[#164095]"
+              } transition duration-300`}
+            >
               Editar Perfil
             </button>
-          </div> */}
+            <button
+              type="submit"
+              className={`font-semibold w-[200px] h-[50px] px-4 rounded-lg text-white ${
+                isDarkMode
+                  ? "bg-[#164095] hover:bg-[#1a3578]"
+                  : "bg-[#0E5EBA] hover:bg-[#164095]"
+              } transition duration-300`}
+            >
+              Salvar Perfil
+            </button>
+          </div>
         </div>
       </div>
 
@@ -261,8 +385,11 @@ const UsuariosComponent = () => {
           return (
             <div
               key={profile.id}
-              className="bg-[#f1f1f1] max-sm:mr-30 cursor-pointer hover:scale-[1.02] 2xl:ml-4 transform transition-transform shadow-lg rounded-lg p-4 flex flex-col relative 
-                   w-full"
+              className={`${
+                isDarkMode
+                  ? "bg-[#2c2c2c] text-white"
+                  : "bg-[#f1f1f1] text-black"
+              } max-sm:mr-30 cursor-pointer hover:scale-[1.02] 2xl:ml-4 transform transition-transform shadow-lg rounded-lg p-4 flex flex-col relative w-full`}
             >
               <div className="flex justify-between items-start w-full">
                 <div
@@ -272,7 +399,11 @@ const UsuariosComponent = () => {
                 </div>
                 <button
                   onClick={() => openModal(profile)}
-                  className="text-[#565656] hover:text-[#232323] transform transition-transform hover:scale-[1.02] justify-end items-end"
+                  className={`${
+                    isDarkMode
+                      ? "text-[#bfc9df8b] hover:text-gray-100"
+                      : "text-[#565656] hover:text-[#232323]"
+                  } transform transition-transform hover:scale-[1.02] justify-end items-end`}
                 >
                   {canAddUser && (
                     <CiCircleInfo className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 lg:w-10 lg:h-10" />
@@ -280,16 +411,32 @@ const UsuariosComponent = () => {
                 </button>
               </div>
               <div className="flex flex-col ml-2 mt-2 sm:ml-4">
-                <h3 className="text-base sm:text-lg font-semibold">
+                <h3
+                  className={`text-base sm:text-lg font-semibold ${
+                    isDarkMode ? "text-white" : "text-black"
+                  }`}
+                >
                   {profile.name}
                 </h3>
-                <p className="text-sm">{profile.department}</p>
-                <p className="text-xs sm:text-sm text-gray-500">
+                <p
+                  className={`text-sm ${
+                    isDarkMode ? "text-gray-400" : "text-gray-800"
+                  }`}
+                >
+                  {profile.department}
+                </p>
+                <p
+                  className={`text-xs sm:text-sm ${
+                    isDarkMode ? "text-gray-500" : "text-gray-500"
+                  }`}
+                >
                   {profile.manager}
                 </p>
                 <div className="flex gap-2 mt-2">
                   <p
-                    className={`permission-text font-semibold border-r-2 border-gray pr-2 ${getPermissionColor(
+                    className={`permission-text font-semibold border-r-2 pr-2 ${
+                      isDarkMode ? "border-gray-600" : "border-gray"
+                    } ${getPermissionColor(
                       profile.permission || profile.userPermission
                     )}`}
                   >
@@ -298,7 +445,11 @@ const UsuariosComponent = () => {
                   <span
                     className={`status-badge ${
                       profile.status === "active"
-                        ? "text-green-500"
+                        ? isDarkMode
+                          ? "text-green-400"
+                          : "text-green-500"
+                        : isDarkMode
+                        ? "text-red-400"
                         : "text-red-500"
                     }`}
                   >
@@ -310,13 +461,21 @@ const UsuariosComponent = () => {
                 <div className="flex mt-2 space-x-2 ml-auto">
                   <button
                     onClick={() => toggleProfileStatus(profile.id)}
-                    className="text-blue-500 hover:text-blue-700"
+                    className={`${
+                      isDarkMode
+                        ? "text-blue-400 hover:text-blue-300"
+                        : "text-blue-500 hover:text-blue-700"
+                    }`}
                   >
                     {profile.status === "active" ? "Bloquear" : "Desbloquear"}
                   </button>
                   <button
                     onClick={() => removeProfile(profile.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className={`${
+                      isDarkMode
+                        ? "text-red-400 hover:text-red-300"
+                        : "text-red-500 hover:text-red-700"
+                    }`}
                   >
                     Remover
                   </button>
@@ -328,26 +487,44 @@ const UsuariosComponent = () => {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h2 className="text-xl font-bold mb-10 flex justify-center items-center">
+        <div
+          className={`fixed inset-0 ${
+            isDarkMode
+              ? "bg-gray-900 bg-opacity-70"
+              : "bg-gray-900 bg-opacity-50"
+          } flex items-center justify-center`}
+        >
+          <div
+            className={`${
+              isDarkMode ? "bg-[#1c283b] text-white" : "bg-white text-gray-800"
+            } rounded-lg p-6 w-96 shadow-lg`}
+          >
+            <h2 className="text-xl font-bold mb-6 flex justify-center items-center">
               {isEditMode ? "Editar Usuário" : "Adicionar Usuário"}
             </h2>
             <form onSubmit={handleFormSubmit}>
-              <div className="mb-4 ">
+              <div className="mb-4">
                 <Input
                   type="text"
                   label="Nome Completo"
                   value={userName}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
-                  labelClass="text-sm font-bold"
+                  className={`w-full px-4 py-2 border ${
+                    isDarkMode
+                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                  labelClass={`text-sm font-bold ${
+                    isDarkMode ? "text-white" : "text-black"
+                  }`}
                   onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
               <div className="mb-4">
                 <label
                   htmlFor="department"
-                  className="block text-sm mb-2 font-bold"
+                  className={`block text-sm mb-2 font-bold ${
+                    isDarkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
                 >
                   Departamento:
                 </label>
@@ -358,7 +535,11 @@ const UsuariosComponent = () => {
                     setUserDepartment(e.target.value);
                     updateManager(e.target.value);
                   }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  className={`w-full px-4 py-2 border ${
+                    isDarkMode
+                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 >
                   {Object.keys(departments).map((dept) => (
                     <option key={dept} value={dept}>
@@ -370,7 +551,9 @@ const UsuariosComponent = () => {
               <div className="mb-6">
                 <label
                   htmlFor="manager"
-                  className="block text-sm mb-2 font-bold"
+                  className={`block text-sm mb-2 font-bold ${
+                    isDarkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
                 >
                   Gestor:
                 </label>
@@ -379,19 +562,29 @@ const UsuariosComponent = () => {
                   id="manager"
                   value={userManager}
                   onChange={(e) => setUserManager(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                   disabled
+                  className={`w-full px-4 py-2 border ${
+                    isDarkMode
+                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      : "border-gray-300 bg-gray-200 text-gray-800"
+                  } rounded-lg`}
                 />
                 <label
                   htmlFor="permission"
-                  className="block text-sm mt-4 font-bold"
+                  className={`block text-sm mt-4 font-bold ${
+                    isDarkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
                 >
                   Permissão:
                 </label>
                 <select
                   id="permission"
                   name="permission"
-                  className="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                  className={`block w-full p-2 mt-1 border ${
+                    isDarkMode
+                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } rounded-md focus:outline-none focus:ring-blue-500`}
                   value={userPermission}
                   onChange={handlePermissionChange}
                 >
@@ -406,13 +599,21 @@ const UsuariosComponent = () => {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500"
+                  className={`px-4 py-2 w-full rounded-lg ${
+                    isDarkMode
+                      ? "bg-gray-600 text-white hover:bg-gray-500"
+                      : "bg-gray-400 text-white hover:bg-gray-500"
+                  }`}
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#164095] text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className={`px-4 py-2 w-full rounded-lg ${
+                    isDarkMode
+                      ? "bg-[#112a54] text-white hover:bg-[#0e2347]"
+                      : "bg-[#164095] text-white hover:bg-blue-700"
+                  }`}
                 >
                   {isEditMode ? "Salvar" : "Adicionar"}
                 </button>
