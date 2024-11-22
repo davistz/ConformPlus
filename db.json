@@ -35,6 +35,14 @@
       "department": "Ambulatório",
       "manager": "Carlos Almeida",
       "photo": "../img/img_users/user_default.png"
+    },
+    {
+      "id": "fda5",
+      "name": "Teste Register",
+      "email": "teste@hotmail.com",
+      "password": "1234",
+      "permission": "Usuário",
+      "status": "active"
     }
   ],
   "conformidades": [

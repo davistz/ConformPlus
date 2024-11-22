@@ -354,6 +354,35 @@ export const StyledButton = styled.button`
     background-color: #104dc9;
   }
 `;
+export const StyledButtonPassword = styled.button`
+  color: black;
+  font-weight: 700;
+  background-color: #d4d4d4;
+  border: 1px solid black;
+  width: 100%;
+  height: 51px;
+  margin-top: 3.5rem;
+  margin-left: -6.5rem;
+  border-radius: 20px 20px;
+  transition: 0.5s;
+
+  @media (max-width: 768px) {
+    height: 50px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    height: 45px;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  &:hover {
+    color: white;
+    background-color: #104dc9;
+  }
+`;
 
 export const StyledButtonRegister = styled.button`
   color: black;
