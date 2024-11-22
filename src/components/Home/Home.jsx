@@ -295,7 +295,7 @@ const NaoConformidades = () => {
             <s.Box
               section="concluido"
               isDarkMode={isDarkMode}
-              style={{ marginTop: "24px" }}
+              style={{ marginTop: "24px", marginBottom: "20px" }}
             >
               <div className="flex items-center justify-between">
                 <s.SectionTitle>Concluídas</s.SectionTitle>

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   width: 100vw;
@@ -33,43 +33,6 @@ export const LogoImg = styled.img`
   }
 `;
 
-export const FormContainer = styled.div`
-  margin-top: 2rem;
-  width: 1000px;
-  height: 560px;
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-radius: 24px;
-
-  @media (max-width: 768px) {
-    height: 89%;
-    width: 100%;
-    flex-direction: column;
-    border-radius: 20px;
-    align-items: center;
-  }
-`;
-export const FormContainerRegister = styled.div`
-  margin-top: 2rem;
-  width: 1000px;
-  height: 560px;
-  background-color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-radius: 24px;
-
-  @media (max-width: 768px) {
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 24px;
-  }
-`;
-
 export const BoxInput = styled.div`
   @media (max-width: 480px) {
     margin-top: -4rem;
@@ -89,7 +52,7 @@ export const StyledInput = styled.input`
   height: 45px;
   margin-bottom: 1.5rem;
   font-weight: 500;
-  padding-left: 1.25rem;
+  padding-left: 0.6rem;
   background-color: ${(props) => (props.darkMode ? "#444" : "#f1f4f9")};
   color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   border: 1px solid #a6a6a6;
@@ -98,6 +61,10 @@ export const StyledInput = styled.input`
   @media (max-width: 480px) {
     height: 30px;
     margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    &::placeholder {
+      font-size: 0.8rem;
+    }
   }
 `;
 export const Title = styled.h1`
@@ -116,8 +83,8 @@ export const Title = styled.h1`
 
   @media (max-width: 480px) {
     font-size: 1.6rem;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    margin-top: -1rem;
+    margin-bottom: 7rem;
   }
 `;
 
@@ -184,11 +151,115 @@ export const FormWrapper = styled.div`
   height: 100%;
   overflow: hidden;
   display: flex;
+  justify-content: center;
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+export const FormContainer = styled.div`
+  margin-top: 2rem;
+  height: 560px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 24px;
+  width: 1000px;
+  overflow: hidden;
+  position: relative;
+
+  transition: opacity 0.5s ease;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    border-radius: 20px;
+    align-items: center;
+    height: 370px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 24px;
+    width: 390px;
+    overflow: hidden;
+    position: relative;
+
+    transition: opacity 0.5s ease;
+  }
+`;
+
+export const InfoLogin = styled.div`
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  height: 100%;
+  background-color: #061c48;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease;
+
+  &.slide-left {
+    transform: translateX(-100%);
+
+    border-top-right-radius: 40%;
+    border-bottom-right-radius: 40%;
+  }
+
+  &.slide-transition {
+    border-radius: 20%;
+  }
+
+  &.slide-right {
+    transform: translateX(0);
+    border-top-left-radius: 40%;
+    border-bottom-left-radius: 40%;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const InfoRegister = styled.div`
+  background-color: #061c48;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  border-top-right-radius: 22px;
+  border-bottom-right-radius: 22px;
+  border-bottom-left-radius: 40%;
+  border-top-left-radius: 40%;
+  transition: transform 0.5s ease;
+
+  &.slide-right {
+    transform: translateX(0);
+  }
+
+  &.slide-left {
+    transform: translateX(-100%);
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -209,22 +280,31 @@ export const FormContainerSenha = styled.div`
 `;
 
 export const InputLogin = styled.div`
-  width: 45%;
-  display: flex;
-  flex-direction: column;
+  width: 50%;
+  position: absolute;
+
+  right: -1rem;
+  transition: transform 0.5s ease;
 
   @media (max-width: 768px) {
-    width: 100%;
+    height: auto;
+    width: 400px;
+    right: -0.5rem;
   }
 `;
-export const InputRegister = styled.div`
-  width: 45%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 
-  @media (max-width: 480px) {
-    width: 100%;
+export const InputRegister = styled.div`
+  width: 50%;
+
+  position: absolute;
+
+  left: 0;
+  transition: transform 0.5s ease;
+
+  @media (max-width: 768px) {
+    height: auto;
+    width: 400px;
+    margin-bottom: 4rem;
   }
 `;
 
@@ -263,7 +343,7 @@ export const InputContainerSenha = styled.div`
   position: relative;
 `;
 
-export const ErrorMesage = styled.p`
+export const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin-bottom: 0.5rem;
@@ -344,9 +424,10 @@ export const StyledButton = styled.button`
   }
 
   @media (max-width: 480px) {
+    width: 50%;
     height: 45px;
     margin-top: 0.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: -1rem;
   }
 
   &:hover {
@@ -402,7 +483,9 @@ export const StyledButtonRegister = styled.button`
 
   @media (max-width: 480px) {
     height: 45px;
-    width: 100%;
+    width: 60%;
+    margin-top: 2rem;
+    margin-bottom: -2rem;
   }
 
   &:hover {
@@ -457,65 +540,6 @@ export const SwitchAuthLink = styled.p`
   }
 `;
 
-export const InfoLogin = styled.div`
-  background-color: #061c48;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: 100%;
-  border-top-left-radius: 19px;
-  border-bottom-left-radius: 22px;
-  border-bottom-right-radius: 40%;
-  border-top-right-radius: 40%;
-  transition: transform 0.5s ease;
-
-  &.slide-right {
-    transform: translateX(100%);
-  }
-
-  &.slide-left {
-    transform: translateX(0%);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: auto;
-    border-top-right-radius: 19px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-  }
-`;
-
-export const InfoRegister = styled.div`
-  background-color: #061c48;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  height: 100%;
-  border-top-right-radius: 22px;
-  border-bottom-right-radius: 22px;
-  border-bottom-left-radius: 40%;
-  border-top-left-radius: 40%;
-  transition: transform 0.5s ease;
-
-  &.slide-right {
-    transform: translateX(0);
-  }
-
-  &.slide-left {
-    transform: translateX(-100%);
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
