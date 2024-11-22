@@ -8,9 +8,10 @@ import { toast } from "sonner";
 import Input from "./Input";
 import miniLogo from "../img/mini_logo.png";
 import { useTheme } from "../ThemeContext";
+import * as s from "./DepartamentoPage.styled";
 
 function DepartamentosPage() {
-  const { isDarkMode } = useTheme(); // Obtém o estado do tema
+  const { isDarkMode } = useTheme();
 
   const [departments, setDepartments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,9 +19,17 @@ function DepartamentosPage() {
   const [departamento, setDepartamento] = useState("");
   const [gestor, setGestor] = useState("");
   const [status, setStatus] = useState("");
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [personState, setPersonState] = useState(null);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const canChangeDepartament = user?.permission === "Admin";
+  useEffect(() => {
+    const storedPerson = localStorage.getItem("person");
+
+    if (storedPerson) {
+      setPersonState(JSON.parse(storedPerson));
+    }
+  }, []);
+  const canChangeDepartament = personState?.permission === "Admin";
 
   useEffect(() => {
     axios
@@ -86,133 +95,99 @@ function DepartamentosPage() {
     );
   };
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(1024 >= window.innerWidth);
+    };
+
+    window.addEventListener("resize", checkScreenSize);
+
+    checkScreenSize();
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   return (
-    <div
-      className={`flex mt-[130px] ml-3 ${
-        isDarkMode ? " text-white" : "text-black"
-      }`}
-    >
-      <main className="flex-1 p-8 w-[1550px]">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-4xl font-bold">Gerenciamento de Departamentos</h2>
-          <div className="flex justify-between">
-            {!canChangeDepartament && (
-              <div className="flex items-center gap-2">
-                <p className="mt-0 text-sm">Fundação Parreiras Horta, 2024 </p>
-                <img src={miniLogo} alt="logo do FPH" className="w-8 h-auto" />
-              </div>
+    <s.Container isDarkMode={isDarkMode}>
+      <s.Main>
+        <s.Header>
+          {isSmallScreen ? (
+            <s.Title>Departamentos</s.Title>
+          ) : (
+            <s.Title>Gerenciamento de Departamentos</s.Title>
+          )}
+          <div>
+            {!canChangeDepartament ? (
+              <s.MiniLogoWrapper>
+                <p>Fundação Parreiras Horta, 2024</p>
+                <img src={miniLogo} alt="logo do FPH" />
+              </s.MiniLogoWrapper>
+            ) : (
+              <s.Botao onClick={openModal}>
+                Adicionar Departamento <FaPlus className="ml-2" />
+              </s.Botao>
             )}
           </div>
-          {canChangeDepartament && (
-            <Botao
-              onClick={openModal}
-              className={`w-[300px] text-base flex items-center justify-center ${
-                isDarkMode ? "bg-gray-800 text-white" : "bg-[#2755b3] "
-              }`}
-              select="btn_add"
-            >
-              Adicionar Departamento
-              <FaPlus className="h-5 w-5 ml-2" />
-            </Botao>
-          )}
-        </div>
-        <div
-          className={`border-b mb-[60px] ${
-            isDarkMode ? "border-gray-700" : "border-gray-300"
-          }`}
-        ></div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        </s.Header>
+        <s.DividerMain isDarkMode={isDarkMode} />
+        <s.DepartmentsGrid>
           {departments.map((dept) => (
-            <div
-              key={dept.id}
-              className={`p-4 w-full h-[250px] ${
-                isDarkMode
-                  ? "bg-[#2c2c2c] text-white"
-                  : "bg-gray-100 text-black"
-              } hover:scale-[1.02] transform transition-transform flex flex-col justify-between border rounded shadow-lg`}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-xl font-semibold">
+            <s.DepartmentCard key={dept.id} isDarkMode={isDarkMode}>
+              <s.DepartmentHeader>
+                <h3>
                   {dept.name}{" "}
-                  {dept.name === "Recursos Humanos" ? (
-                    <GiHumanPyramid className="inline-block w-5 h-5 ml-2" />
-                  ) : dept.name === "Financeiro" ? (
-                    <GiTakeMyMoney className="inline-block w-5 h-5 ml-2" />
-                  ) : dept.name === "Tecnologia da Informação" ? (
-                    <FaLaptopCode className="inline-block w-5 h-5 ml-2" />
-                  ) : (
-                    <FaBuilding className="inline-block w-5 h-5 ml-2" />
-                  )}
+                  {dept.name === "Recursos Humanos" && <GiHumanPyramid />}
+                  {dept.name === "Financeiro" && <GiTakeMyMoney />}
+                  {dept.name === "Tecnologia da Informação" && <FaLaptopCode />}
+                  {![
+                    "Recursos Humanos",
+                    "Financeiro",
+                    "Tecnologia da Informação",
+                  ].includes(dept.name) && <FaBuilding />}
                 </h3>
-
-                <div className="flex gap-2">
-                  <span
-                    className={`inline-block px-2 py-1 rounded ${
-                      dept.status === "active" ? "bg-green-500" : "bg-red-500"
-                    } text-white`}
-                  >
+                <div>
+                  <s.StatusBadge status={dept.status}>
                     {dept.status === "active" ? "Ativo" : "Bloqueado"}
-                  </span>
-                  {canChangeDepartament && (
-                    <div className="flex">
-                      <button
-                        onClick={() => removeDepartment(dept.id)}
-                        className="text-red-500 hover:text-red-700"
-                      >
-                        <FaTrash className="w-5 h-5" />
-                      </button>
-                    </div>
-                  )}
+                  </s.StatusBadge>
                 </div>
-              </div>
-              <div className="justify-end flex flex-col">
+              </s.DepartmentHeader>
+              <div>
                 {canChangeDepartament && (
-                  <button
-                    onClick={() => openEditModal(dept)}
-                    className={`ml-auto font-medium text-lg hover:scale-[1.05] transition ${
-                      isDarkMode ? "text-blue-300" : "text-blue-600"
-                    }`}
-                  >
-                    Editar
-                  </button>
-                )}
-                <div className="flex justify-between items-center">
-                  <div className="flex-1">
-                    <div
-                      className={`border-b-[1px] mb-5 ${
-                        isDarkMode ? "border-gray-600" : "border-gray-300"
-                      }`}
-                    ></div>
-                    <div className="flex items-center mt-2">
-                      <div
-                        className={`rounded-full w-14 h-14 flex items-center justify-center ${
-                          isDarkMode
-                            ? "bg-gray-700 text-white"
-                            : "bg-gray-300 text-black"
-                        }`}
-                      >
-                        {dept.manager
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                          .toUpperCase()}
-                      </div>
-                      <div className="ml-4">
-                        <div className="font-medium text-xl">
-                          {dept.manager}
-                        </div>
-                        <div className="text-base text-gray-600">Gestor</div>
-                      </div>
-                    </div>
+                  <div className="flex gap-4">
+                    <s.EditButton
+                      onClick={() => openEditModal(dept)}
+                      isDarkMode={isDarkMode}
+                    >
+                      Editar
+                    </s.EditButton>
+                    <button
+                      className="text-lg text-red-600 hover:text-red-800"
+                      onClick={() => removeDepartment(dept.id)}
+                    >
+                      <FaTrash />
+                    </button>
                   </div>
-                </div>
+                )}
+                <s.Divider isDarkMode={isDarkMode} />
+                <s.ManagerInfo isDarkMode={isDarkMode}>
+                  <div className="avatar">
+                    {dept.manager
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()}
+                  </div>
+                  <div className="info">
+                    <div className="name">{dept.manager}</div>
+                    <div className="role">Gestor</div>
+                  </div>
+                </s.ManagerInfo>
               </div>
-            </div>
+            </s.DepartmentCard>
           ))}
-        </div>
-      </main>
-    </div>
+        </s.DepartmentsGrid>
+      </s.Main>
+    </s.Container>
   );
 }
 

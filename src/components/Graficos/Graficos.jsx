@@ -387,37 +387,52 @@ const GraficosDetalhados = () => {
       <div className="flex flex-col gap-6 mt-16">
         <div className="mb-6 ">
           <div className="flex justify-between">
-            {personState ? (
-              <p className="text-xl">
-                Seja Bem-vindo(a),{" "}
-                <b className="font-semibold">{personState.name}</b> ao painel de
-                controle das não conformidades.
-              </p>
-            ) : (
-              <p className="text-xl">
-                Seja Bem-vindo(a) ao painel de controle das não conformidades.
-              </p>
-            )}
-            <div className="flex items-center gap-2">
+            <div>
+              {/* Aparecer apenas em telas maiores que `sm` */}
+              <div className="max-sm:hidden">
+                {personState ? (
+                  <p className="text-xl">
+                    Seja Bem-vindo(a),{" "}
+                    <b className="font-semibold">{personState.name}</b> ao
+                    painel de controle das não conformidades.
+                  </p>
+                ) : (
+                  <p className="text-xl">
+                    Seja Bem-vindo(a) ao painel de controle das não
+                    conformidades.
+                  </p>
+                )}
+              </div>
+              {/* Aparecer apenas em telas menores ou iguais a `sm` */}
+              <div className="hidden max-sm:block ml-7">
+                {personState ? (
+                  <p className="text-lg">
+                    Seja Bem-vindo(a),{" "}
+                    <b className="font-semibold">{personState.name}</b>
+                  </p>
+                ) : (
+                  <p>a</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 max-sm:hidden">
               <p className="mt-0 text-sm">Fundação Parreiras Horta, 2024 </p>
               <img src={miniLogo} alt="logo do FPH" className="w-8 h-auto" />
             </div>
           </div>
           <div className="border-b mt-2 border-[#bdbdbd] " />
         </div>
-        <div className="grid max-xl:grid-cols-2 xl:grid-cols-3 gap-5 max-lg:gap-2 ml-3">
+        <div className="grid max-xl:grid-cols-1 xl:grid-cols-3 gap-5 max-lg:gap-3 ml-3 mr-3">
           {/* Causa Raiz das Não Conformidades */}
           <div
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
             style={{ height: "300px" }}
           >
-            <h2 className="chart-title  max-lg:text-sm  text-lg mt-2 font-medium">
+            <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Causa Raiz das Não Conformidades
             </h2>
-            <canvas
-              id="rootCauseChart"
-              style={{ height: "100%", width: "100%", color: "white" }}
-            ></canvas>
+            <canvas id="rootCauseChart" className="w-full h-full"></canvas>
           </div>
 
           {/* Tendência das Não Conformidades */}
@@ -425,13 +440,10 @@ const GraficosDetalhados = () => {
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
             style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base max-lg:text-sm xl:text-lg mt-2 mb-1 font-medium">
+            <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Tendência das Não Conformidades
             </h2>
-            <canvas
-              id="trendChart"
-              style={{ height: "100%", width: "100%" }}
-            ></canvas>
+            <canvas id="trendChart" className="w-full h-full"></canvas>
           </div>
 
           {/* Eficácia das Ações Corretivas */}
@@ -439,13 +451,10 @@ const GraficosDetalhados = () => {
             className="chart-container max-lg:hidden flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
             style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base text-lg mt-2 mb-1 font-medium">
+            <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Eficácia das Ações Corretivas
             </h2>
-            <canvas
-              id="effectivenessChart"
-              style={{ height: "100%", width: "100%" }}
-            ></canvas>
+            <canvas id="effectivenessChart" className="w-full h-full"></canvas>
           </div>
 
           {/* Classificação por Severidade */}
@@ -453,13 +462,10 @@ const GraficosDetalhados = () => {
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
             style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base max-lg:text-sm  text-lg mt-2 mb-1 font-medium">
+            <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Classificação por Severidade
             </h2>
-            <canvas
-              id="severityChart"
-              style={{ height: "100%", width: "100%" }}
-            ></canvas>
+            <canvas id="severityChart" className="w-full h-full"></canvas>
           </div>
 
           {/* Conformidades Totais */}
@@ -467,27 +473,21 @@ const GraficosDetalhados = () => {
             className="chart-container flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
             style={{ height: "300px" }}
           >
-            <h2 className="chart-title max-xl:text-base max-lg:text-sm  text-lg mt-2 mb-1 font-medium">
+            <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Conformidades Totais
             </h2>
-            <canvas
-              id="conformidadesChart"
-              style={{ height: "100%", width: "100%" }}
-            ></canvas>
+            <canvas id="conformidadesChart" className="w-full h-full"></canvas>
           </div>
 
           {/* Gráfico de Histogramas */}
           <div
-            className="chart-container flex max-xl:hidden flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
+            className="chart-container max-xl:hidden flex flex-col justify-center items-center border border-gray-300 rounded-lg p-4"
             style={{ height: "300px" }}
           >
-            <h2 className="chart-title text-lg mt-2 mb-1 font-medium">
+            <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Gráfico de Histogramas
             </h2>
-            <canvas
-              id="histogramChart"
-              style={{ height: "100%", width: "100%" }}
-            ></canvas>
+            <canvas id="histogramChart" className="w-full h-full"></canvas>
           </div>
         </div>
       </div>

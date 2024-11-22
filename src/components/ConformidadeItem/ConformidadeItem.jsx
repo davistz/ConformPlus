@@ -16,10 +16,18 @@ const ConformidadeItem = ({
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const { isDarkMode } = useTheme(); // Obtém o valor de isDarkMode do contexto global
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [personState, setPersonState] = useState(null);
+
+  useEffect(() => {
+    const storedPerson = localStorage.getItem("person");
+
+    if (storedPerson) {
+      setPersonState(JSON.parse(storedPerson));
+    }
+  }, []);
 
   const canChangeConformidades =
-    user?.permission === "Admin" || user?.permission === "Gestor";
+    personState?.permission === "Admin" || personState?.permission === "Gestor";
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -88,23 +96,25 @@ const ConformidadeItem = ({
 
         <s.StyledDiv>
           <s.StyledUl>
+            {/* Exibir o ID apenas em telas maiores */}
             {!isSmallScreen && <li>{conformidade.id}</li>}
             <li>{conformidade.origem}</li>
-            <li>{conformidade.enquadramento}</li>
+            {!isSmallScreen && <li>{conformidade.enquadramento}</li>}
             {!isSmallScreen && <li>{conformidade.data}</li>}
             <li>{conformidade.grau_severidade}</li>
           </s.StyledUl>
 
+          {/* Ações disponíveis somente se o usuário puder alterar conformidades */}
           {canChangeConformidades && (
             <s.ActionButtonWrapper>
               <s.ActionButton
                 onClick={() => deletarNaoConformidade(conformidade.id)}
               >
-                <FaTrashAlt className="text-[#ff4848] h-[20px] w-[20px]" />
+                <FaTrashAlt className="text-[#ff4848] max-sm:h-4 max-sm:w-4 h-[20px] w-[20px]" />
               </s.ActionButton>
               <s.ActionButton onClick={() => onInfoClick(conformidade)}>
                 <CiCircleInfo
-                  className={`h-[35px] w-[35px] ${
+                  className={`h-[35px] w-[35px] max-sm:h-6 max-sm:w-6  ${
                     isDarkMode ? "text-[#e2e2e2]" : "text-[#6c6c6c]"
                   }`}
                 />

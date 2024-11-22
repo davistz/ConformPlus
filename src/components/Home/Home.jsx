@@ -8,7 +8,7 @@ import ConformidadeItem from "../ConformidadeItem/ConformidadeItem.jsx";
 import { toast } from "sonner";
 import axios from "axios";
 import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
-import NaoConformidadeCheck from "../NaoConformidadeCheck.jsx";
+import NaoConformidadeCheck from "../ConformidadesCheck/NaoConformidadeCheck.jsx";
 import Id from "../Id/Id.jsx";
 import KanbanBoard from "../KanbanBoard/KanbanBoard.jsx";
 import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
@@ -171,7 +171,9 @@ const NaoConformidades = () => {
     <s.Container>
       <s.Row>
         <s.DivSelector isDarkMode={isDarkMode}>
-          <h1>Escolher modo de Visualizar</h1>
+          <p className="font-semibold max-sm:text-[14px] mr-4">
+            Escolher modo de Visualizar
+          </p>
           <select name="" id="" onChange={handleChangeViewMode}>
             <option value="Lista">Lista</option>
             <option value="Quadro">Quadro</option>
@@ -223,7 +225,7 @@ const NaoConformidades = () => {
         ) : (
           <div>
             <s.Box section="aberto" isDarkMode={isDarkMode}>
-              <div className="flex items-center justify-between max-sm:flex-col max-sm:w-full">
+              <div className="flex items-center justify-between max-sm:mb-2 max-sm:w-full">
                 <s.SectionTitle>Em Aberto</s.SectionTitle>
                 <s.IconWrapper>
                   <a
@@ -238,13 +240,12 @@ const NaoConformidades = () => {
               {isSmallScreen ? (
                 <s.StatusHeader>
                   <h1>Departamento</h1>
-                  <h1>Setor Destino</h1>
                   <h1>Grau de Severidade</h1>
                 </s.StatusHeader>
               ) : (
                 <Id className="ml-[140px]" />
               )}
-              <div className="pb-4 pr-4">
+              <div className="">
                 {conformidadesAberto.map((conformidade) => (
                   <ConformidadeItem
                     key={conformidade.id}
@@ -270,7 +271,7 @@ const NaoConformidades = () => {
               {isSmallScreen ? (
                 <s.StatusHeader>
                   <h1>Departamento</h1>
-                  <h1>Setor Destino</h1>
+
                   <h1>Grau de Severidade</h1>
                 </s.StatusHeader>
               ) : (
@@ -303,7 +304,7 @@ const NaoConformidades = () => {
               {isSmallScreen ? (
                 <s.StatusHeader>
                   <h1>Departamento</h1>
-                  <h1>Setor Destino</h1>
+
                   <h1>Grau de Severidade</h1>
                 </s.StatusHeader>
               ) : (

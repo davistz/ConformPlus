@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { IoMdNotifications } from "react-icons/io";
 import { AiFillDashboard } from "react-icons/ai";
-import { IoIosGitNetwork } from "react-icons/io";
+import { IoIosGitNetwork, IoMdClose } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
 import { IoIosClose } from "react-icons/io";
 import { MdLogout, MdLightMode, MdDarkMode } from "react-icons/md";
@@ -42,8 +42,7 @@ const Header = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const PermView =
-    personState?.permission === "Admin" || personState?.permission === "Gestor";
+  const PermView = personState?.permission === "Usuário";
 
   const telaPequena = () => {
     setIsSidebarOpen(true);
@@ -53,21 +52,6 @@ const Header = () => {
     const path = location.pathname.split("/")[1];
     setActiveButton(path || "home");
   }, [location]);
-
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const isSmall = window.innerWidth <= 768;
-      setIsSmallScreen(isSmall);
-      if (isSmall) {
-        telaPequena();
-      }
-    };
-
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
 
   const notificacoes = [
     {
@@ -197,20 +181,24 @@ const Header = () => {
             <s.SwitchCircle isOn={isOn} />
           </s.SwitchContainer>
           <MdDarkMode className="w-8 h-8 ml-2 mr-6 text-[#ffffffdb]" />
-          <s.NotificationsButton onClick={() => setIsNotificationOpen(true)}>
-            <IoMdNotifications />
-          </s.NotificationsButton>
+          <div className="max-sm:hidden">
+            <s.NotificationsButton onClick={() => setIsNotificationOpen(true)}>
+              <IoMdNotifications />
+            </s.NotificationsButton>
+          </div>
           {personState ? (
             <s.UserDetails onClick={handleUsers}>
               <s.UserInitials>{initials}</s.UserInitials>
-              <s.UserInfo>
-                <s.UserName>{personState.name}</s.UserName>
-                <s.UserPermission
-                  color={getPermissionColor(personState.permission)}
-                >
-                  {personState.permission}
-                </s.UserPermission>
-              </s.UserInfo>
+              <div className="max-sm:hidden ">
+                <s.UserInfo>
+                  <s.UserName>{personState.name}</s.UserName>
+                  <s.UserPermission
+                    color={getPermissionColor(personState.permission)}
+                  >
+                    {personState.permission}
+                  </s.UserPermission>
+                </s.UserInfo>
+              </div>
             </s.UserDetails>
           ) : (
             <s.UserPlaceholder>Usuário</s.UserPlaceholder>
@@ -231,33 +219,53 @@ const Header = () => {
           </s.NotificationModal>
         )}
 
-        <s.SidebarContainer isSidebarOpen={isSidebarOpen}>
-          <s.CloseSidebarButton onClick={() => setIsSidebarOpen(false)} />
-          <s.MenuList>
-            <s.MenuItem onClick={() => handleButtonClick("dashboard")}>
-              Dashboard
-              <RiDashboardHorizontalFill />
-            </s.MenuItem>
-            <s.MenuItem onClick={() => handleButtonClick("conformidades")}>
-              Não Conformidades
-              <AiFillDashboard />
-            </s.MenuItem>
-            <s.MenuItem onClick={() => handleButtonClick("departamentos")}>
-              Departamentos
-              <IoIosGitNetwork />
-            </s.MenuItem>
-            <s.MenuItem onClick={() => handleButtonClick("users")}>
-              Usuários
-              <PiUsersLight />
-            </s.MenuItem>
-          </s.MenuList>
+        <s.SidebarContainer
+          isDarkMode={isDarkMode}
+          isSidebarOpen={isSidebarOpen}
+        >
+          <IoMdClose
+            className="w-7 h-7 ml-[240px] "
+            onClick={() => setIsSidebarOpen(false)}
+          />
+          <div>
+            <s.MenuList>
+              <s.MenuItem onClick={() => handleButtonClick("dashboard")}>
+                Dashboard
+                <RiDashboardHorizontalFill />
+              </s.MenuItem>
+              <s.MenuItem onClick={() => handleButtonClick("conformidades")}>
+                Não Conformidades
+                <AiFillDashboard />
+              </s.MenuItem>
+              {PermView ? (
+                <></>
+              ) : (
+                <>
+                  <s.MenuItem
+                    onClick={() => handleButtonClick("departamentos")}
+                  >
+                    Departamentos
+                    <IoIosGitNetwork />
+                  </s.MenuItem>
+                  <s.MenuItem onClick={() => handleButtonClick("users")}>
+                    Usuários
+                    <PiUsersLight />
+                  </s.MenuItem>
+                </>
+              )}
+            </s.MenuList>
+          </div>
+
+          <s.FooterButtonMob onClick={handleLogout} select="not">
+            <MdLogout />
+            Sair
+          </s.FooterButtonMob>
         </s.SidebarContainer>
       </s.HeaderContainer>
 
       <s.MainContent>
         <s.GeralContainer isOn={isDarkMode}>
           <s.ButtonContainer>
-            {PermView ?? <h1>teste</h1>}
             <s.StyledButton
               active={activeButton === "dashboard"}
               onClick={() => handleButtonClick("dashboard")}
@@ -272,20 +280,26 @@ const Header = () => {
               <AiFillDashboard />
               Não Conformidades
             </s.StyledButton>
-            <s.StyledButton
-              active={activeButton === "departamentos"}
-              onClick={() => handleButtonClick("departamentos")}
-            >
-              <IoIosGitNetwork />
-              Departamentos
-            </s.StyledButton>
-            <s.StyledButton
-              active={activeButton === "users"}
-              onClick={() => handleButtonClick("users")}
-            >
-              <PiUsersLight />
-              Usuários
-            </s.StyledButton>
+            {PermView ? (
+              <></>
+            ) : (
+              <>
+                <s.StyledButton
+                  active={activeButton === "departamentos"}
+                  onClick={() => handleButtonClick("departamentos")}
+                >
+                  <IoIosGitNetwork />
+                  Departamentos
+                </s.StyledButton>
+                <s.StyledButton
+                  active={activeButton === "users"}
+                  onClick={() => handleButtonClick("users")}
+                >
+                  <PiUsersLight />
+                  Usuários
+                </s.StyledButton>
+              </>
+            )}
           </s.ButtonContainer>
 
           <s.Footer>

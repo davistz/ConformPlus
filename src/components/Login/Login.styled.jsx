@@ -8,6 +8,14 @@ export const Container = styled.div`
   padding-top: 6rem;
   align-items: center;
   background-color: ${(props) => (props.darkMode ? "#1e1e1e" : "#164095")};
+
+  @media (max-width: 768px) {
+    padding-top: 4rem;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 2rem;
+  }
 `;
 
 export const LogoImg = styled.img`
@@ -18,6 +26,10 @@ export const LogoImg = styled.img`
 
   @media (max-width: 768px) {
     width: 80%;
+  }
+
+  @media (max-width: 480px) {
+    width: 90%;
   }
 `;
 
@@ -32,8 +44,43 @@ export const FormContainer = styled.div`
   border-radius: 24px;
 
   @media (max-width: 768px) {
-    height: auto;
-    width: 400px;
+    height: 89%;
+    width: 100%;
+    flex-direction: column;
+    border-radius: 20px;
+    align-items: center;
+  }
+`;
+export const FormContainerRegister = styled.div`
+  margin-top: 2rem;
+  width: 1000px;
+  height: 560px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 24px;
+
+  @media (max-width: 768px) {
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 24px;
+  }
+`;
+
+export const BoxInput = styled.div`
+  @media (max-width: 480px) {
+    margin-top: -4rem;
+    font-size: 10px;
+  }
+`;
+export const BoxRegister = styled.div`
+  @media (max-width: 480px) {
+    width: 110%;
+    margin-left: -1.6rem;
+    font-size: 10px;
   }
 `;
 
@@ -48,11 +95,11 @@ export const StyledInput = styled.input`
   border: 1px solid #a6a6a6;
   border-radius: 0.5rem;
 
-  @media (max-width: 768px) {
-    height: 40px;
+  @media (max-width: 480px) {
+    height: 30px;
+    margin-bottom: 0.6rem;
   }
 `;
-
 export const Title = styled.h1`
   font-size: 2.3rem;
   font-weight: bold;
@@ -61,18 +108,32 @@ export const Title = styled.h1`
   margin-top: 3rem;
   margin-bottom: 1.5rem;
   color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+
   @media (max-width: 768px) {
     font-size: 1.9rem;
+    margin-left: 0;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.6rem;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
   }
 `;
+
 export const TitleRegister = styled.h1`
   font-size: 2.3rem;
   font-weight: bold;
   text-align: center;
   margin-top: 1.7rem;
   color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+
   @media (max-width: 768px) {
     font-size: 1.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.6rem;
   }
 `;
 
@@ -83,6 +144,10 @@ export const LabImg = styled.img`
   @media (max-width: 768px) {
     width: 80%;
   }
+
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 export const MiniImg = styled.img`
   width: 80px;
@@ -91,6 +156,10 @@ export const MiniImg = styled.img`
   @media (max-width: 768px) {
     width: 80%;
   }
+
+  @media (max-width: 480px) {
+    width: 15%;
+  }
 `;
 
 export const AuthContainer = styled.div`
@@ -98,13 +167,36 @@ export const AuthContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 768px) {
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  @media (max-width: 480px) {
+    margin-top: 0.25rem;
+    padding: 0 0.5rem;
+  }
+`;
+export const FormWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 export const FormContainerSenha = styled.div`
   margin-top: 2rem;
   width: 500px;
   height: 330px;
-  background-color: white;
+  background-color: red;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -120,12 +212,20 @@ export const InputLogin = styled.div`
   width: 45%;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 export const InputRegister = styled.div`
   width: 45%;
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `;
 
 export const InputContainer = styled.div`
@@ -136,6 +236,12 @@ export const InputContainer = styled.div`
   margin-top: 3rem;
 
   position: relative;
+
+  @media (max-width: 768px) {
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+    margin-bottom: 0px;
+  }
 `;
 export const RegisterContainer = styled.div`
   display: flex;
@@ -162,6 +268,12 @@ export const ErrorMesage = styled.p`
   font-size: 14px;
   margin-bottom: 0.5rem;
   margin-top: -1.5rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    margin-top: -9px;
+    margin-bottom: 3px;
+  }
 `;
 
 export const Label = styled.label`
@@ -171,7 +283,8 @@ export const Label = styled.label`
   display: block;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
   }
 `;
 
@@ -186,7 +299,8 @@ export const ForgotPasswordLink = styled.a`
   transition: color 0.3s ease, transform 0.3s ease;
 
   @media (max-width: 768px) {
-    top: 6.2rem;
+    top: 0.1rem;
+    font-size: 0.675rem;
   }
 
   &:hover {
@@ -196,10 +310,14 @@ export const ForgotPasswordLink = styled.a`
 `;
 
 export const ErrorText = styled.p`
-  color: red;
+  color: vlue;
   text-align: center;
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
+
+  @media (max-width: 480px) {
+    color: blue;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
@@ -221,6 +339,14 @@ export const StyledButton = styled.button`
 
   @media (max-width: 768px) {
     height: 50px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    height: 45px;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
   }
 
   &:hover {
@@ -228,6 +354,7 @@ export const StyledButton = styled.button`
     background-color: #104dc9;
   }
 `;
+
 export const StyledButtonRegister = styled.button`
   color: black;
   font-weight: 700;
@@ -241,6 +368,12 @@ export const StyledButtonRegister = styled.button`
 
   @media (max-width: 768px) {
     height: 50px;
+    width: 90%;
+  }
+
+  @media (max-width: 480px) {
+    height: 45px;
+    width: 100%;
   }
 
   &:hover {
@@ -295,14 +428,6 @@ export const SwitchAuthLink = styled.p`
   }
 `;
 
-export const FormWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-`;
-
 export const InfoLogin = styled.div`
   background-color: #061c48;
   color: white;
@@ -312,7 +437,7 @@ export const InfoLogin = styled.div`
   align-items: center;
   width: 50%;
   height: 100%;
-  border-top-left-radius: 22px;
+  border-top-left-radius: 19px;
   border-bottom-left-radius: 22px;
   border-bottom-right-radius: 40%;
   border-top-right-radius: 40%;
@@ -324,6 +449,14 @@ export const InfoLogin = styled.div`
 
   &.slide-left {
     transform: translateX(0%);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    border-top-right-radius: 19px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
   }
 `;
 
@@ -349,15 +482,22 @@ export const InfoRegister = styled.div`
   &.slide-left {
     transform: translateX(-100%);
   }
-`;
 
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 1.5rem;
+  /* margin-left: 1.5rem; */
 
   @media (max-width: 768px) {
     margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    margin-left: 1.5rem;
   }
 `;
 
@@ -378,7 +518,9 @@ export const CheckboxLabel = styled.label`
   font-weight: bold;
   color: #2022249b;
 
-  @media (min-width: 768px) {
-    font-size: 1rem;
+  @media (max-width: 480px) {
+    font-size: 0.775rem;
   }
 `;
+
+//

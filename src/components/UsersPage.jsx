@@ -240,7 +240,7 @@ const UsuariosComponent = () => {
                 type="text"
                 id="nome"
                 name="nome"
-                placeholder={personState.name}
+                value={personState.name}
                 className={`${
                   isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
@@ -261,7 +261,7 @@ const UsuariosComponent = () => {
                 type="tel"
                 id="telefone"
                 name="telefone"
-                placeholder={personState.telefone}
+                value={personState.telefone}
                 className={`${
                   isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
@@ -279,7 +279,7 @@ const UsuariosComponent = () => {
                 type="email"
                 id="email"
                 name="email"
-                placeholder={personState.email}
+                value={personState.email}
                 className={`${
                   isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
@@ -297,9 +297,9 @@ const UsuariosComponent = () => {
                 type="text"
                 id="departamento"
                 name="departamento"
-                placeholder={personState.department}
+                value={personState.department}
                 className={`${
-                  isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
+                  isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-[#e3e3e3]"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
               />
             </div>
@@ -311,8 +311,8 @@ const UsuariosComponent = () => {
               type="button"
               className={`font-semibold w-[200px] h-[50px] px-4 rounded-lg text-white ${
                 isDarkMode
-                  ? "bg-[#164095] hover:bg-[#1a3578]"
-                  : "bg-[#0E5EBA] hover:bg-[#164095]"
+                  ? "bg-[#464646] hover:bg-[#323232]"
+                  : "bg-[#848484] hover:bg-[#707070]"
               } transition duration-300`}
             >
               Editar Perfil
@@ -322,7 +322,7 @@ const UsuariosComponent = () => {
               className={`font-semibold w-[200px] h-[50px] px-4 rounded-lg text-white ${
                 isDarkMode
                   ? "bg-[#164095] hover:bg-[#1a3578]"
-                  : "bg-[#0E5EBA] hover:bg-[#164095]"
+                  : "bg-[#123b69] hover:bg-[#122044]"
               } transition duration-300`}
             >
               Salvar Perfil
@@ -333,7 +333,7 @@ const UsuariosComponent = () => {
 
       <div className="ml-10 max-sm:mt-5 max-sm:ml-0 ">
         <div className="flex max-sm:w-screen justify-between items-center mt-6">
-          <h1 className="text-2xl ml-4 font-semibold max-sm:text-xl max-sm:ml-5 sm:text-lg md:text-xl lg:text-2xl">
+          <h1 className="text-2xl ml-4 font-semibold max-sm:text-[16px] max-sm:ml-5 sm:text-lg md:text-xl lg:text-2xl">
             Usuários Existentes
           </h1>
           <div className="flex justify-between">
@@ -356,7 +356,7 @@ const UsuariosComponent = () => {
             rounded-lg 
             hover:bg-blue-700 
             transition duration-500
-            max-sm:w-[190px] max-sm:mr-6 max-sm:h-[36px] max-sm:text-sm max-sm:px-1 ma
+            max-sm:w-[190px] max-sm:font-medium  max-sm:mr-6 max-sm:h-[36px] max-sm:text-sm max-sm:px-1 ma
             sm:w-[230px] sm:h-[40px] sm:text-base sm:px-2
             md:w-[260px] md:h-[42px] md:text-base md:px-3
             lg:w-[290px] lg:h-[42px] lg:text-lg lg:px-4
@@ -369,7 +369,7 @@ const UsuariosComponent = () => {
             </button>
           )}
         </div>
-        <div className="border-b pb-1  border-[#bdbdbd] "> </div>
+        <div className="border-b pb-1 ml-[-10px] border-[#bdbdbd] "> </div>
       </div>
 
       <div className="grid grid-cols-1 max-sm:ml-[60px]  md:mr-10 md:grid-cols-3 gap-4 mt-8 sm:ml-[40px]  max-sm:w-[385px]">
@@ -388,8 +388,8 @@ const UsuariosComponent = () => {
               className={`${
                 isDarkMode
                   ? "bg-[#2c2c2c] text-white"
-                  : "bg-[#f1f1f1] text-black"
-              } max-sm:mr-30 cursor-pointer hover:scale-[1.02] 2xl:ml-4 transform transition-transform shadow-lg rounded-lg p-4 flex flex-col relative w-full`}
+                  : "bg-[#e6e5e5] hover:bg-[#d9d8d8] text-black"
+              } max-sm:ml-[-45px] cursor-pointer hover:scale-[1.02] 2xl:ml-4 transform transition-transform shadow-lg rounded-lg p-4 flex flex-col relative w-full`}
             >
               <div className="flex justify-between items-start w-full">
                 <div
@@ -434,8 +434,8 @@ const UsuariosComponent = () => {
                 </p>
                 <div className="flex gap-2 mt-2">
                   <p
-                    className={`permission-text font-semibold border-r-2 pr-2 ${
-                      isDarkMode ? "border-gray-600" : "border-gray"
+                    className={`permission-text font-semibold border-r-[1px] pr-2 ${
+                      isDarkMode ? "border-gray-600" : "border-gray-400"
                     } ${getPermissionColor(
                       profile.permission || profile.userPermission
                     )}`}

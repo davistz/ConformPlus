@@ -14,12 +14,12 @@ export const HeaderContainer = styled.div`
 
 export const SidebarContainer = styled.div`
   position: fixed;
-  margin-top: 2rem;
+  padding-top: 2rem;
   top: 0;
   left: 0;
-
-  color: white;
-  width: 360px;
+  background-color: ${(props) =>
+    props.isDarkMode ? "#000000ee" : "#164095f0"}; /* Ajuste de cores */
+  width: 300px;
   height: 100%;
   z-index: 50;
   transform: translateX(${(props) => (props.isSidebarOpen ? "0" : "-100%")});
@@ -110,8 +110,8 @@ export const CloseSidebarButton = styled.img`
 export const MenuItem = styled.li`
   width: 100%;
   font-size: 20px;
-  color: ${({ active }) => (active ? "#082d76" : "white")};
-  font-weight: ${({ active }) => (active ? "600" : "400")};
+  color: white;
+  font-weight: bold;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -201,6 +201,10 @@ export const UserInfoContainer = styled.div`
   align-items: center;
   margin-left: auto;
   margin-right: 1.25rem;
+
+  @media (max-width: 480px) {
+    margin-right: -1rem;
+  }
 `;
 
 export const UserDetails = styled.div`
@@ -239,6 +243,25 @@ export const FooterButton = styled.button`
   padding: 0.7rem;
   margin-left: 3rem;
   margin-top: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  & > svg {
+    margin-right: 1rem;
+  }
+`;
+export const FooterButtonMob = styled.button`
+  width: 100%;
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0.7rem;
+  margin-left: 2rem;
+  margin-top: 25rem;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;

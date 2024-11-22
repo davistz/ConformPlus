@@ -16,12 +16,12 @@ const Login = () => {
   const toggleMode = () => setModeLogin((prevMode) => !prevMode);
 
   const handleLogin = async (data) => {
-    const { nome, senha } = data;
+    const { email, senha } = data;
 
     try {
       const response = await axios.get("http://localhost:3001/logins", {
         params: {
-          name: nome,
+          email: email,
           password: senha,
         },
       });
@@ -108,10 +108,10 @@ const Login = () => {
                   className={modeLogin ? "slide-left" : "slide-right"}
                 >
                   <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
-                  <h1 className="font-bold text-[40px] mb-2 mt-[50px]">
-                    Conform<span className="text-[#508aff]">Plus</span>
+                  <h1 className="font-bold text-[40px] mb-2 mt-[50px] max-sm:text-lg max-sm:mt-3">
+                    Conform<span className="text-[#508aff] ">Plus</span>
                   </h1>
-                  <p className="text-center mb-8">
+                  <p className="text-center max-sm:text-sm mb-8">
                     Gerencie e resolva não conformidades
                     <br /> com eficiência e simplicidade.
                   </p>
@@ -121,17 +121,19 @@ const Login = () => {
                 <s.InputLogin>
                   <s.Title>Login</s.Title>
                   <s.InputContainer>
-                    <s.Label>Digite seu Nome</s.Label>
-                    <s.StyledInput
-                      type="text"
-                      placeholder="Insira seu nome"
-                      {...register("nome", {
-                        required: "Informe seu nome",
-                      })}
-                    />
-                    {errors.nome && (
-                      <s.ErrorMesage>{errors.nome.message}</s.ErrorMesage>
-                    )}
+                    <s.BoxInput>
+                      <s.Label>Digite seu Nome</s.Label>
+                      <s.StyledInput
+                        type="text"
+                        placeholder="Insira seu nome"
+                        {...register("nome", {
+                          required: "Informe seu nome",
+                        })}
+                      />
+                      {errors.nome && (
+                        <s.ErrorMesage>{errors.nome.message}</s.ErrorMesage>
+                      )}
+                    </s.BoxInput>
 
                     <s.Label>Digite sua Senha</s.Label>
                     <s.StyledInput
@@ -164,44 +166,48 @@ const Login = () => {
             </form>
           ) : (
             <form onSubmit={handleSubmit(handleRegister)}>
-              <s.FormContainer>
+              <s.FormContainerRegister>
                 <s.InputRegister>
                   <s.TitleRegister>Registrar</s.TitleRegister>
                   <s.RegisterContainer>
-                    <s.Label>Digite seu Nome</s.Label>
-                    <s.StyledInput
-                      placeholder="Insira seu nome"
-                      {...register("name", {
-                        required: "Informe um nome",
-                      })}
-                    />
-                    {errors.name && (
-                      <s.ErrorMesage>{errors.name.message}</s.ErrorMesage>
-                    )}
-
-                    <s.Label>Digite seu Email</s.Label>
-                    <s.StyledInput
-                      type="email"
-                      placeholder="Insira seu email"
-                      {...register("email", {
-                        required: "Informe um email",
-                      })}
-                    />
-                    {errors.email && (
-                      <s.ErrorMesage>{errors.email.message}</s.ErrorMesage>
-                    )}
-
-                    <s.Label>Digite sua Senha</s.Label>
-                    <s.StyledInput
-                      type="password"
-                      placeholder="Digite sua senha"
-                      {...register("senha", {
-                        required: "Informe uma senha",
-                      })}
-                    />
-                    {errors.senha && (
-                      <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
-                    )}
+                    <s.BoxRegister>
+                      <s.Label>Digite seu Nome</s.Label>
+                      <s.StyledInput
+                        placeholder="Insira seu nome"
+                        {...register("name", {
+                          required: "Informe um nome",
+                        })}
+                      />
+                      {errors.name && (
+                        <s.ErrorMesage>{errors.name.message}</s.ErrorMesage>
+                      )}
+                    </s.BoxRegister>
+                    <s.BoxRegister>
+                      <s.Label>Digite seu Email</s.Label>
+                      <s.StyledInput
+                        type="email"
+                        placeholder="Insira seu email"
+                        {...register("email", {
+                          required: "Informe um email",
+                        })}
+                      />
+                      {errors.email && (
+                        <s.ErrorMesage>{errors.email.message}</s.ErrorMesage>
+                      )}
+                    </s.BoxRegister>
+                    <s.BoxRegister>
+                      <s.Label>Digite sua Senha</s.Label>
+                      <s.StyledInput
+                        type="password"
+                        placeholder="Digite sua senha"
+                        {...register("senha", {
+                          required: "Informe uma senha",
+                        })}
+                      />
+                      {errors.senha && (
+                        <s.ErrorMesage>{errors.senha.message}</s.ErrorMesage>
+                      )}
+                    </s.BoxRegister>
                   </s.RegisterContainer>
                   {error && <s.ErrorMesage>{error}</s.ErrorMesage>}
                   <s.ButtonWrapper>
@@ -209,6 +215,16 @@ const Login = () => {
                       Registrar
                     </s.StyledButtonRegister>
                   </s.ButtonWrapper>
+                  <div className="flex ml-[65px] mb-4 min-[430px]:hidden">
+                    <s.MiniImg
+                      className="mt-3"
+                      src={MiniLogo}
+                      alt="logo fsph"
+                    />
+                    <h1 className="font-bold text-[30px] mt-3 text-black">
+                      Conform<span className="text-[#508aff]">Plus</span>
+                    </h1>
+                  </div>
                 </s.InputRegister>
                 <s.InfoRegister
                   className={modeLogin ? "slide-left" : "slide-right"}
@@ -223,7 +239,7 @@ const Login = () => {
                   </p>
                   <s.LabImg src={Lab} alt="logo fsph" />
                 </s.InfoRegister>
-              </s.FormContainer>
+              </s.FormContainerRegister>
             </form>
           )}
         </s.FormWrapper>
@@ -233,7 +249,6 @@ const Login = () => {
             : "Já possui login? Clique Aqui!"}
         </s.SwitchAuthLink>
       </s.AuthContainer>
-      ;
     </s.Container>
   );
 };

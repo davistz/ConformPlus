@@ -59,6 +59,9 @@ export const DivSelector = styled.div`
         isDarkMode ? "#fff" : "#000"}; /* Cor das opções */
     }
   }
+  @media (max-width: 640px) {
+    display: none;
+  }
 `;
 
 export const ButtonGroup = styled.div`
@@ -70,6 +73,7 @@ export const ButtonGroup = styled.div`
 
   @media (max-width: 640px) {
     justify-content: center;
+    margin-left: 75px;
   }
 
   @media (min-width: 1280px) {
@@ -101,7 +105,7 @@ export const BtnAdd = styled.button`
 `;
 
 export const BtnCheck = styled.button`
-  background-color: #ffb74d;
+  background-color: #e49d31;
   width: 220px;
   height: 50px;
   padding: 0 8px;
@@ -114,7 +118,7 @@ export const BtnCheck = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #ffa827;
+    background-color: #ca8723;
   }
 
   @media (max-width: 640px) {
@@ -161,7 +165,7 @@ export const Box = styled.div`
   }
 
   @media (max-width: 640px) {
-    width: 100%;
+    width: 380px;
   }
 `;
 
@@ -205,9 +209,9 @@ export const StatusHeader = styled.div`
   }
 
   @media (max-width: 640px) {
-    margin-left: 0;
+    margin-left: 35px;
     justify-content: center;
-    flex-direction: column;
-    gap: 10px;
+    font-size: 0.65rem;
+    gap: 15px;
   }
 `;

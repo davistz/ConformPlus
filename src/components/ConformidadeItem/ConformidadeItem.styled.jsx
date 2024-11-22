@@ -11,8 +11,8 @@ export const StyledLi = styled.li`
   margin-bottom: 4px;
 
   @media (max-width: 640px) {
-    max-width: 580px;
-    margin-left: 10px;
+    max-width: 400px;
+    margin-left: 0px;
   }
 
   @media (min-width: 768px) {
@@ -59,6 +59,7 @@ export const StyledDiv = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
+  gap: 10px;
 
   @media (max-width: 640px) {
     flex-direction: column;
@@ -72,21 +73,21 @@ export const StyledUl = styled.ul`
   font-size: 1rem;
   font-weight: normal;
   list-style: none;
-  margin-left: 49px;
+  margin-left: 44px;
 
+  /* Layout para telas menores que 640px */
   @media (max-width: 640px) {
-    grid-template-columns: 150px 260px 300px;
+    grid-template-columns: repeat(2, 130px);
+
+    font-size: 12px;
     margin-left: 0;
   }
 
-  @media (min-width: 640px) {
-    grid-template-columns: 150px 260px 300px 240px 10px;
-  }
-  @media (max-width: 1024px) {
-    grid-template-columns: 90px 170px 150px 250px 60px;
-  }
+  /* Layout para telas menores que 1024px */
+
+  /* Layout para telas maiores que 1280px */
   @media (min-width: 1280px) {
-    grid-template-columns: 150px 260px 300px 290px 0px;
+    grid-template-columns: 130px 260px 300px 290px auto;
   }
 `;
 
@@ -97,8 +98,7 @@ export const ActionButtonWrapper = styled.div`
   margin-right: 10px;
 
   @media (max-width: 640px) {
-    margin-left: 0;
-    margin-top: 10px;
+    margin-top: -35px;
   }
 `;
 
