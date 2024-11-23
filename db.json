@@ -46,7 +46,7 @@
       "enquadramento": "ABNT NBR ISO 9001:2015",
       "acao_imediata": "Conformidade 1",
       "investigacao": "Conformidade 1",
-      "departamento": "",
+      "departamento": "Recursos Humanos",
       "data": "2024-11-22T05:13:18.895Z",
       "grau_severidade": "Baixo",
       "status": "aberto"
@@ -86,7 +86,22 @@
       "acao_imediata": "",
       "investigacao": "",
       "departamento": "",
-      "data": "2024-11-22T19:50:17.422Z",
+      "departamento_destino": "",
+      "data": "2024-11-23T21:55:21.559Z",
+      "grau_severidade": "Baixo",
+      "status": "aberto"
+    },
+    {
+      "id": "5",
+      "titulo": "",
+      "origem": "Processos / Insumos",
+      "descricao": "",
+      "enquadramento": "",
+      "acao_imediata": "",
+      "investigacao": "",
+      "departamento": "",
+      "departamento_destino": "",
+      "data": "2024-11-23T21:55:28.243Z",
       "grau_severidade": "Baixo",
       "status": "aberto"
     }

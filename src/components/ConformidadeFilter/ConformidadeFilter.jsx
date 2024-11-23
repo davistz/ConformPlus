@@ -4,10 +4,10 @@ import { FaCheck } from "react-icons/fa";
 import { LuLoader2 } from "react-icons/lu";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
-import * as s from "./ConformidadeItem.styled";
+import * as s from "./ConformidadeFilter.styled";
 import { useTheme } from "../../ThemeContext"; // Importando o useTheme
 
-const ConformidadeItem = ({
+const ConformidadeFilter = ({
   conformidade,
   alterarStatusConformidade,
   deletarNaoConformidade,
@@ -60,52 +60,23 @@ const ConformidadeItem = ({
     }
   };
 
-  const getColor = () => {
-    if (conformidade.status === "aberto") {
-      return isDarkMode
-        ? "background-color: #afaeae; color: #c0c0c0;" // Escuro no modo dark
-        : "background-color: #afaeae; color: #202224;"; // Claro no modo light
-    }
-    if (conformidade.status === "andamento") {
-      return isDarkMode
-        ? "background-color: #c78d3d; color: #fff;" // Escuro no modo dark
-        : "background-color: #ffb752; color: #202224;"; // Claro no modo light
-    }
-    if (conformidade.status === "concluida") {
-      return isDarkMode
-        ? "background-color: #15b0b862; color: #fff;" // Escuro no modo dark
-        : "background-color: #27aeb564; color: #202224;"; // Claro no modo light
-    }
-  };
-
   return (
     <div>
       <s.StyledLi className={getStatusClasses()}>
-        <s.StyledLabel getColor={getColor}>
-          <s.StyledInput
-            type="checkbox"
-            onChange={() => alterarStatusConformidade(conformidade.id)}
-          />
-          {conformidade.status === "concluida" && (
-            <FaCheck className="text-white w-5 h-5" />
-          )}
-          {conformidade.status === "andamento" && (
-            <LuLoader2 className="text-white animate-spin w-5 h-5" />
-          )}
-        </s.StyledLabel>
-
         <s.StyledDiv>
           <s.StyledUl>
             {/* Exibir o ID apenas em telas maiores */}
             {!isSmallScreen && <li>{conformidade.id}</li>}
             {!isSmallScreen ? <li>•</li> : <li></li>}
-            <li>{conformidade.titulo}</li>
+            {!isSmallScreen && <li>{conformidade.titulo}</li>}
+            {!isSmallScreen ? <li>•</li> : <li></li>}
+            <li>{conformidade.origem}</li>
+            {!isSmallScreen ? <li>•</li> : <li>•</li>}
+            <li>{conformidade.departamento}</li>
             {!isSmallScreen ? <li>•</li> : <li>•</li>}
             {!isSmallScreen && <li>{conformidade.enquadramento}</li>}
             {!isSmallScreen ? <li>•</li> : <li></li>}
-            {!isSmallScreen && <li>{conformidade.data}</li>}
-            {!isSmallScreen ? <li>•</li> : <li></li>}
-            <li>{conformidade.grau_severidade}</li>
+            {!isSmallScreen && <li>{conformidade.grau_severidade}</li>}
           </s.StyledUl>
 
           {/* Ações disponíveis somente se o usuário puder alterar conformidades */}
@@ -131,11 +102,11 @@ const ConformidadeItem = ({
   );
 };
 
-ConformidadeItem.propTypes = {
+ConformidadeFilter.propTypes = {
   conformidade: PropTypes.object.isRequired,
   alterarStatusConformidade: PropTypes.func,
   deletarNaoConformidade: PropTypes.func,
   onInfoClick: PropTypes.func,
 };
 
-export default ConformidadeItem;
+export default ConformidadeFilter;

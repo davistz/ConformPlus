@@ -15,7 +15,7 @@ export const Container = styled.div`
 export const Row = styled.div`
   display: flex;
   width: 100%;
-  margin-left: 12px;
+
   margin-top: 130px;
 
   @media (max-width: 640px) {
@@ -64,27 +64,36 @@ export const DivSelector = styled.div`
   }
 `;
 
+export const DividerMain = styled.div`
+  border-bottom: 1px solid
+    ${(props) => (props.isDarkMode ? "#4b5563" : "#d1d5db")};
+  margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    margin-left: -3rem;
+    margin-right: -2rem;
+  }
+`;
+
 export const ButtonGroup = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 40px;
+
   justify-content: flex-end;
-  width: 100%;
+  margin-left: 40px;
+  margin-right: 10px;
 
   @media (max-width: 640px) {
     justify-content: center;
     margin-left: 75px;
-  }
-
-  @media (min-width: 1280px) {
-    width: 100%;
   }
 `;
 
 export const BtnAdd = styled.button`
   background-color: #164095;
   width: 260px;
-  height: 50px;
+  height: 40px;
   padding: 0 8px;
   font-size: 0.875rem;
   color: #ffffff;
@@ -101,13 +110,15 @@ export const BtnAdd = styled.button`
 
   @media (max-width: 640px) {
     width: 100%;
+    height: 45px;
+    font-size: 0.575rem;
   }
 `;
 
 export const BtnCheck = styled.button`
   background-color: #e49d31;
   width: 220px;
-  height: 50px;
+  height: 40px;
   padding: 0 8px;
   font-size: 0.875rem;
   color: #ffffff;
@@ -123,6 +134,8 @@ export const BtnCheck = styled.button`
 
   @media (max-width: 640px) {
     width: 100%;
+    height: 45px;
+    font-size: 0.6rem;
   }
 `;
 

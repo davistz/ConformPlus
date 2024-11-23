@@ -34,6 +34,7 @@ export const LogoImg = styled.img`
 `;
 
 export const BoxInput = styled.div`
+  margin-left: 1rem;
   @media (max-width: 480px) {
     margin-top: -4rem;
     font-size: 10px;
@@ -211,23 +212,31 @@ export const InfoLogin = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: transform 0.5s ease;
+  transition: all 0.5s ease;
+
+  &.slide-left,
+  &.slide-right {
+    transform: translateX(0);
+    width: 50%;
+    border-radius: 0;
+  }
 
   &.slide-left {
     transform: translateX(-100%);
-
     border-top-right-radius: 40%;
     border-bottom-right-radius: 40%;
-  }
-
-  &.slide-transition {
-    border-radius: 20%;
   }
 
   &.slide-right {
     transform: translateX(0);
     border-top-left-radius: 40%;
     border-bottom-left-radius: 40%;
+  }
+
+  &.slide-transition {
+    width: 100%;
+    transform: translateX(0);
+    border-radius: 20%;
   }
 
   @media (max-width: 768px) {
@@ -370,11 +379,11 @@ export const Label = styled.label`
 
 export const ForgotPasswordLink = styled.a`
   position: absolute;
-  top: 7rem;
+  top: 7.1rem;
   right: 1rem;
   cursor: pointer;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.775rem;
   color: #404040;
   transition: color 0.3s ease, transform 0.3s ease;
 
@@ -543,7 +552,7 @@ export const SwitchAuthLink = styled.p`
 export const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
-  /* margin-left: 1.5rem; */
+  margin-left: 1.2rem;
 
   @media (max-width: 768px) {
     margin-bottom: 1.5rem;

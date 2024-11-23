@@ -36,13 +36,14 @@ export const SwitchContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.isOn ? "flex-end" : "flex-start")};
+
   width: 50px;
   height: 25px;
   background-color: ${(props) => (props.isOn ? "#646464" : "#ccc")};
   border-radius: 25px;
   padding: 3px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 2s ease, justify-content 2s ease;
 `;
 
 export const SwitchCircle = styled.div`
@@ -50,8 +51,13 @@ export const SwitchCircle = styled.div`
   height: 20px;
   background-color: #ffffff;
   border-radius: 50%;
-  transition: transform 0.3s ease;
-  transform: ${(props) => (props.isOn ? "translateX(26px)" : "translateX(0)")};
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-right: ${(props) => (props.isDarkMode ? "-1.4rem" : "1.5rem")};
+  transform: ${(props) => (props.isOn ? "translateX(24px)" : "translateX(0)")};
+  box-shadow: ${(props) =>
+    props.isOn
+      ? "0px 2px 5px rgba(0, 0, 0, 0.3)"
+      : "0px 2px 5px rgba(0, 0, 0, 0.1)"};
 `;
 
 export const Layout = styled.div`

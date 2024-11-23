@@ -103,15 +103,13 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const [transitionState, setTransitionState] = useState("");
+  const [transitionState, setTransitionState] = useState("right");
 
   useEffect(() => {
     if (modeLogin) {
-      setTransitionState("slide-transition");
-      setTimeout(() => setTransitionState("slide-left"), 200);
+      setTransitionState("left");
     } else {
-      setTransitionState("slide-transition");
-      setTimeout(() => setTransitionState("slide-right"), 200);
+      setTransitionState("right");
     }
   }, [modeLogin]);
 
@@ -140,18 +138,6 @@ const Login = () => {
         }}
       />
 
-      {/* <s.InputContainerSenha>
-                  <s.Label>Digite seu E-mail de Recuperação</s.Label>
-                  <s.StyledInput
-                    type="email"
-                    placeholder="E-mail de recuperação"
-                  />
-                </s.InputContainerSenha> */}
-
-      {/* <s.SwitchAuthLink onClick="{handleSenhaOn}">
-                Sabe sua senha? Clique Aqui!
-              </s.SwitchAuthLink> */}
-
       <s.LogoImg src={Logo} alt="logo fsph" />
       <s.AuthContainer>
         {RecuperarSenha ? (
@@ -159,7 +145,7 @@ const Login = () => {
             <s.FormWrapper>
               <form onSubmit={handleSubmit(handleLogin)}>
                 <s.FormContainer isActive={modeLogin}>
-                  <s.InfoLogin className={transitionState}>
+                  <s.InfoLogin className={`slide-${transitionState}`}>
                     <s.MiniImg
                       className="mt-4"
                       src={MiniLogo}
@@ -195,42 +181,45 @@ const Login = () => {
                           </s.ErrorMessage>
                         )}
                       </s.BoxInput>
-
-                      <s.Label>Digite sua Senha</s.Label>
-                      <div
-                        style={{
-                          position: "relative",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <s.StyledInput
-                          type={showPassword ? "text" : "password"}
-                          placeholder="Digite sua senha"
-                          {...register("senha", {
-                            required: "Informe uma senha",
-                          })}
-                          style={{ paddingRight: "40px" }}
-                        />
-                        <button
-                          type="button"
-                          onClick={togglePasswordVisibility}
+                      <s.BoxInput>
+                        <s.Label>Digite sua Senha</s.Label>
+                        <div
                           style={{
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
+                            position: "relative",
+                            display: "flex",
+                            alignItems: "center",
                           }}
                         >
-                          {showPassword ? (
-                            <FaEye className="w-5 h-5 absolute max-sm:top-[5px] right-[15px] top-[14px] text-[#0e4afc]" />
-                          ) : (
-                            <FaEyeSlash className="w-5 h-5 absolute max-sm:top-[5px] right-[15px] top-[14px]" />
-                          )}
-                        </button>
-                      </div>
-                      {errors.senha && (
-                        <s.ErrorMessage>{errors.senha.message}</s.ErrorMessage>
-                      )}
+                          <s.StyledInput
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Digite sua senha"
+                            {...register("senha", {
+                              required: "Informe uma senha",
+                            })}
+                            style={{ paddingRight: "40px" }}
+                          />
+                          <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            style={{
+                              background: "none",
+                              border: "none",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {showPassword ? (
+                              <FaEye className="w-5 h-5 absolute max-sm:top-[5px] right-[15px] top-[14px] text-[#0e4afc]" />
+                            ) : (
+                              <FaEyeSlash className="w-5 h-5 absolute max-sm:top-[5px] right-[15px] top-[14px]" />
+                            )}
+                          </button>
+                        </div>
+                        {errors.senha && (
+                          <s.ErrorMessage>
+                            {errors.senha.message}
+                          </s.ErrorMessage>
+                        )}
+                      </s.BoxInput>
                       <s.ForgotPasswordLink onClick={handleRecuperarSenha}>
                         Esqueceu a senha?
                       </s.ForgotPasswordLink>
@@ -339,74 +328,6 @@ const Login = () => {
                 </s.FormContainer>
               </form>
             </s.FormWrapper>
-
-            {/* <s.FormContainer isActive={!modeLogin}>
-                  <s.InputRegister>
-                    <s.TitleRegister>Registrar</s.TitleRegister>
-                    <s.RegisterContainer>
-                      <s.BoxRegister>
-                        <s.Label>Digite seu Nome</s.Label>
-                        <s.StyledInput
-                          placeholder="Insira seu nome"
-                          {...register("name", {
-                            required: "Informe um nome",
-                          })}
-                        />
-                        {errors.name && (
-                          <s.ErrorMessage>{errors.name.message}</s.ErrorMessage>
-                        )}
-                      </s.BoxRegister>
-                      <s.BoxRegister>
-                        <s.Label>Digite seu Email</s.Label>
-                        <s.StyledInput
-                          type="email"
-                          placeholder="Insira seu email"
-                          {...register("email", {
-                            required: "Informe um email",
-                          })}
-                        />
-                        {errors.email && (
-                          <s.ErrorMessage>
-                            {errors.email.message}
-                          </s.ErrorMessage>
-                        )}
-                      </s.BoxRegister>
-                      <s.BoxRegister>
-                        <s.Label>Digite sua Senha</s.Label>
-                        <s.StyledInput
-                          type="password"
-                          placeholder="Digite sua senha"
-                          {...register("senha", {
-                            required: "Informe uma senha",
-                          })}
-                        />
-                        {errors.senha && (
-                          <s.ErrorMessage>
-                            {errors.senha.message}
-                          </s.ErrorMessage>
-                        )}
-                      </s.BoxRegister>
-                    </s.RegisterContainer>
-
-                    {error && <s.ErrorMessage>{error}</s.ErrorMessage>}
-                    <s.ButtonWrapper>
-                      <s.StyledButtonRegister type="submit">
-                        Registrar
-                      </s.StyledButtonRegister>
-                    </s.ButtonWrapper>
-
-                    <div className="flex ml-[65px] mb-4 min-[430px]:hidden">
-                      <s.MiniImg
-                        className="mt-3"
-                        src={MiniLogo}
-                        alt="logo fsph"
-                      />
-                      <h1 className="font-bold text-[30px] mt-3 text-black">
-                        Conform<span className="text-[#508aff]">Plus</span>
-                      </h1>
-                    </div>
-                  </s.InputRegister>
-                </s.FormContainer> */}
 
             <s.SwitchAuthLink onClick={() => toggleMode()}>
               {modeLogin

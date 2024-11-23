@@ -178,7 +178,7 @@ const Header = () => {
         <s.UserInfoContainer>
           <MdLightMode className="w-8 h-8 mr-2 text-[#ffffffdb]" />
           <s.SwitchContainer isOn={isDarkMode} onClick={toggleTheme}>
-            <s.SwitchCircle isOn={isOn} />
+            <s.SwitchCircle isOn={isDarkMode} />
           </s.SwitchContainer>
           <MdDarkMode className="w-8 h-8 ml-2 mr-6 text-[#ffffffdb]" />
           <div className="max-sm:hidden">

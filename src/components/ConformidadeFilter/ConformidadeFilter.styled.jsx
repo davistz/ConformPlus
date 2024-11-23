@@ -99,7 +99,7 @@ export const StyledUl = styled.ul`
 
   /* Layout para telas maiores que 1280px */
   @media (min-width: 1280px) {
-    grid-template-columns: 80px 55px 190px 60px 240px 50px 240px 80px auto;
+    grid-template-columns: 50px 50px 200px 50px 220px 55px 200px 40px 220px 80px auto;
   }
 `;
 
