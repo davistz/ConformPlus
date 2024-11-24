@@ -8,33 +8,35 @@
       "password": "1234",
       "permission": "Admin",
       "status": "active",
-      "department": "TI - Tecnologia",
-      "manager": "Julio Mendes",
-      "photo": "../src/img/img_users/davi.png"
+      "department": "Marketing",
+      "manager": "Juliana Oliveira",
+      "photo": "../src/img/img_users/davi.png",
+      "userPermission": "Admin"
     },
     {
       "id": "2",
-      "name": "Lucas Melo",
-      "email": "lucas@gmail.com",
-      "telefone": "(79) 98543-2351",
+      "name": "Felipe Melo",
+      "email": "felipe@gmail.com",
+      "telefone": "(79) 99513-6432",
       "password": "1234",
       "permission": "Gestor",
       "status": "active",
       "department": "RH - Recursos Humanos",
-      "manager": "Aline Machado",
-      "photo": "../img/img_users/lucas.png"
+      "manager": "Carlos Alberto",
+      "photo": "../src/img/img_users/davi.png"
     },
     {
       "id": "3",
-      "name": "Felipe Andrade",
-      "email": "felipe@gmail.com",
-      "telefone": "(79) 99943-2332",
+      "name": "Lucas Melo",
+      "email": "lucas@gmail.com",
+      "telefone": "(79) 99874-4432",
       "password": "1234",
       "permission": "Usuário",
       "status": "active",
-      "department": "Ambulatório",
-      "manager": "Carlos Almeida",
-      "photo": "../img/img_users/user_default.png"
+      "department": "Financeiro",
+      "manager": "Douglas Abilio",
+      "photo": "../src/img/img_users/davi.png",
+      "userPermission": "Usuário"
     }
   ],
   "conformidades": [
@@ -104,6 +106,20 @@
       "data": "2024-11-23T21:55:28.243Z",
       "grau_severidade": "Baixo",
       "status": "aberto"
+    },
+    {
+      "id": "6",
+      "titulo": "",
+      "origem": "Processos / Insumos",
+      "descricao": "",
+      "enquadramento": "",
+      "acao_imediata": "",
+      "investigacao": "",
+      "departamento": "",
+      "departamento_destino": "",
+      "data": "2024-11-23T22:06:13.526Z",
+      "grau_severidade": "Baixo",
+      "status": "aberto"
     }
   ],
   "departamentos": [
@@ -122,8 +138,8 @@
     {
       "id": "3",
       "name": "Financeiro",
-      "manager": "Felipe Barros",
-      "status": "blocked"
+      "manager": "Douglas Abilio",
+      "status": "active"
     }
   ]
 }

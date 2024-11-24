@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Chart } from "chart.js/auto";
 import miniLogo from "../../img/mini_logo.png";
-import { useTheme } from "../../ThemeContext"; // Importando o hook
+import { useTheme } from "../../ThemeContext";
 
 const GraficosDetalhados = () => {
-  const { isDarkMode } = useTheme(); // Acessando o estado de isDarkMode
+  const { isDarkMode } = useTheme();
   const trendChartRef = useRef(null);
   const rootCauseChartRef = useRef(null);
   const pieChartRef = useRef(null);
@@ -87,19 +87,19 @@ const GraficosDetalhados = () => {
               },
               x: {
                 ticks: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor das marcações no eixo X
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
             },
             plugins: {
               legend: {
                 labels: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
               tooltip: {
-                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
-                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+                titleColor: isDarkMode ? "#b1aeae" : "black",
+                bodyColor: isDarkMode ? "#b1aeae" : "black",
               },
             },
           },
@@ -365,13 +365,12 @@ const GraficosDetalhados = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Ao carregar o componente, tenta obter o usuário do localStorage
     const storedPerson = localStorage.getItem("person");
 
     if (storedPerson) {
-      setPersonState(JSON.parse(storedPerson)); // Atualiza o estado com as informações do usuário
+      setPersonState(JSON.parse(storedPerson));
     }
-    setIsLoading(false); // Finaliza o carregamento
+    setIsLoading(false);
   }, []);
 
   if (isLoading) {
@@ -383,7 +382,7 @@ const GraficosDetalhados = () => {
   }
 
   return (
-    <div className="container mt-[90px] mx-auto">
+    <div className="container mt-[90px] ml-[22rem] max-sm:ml-0 mx-auto">
       <div className="flex flex-col gap-6 mt-16">
         <div className="mb-6 ">
           <div className="flex justify-between">

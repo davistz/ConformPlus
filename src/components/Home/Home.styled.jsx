@@ -5,10 +5,12 @@ export const Container = styled.div`
   flex-direction: column;
   height: 829px;
   margin-top: 1rem;
+  margin-left: 20rem;
   width: 80%;
 
   @media (max-width: 640px) {
     height: auto;
+    margin-left: 0rem;
   }
 `;
 
@@ -152,19 +154,13 @@ export const Box = styled.div`
   background-color: ${({ section, isDarkMode }) => {
     switch (section) {
       case "andamento":
-        return isDarkMode
-          ? "#967001c1" // Amarelo mais escuro no dark mode
-          : "#eac623b8"; // Amarelo normal no light mode
+        return isDarkMode ? "#967001c1" : "#eac623b8";
       case "aberto":
-        return isDarkMode
-          ? "#454545" // Verde mais escuro no dark mode
-          : "#e1e1e1"; // Verde normal no light mode
+        return isDarkMode ? "#454545" : "#e1e1e1";
       case "concluido":
-        return isDarkMode
-          ? "#073a3d" // Azul mais escuro no dark mode
-          : "#15b6bf"; // Azul normal no light mode
+        return isDarkMode ? "#073a3d" : "#15b6bf";
       default:
-        return "#e1e1e1"; // Cor padrão para os outros Boxes
+        return "#e1e1e1";
     }
   }};
 

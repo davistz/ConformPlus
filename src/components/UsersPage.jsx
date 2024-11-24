@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { CiCircleInfo } from "react-icons/ci";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdClose } from "react-icons/io";
 
 import Cookies from "js-cookie";
 import Input from "./Input";
@@ -19,7 +19,7 @@ const UsuariosComponent = () => {
   const [userPermission, setUserPermission] = useState("");
   const [userPhoto, setUserPhoto] = useState(null);
 
-  const [profiles, setProfiles] = useState([]); // Inicialmente vazio, dados carregados pelo useEffect
+  const [profiles, setProfiles] = useState([]);
 
   const { isDarkMode } = useTheme();
 
@@ -69,6 +69,7 @@ const UsuariosComponent = () => {
       setUserManager(profile.manager);
       setUserPhoto(profile.photo);
       setUserPermission(profile.userPermission);
+      setUserPermission(profile.userPermission);
     } else {
       setIsEditMode(false);
       setUserName("");
@@ -80,23 +81,44 @@ const UsuariosComponent = () => {
     setIsModalOpen(true);
   };
 
-  const [personState, setPersonState] = useState(null);
+  const [personState, setPersonState] = useState({
+    name: "",
+    telefone: "",
+    email: "",
+    department: "",
+    permission: "",
+  });
+
+  const [isPersonStateLoaded, setIsPersonStateLoaded] = useState(false);
+
+  const personAtual = personState;
 
   useEffect(() => {
-    // Ao carregar o componente, tenta obter o usuário do localStorage
     const storedPerson = localStorage.getItem("person");
-
     if (storedPerson) {
-      setPersonState(JSON.parse(storedPerson)); // Atualiza o estado com as informações do usuário
+      const personData = JSON.parse(storedPerson);
+      setPersonState(personData);
+      setIsPersonStateLoaded(true);
     }
-  }, []); // O useEffect será executado apenas uma vez, após o componente ser montado
+  }, []);
 
-  // Verifica se personState é null antes de tentar acessar seus dados
+  useEffect(() => {
+    if (currentProfile) {
+      const updatedPerson = {
+        name: currentProfile.name,
+        telefone: currentProfile.telefone,
+        email: currentProfile.email,
+        department: currentProfile.department,
+        permission: currentProfile.permission,
+      };
+      setPersonState(updatedPerson);
+      setIsPersonStateLoaded(true);
+    }
+  }, [currentProfile]);
+
   if (!personState) {
-    return <p>Carregando informações do usuário...</p>; // Ou qualquer outro fallback enquanto os dados não são carregados
+    return <p>Carregando informações do usuário...</p>;
   }
-
-  // console.log(personState.name);
 
   const canAddUser = personState?.permission === "Admin";
 
@@ -121,76 +143,84 @@ const UsuariosComponent = () => {
     setUserPermission(e.target.value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const initials = personState?.name
-      ? personState.name
-          .split(" ")
-          .slice(0, 2)
-          .map((n) => n[0])
-          .join("")
-          .toUpperCase()
-      : "";
-
     if (isEditMode && currentProfile) {
+      try {
+        const updatedProfile = {
+          ...currentProfile,
+          name: userName,
+          department: userDepartment,
+          manager: userManager,
+          photo: userPhoto,
+          userPermission: userPermission,
+        };
+
+        await axios.patch(
+          `http://localhost:3001/logins/${currentProfile.id}`,
+          updatedProfile
+        );
+
+        setProfiles((prevProfiles) =>
+          prevProfiles.map((profile) =>
+            profile.id === currentProfile.id ? updatedProfile : profile
+          )
+        );
+
+        toast.success("Usuário atualizado com sucesso!");
+        closeModal();
+      } catch (error) {
+        console.error("Erro ao atualizar o usuário:", error);
+        toast.error("Erro ao atualizar o usuário.");
+      }
+    }
+  };
+
+  const toggleProfileStatus = async (id) => {
+    try {
+      const profile = profiles.find((profile) => profile.id === id);
+      const updatedStatus = profile.status === "active" ? "blocked" : "active";
+
+      await axios.patch(`http://localhost:3001/logins/${id}`, {
+        status: updatedStatus,
+      });
+
       setProfiles((prevProfiles) =>
         prevProfiles.map((profile) =>
-          profile.id === currentProfile.id
-            ? {
-                ...profile,
-                name: userName,
-                department: userDepartment,
-                manager: userManager,
-                photo: userPhoto || profile.photo || initials,
-                userPermission: userPermission || profile.userPermission,
-                status: profile.status,
-              }
-            : profile
+          profile.id === id ? { ...profile, status: updatedStatus } : profile
         )
       );
-    } else {
-      const newProfile = {
-        id: profiles.length + 1,
-        name: userName,
-        department: userDepartment,
-        manager: userManager,
-        status: "active",
-        photo: userPhoto || initials,
-        userPermission: userPermission || "Usuario",
-      };
-      setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
-      toast.success("Adicionado com sucesso");
+    } catch (error) {
+      console.error("Erro ao atualizar o status:", error);
     }
-
-    closeModal();
   };
 
-  const toggleProfileStatus = (id) => {
-    setProfiles((prevProfiles) =>
-      prevProfiles.map((profile) =>
-        profile.id === id
-          ? {
-              ...profile,
-              status: profile.status === "active" ? "blocked" : "active",
-            }
-          : profile
-      )
-    );
+  const removeProfile = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/logins/${id}`);
+      setProfiles((prevProfiles) =>
+        prevProfiles.filter((profile) => profile.id !== id)
+      );
+    } catch (error) {
+      console.error("Erro ao deletar usuário:", error);
+    }
   };
 
-  const removeProfile = (id) => {
-    setProfiles((prevProfiles) =>
-      prevProfiles.filter((profile) => profile.id !== id)
-    );
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "nome") {
+      setPersonState((prevState) => ({ ...prevState, name: value }));
+    }
   };
 
   return (
-    <div className="flex mt-[120px] ml-2 flex-col">
+    <div className="flex mt-[120px] ml-[21rem] max-sm:ml-0 flex-col">
       <div
         className={`flex ml-[30px] ${
           isDarkMode ? "bg-[#050c1a]" : "bg-[#2051b3]"
-        } max-sm:hidden w-[1500px] h-auto justify-start mt-[30px] rounded-xl relative`}
+        } max-sm:hidden w-[1500px] h-[350px] justify-start mt-[30px] rounded-xl relative`}
       >
         <div className="bg-[#10254f] flex justify-center items-center rounded-tl-xl rounded-bl-xl p-6">
           <div className="flex flex-col items-center gap-4">
@@ -212,6 +242,9 @@ const UsuariosComponent = () => {
 
                 <div className="text-center mt-4">
                   <h1 className="font-bold text-white">{personState?.name}</h1>
+                  <p className={`text-[#cacaca] text-sm`}>
+                    {personState.department}
+                  </p>
                   <p
                     className={`${getPermissionColor(
                       personState.permission
@@ -227,6 +260,7 @@ const UsuariosComponent = () => {
 
         <div className="p-6 rounded-xl w-full">
           <h1 className="text-xl text-white mb-6">Suas Informações</h1>
+          {isPersonStateLoaded ?? <h1>teste</h1>}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/** Campos de Input */}
             <div>
@@ -240,7 +274,7 @@ const UsuariosComponent = () => {
                 type="text"
                 id="nome"
                 name="nome"
-                value={personState.name}
+                value={personAtual.name}
                 className={`${
                   isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
@@ -298,35 +332,12 @@ const UsuariosComponent = () => {
                 id="departamento"
                 name="departamento"
                 value={personState.department}
+                onChange={handleChange}
                 className={`${
                   isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-[#e3e3e3]"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
               />
             </div>
-          </div>
-
-          {/** Botões */}
-          <div className="flex justify-end gap-4 mt-8">
-            <button
-              type="button"
-              className={`font-semibold w-[200px] h-[50px] px-4 rounded-lg text-white ${
-                isDarkMode
-                  ? "bg-[#464646] hover:bg-[#323232]"
-                  : "bg-[#848484] hover:bg-[#707070]"
-              } transition duration-300`}
-            >
-              Editar Perfil
-            </button>
-            <button
-              type="submit"
-              className={`font-semibold w-[200px] h-[50px] px-4 rounded-lg text-white ${
-                isDarkMode
-                  ? "bg-[#164095] hover:bg-[#1a3578]"
-                  : "bg-[#123b69] hover:bg-[#122044]"
-              } transition duration-300`}
-            >
-              Salvar Perfil
-            </button>
           </div>
         </div>
       </div>
@@ -356,7 +367,7 @@ const UsuariosComponent = () => {
             rounded-lg 
             hover:bg-blue-700 
             transition duration-500
-            max-sm:w-[190px] max-sm:font-medium  max-sm:mr-6 max-sm:h-[36px] max-sm:text-sm max-sm:px-1 ma
+            max-sm:w-[170px] max-sm:font-medium  max-sm:mr-6 max-sm:h-[30px] max-sm:text-sm max-sm:px-1 ma
             sm:w-[230px] sm:h-[40px] sm:text-base sm:px-2
             md:w-[260px] md:h-[42px] md:text-base md:px-3
             lg:w-[290px] lg:h-[42px] lg:text-lg lg:px-4
@@ -365,14 +376,16 @@ const UsuariosComponent = () => {
           "
             >
               Adicionar Usuário
-              <IoMdAdd className="h-6 w-6 ml-2" />
+              <IoMdAdd className="max-sm:hiddenh-6 w-6 ml-2" />
             </button>
           )}
         </div>
-        <div className="border-b pb-1 ml-[-10px] border-[#bdbdbd] "> </div>
+        <div className="border-b pb-1 ml-[-10px] max-sm:w-[430px] border-[#bdbdbd] ">
+          {" "}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 max-sm:ml-[60px]  md:mr-10 md:grid-cols-3 gap-4 mt-8 sm:ml-[40px]  max-sm:w-[385px]">
+      <div className="grid grid-cols-1 max-sm:ml-[80px] max-sm:mr-0 max-sm:mb-10 md:mr-10 md:grid-cols-3 gap-4 mt-8 sm:ml-[40px] max-sm:w-[340px]">
         {profiles.map((profile, index) => {
           const initials = profile.name
             .split(" ")
@@ -490,18 +503,26 @@ const UsuariosComponent = () => {
         <div
           className={`fixed inset-0 ${
             isDarkMode
-              ? "bg-gray-900 bg-opacity-70"
-              : "bg-gray-900 bg-opacity-50"
+              ? "bg-[#000000] bg-opacity-70"
+              : "bg-[#000000] bg-opacity-50"
           } flex items-center justify-center`}
         >
           <div
             className={`${
-              isDarkMode ? "bg-[#1c283b] text-white" : "bg-white text-gray-800"
+              isDarkMode ? "bg-[#2D2D2D] text-white" : "bg-white text-black"
             } rounded-lg p-6 w-96 shadow-lg`}
           >
-            <h2 className="text-xl font-bold mb-6 flex justify-center items-center">
-              {isEditMode ? "Editar Usuário" : "Adicionar Usuário"}
-            </h2>
+            <div className="flex justify-between">
+              <h2 className="text-xl ml-[68px] font-[700] mb-6 flex justify-center items-center">
+                {isEditMode ? "Editar Usuário" : "Adicionar Usuário"}
+              </h2>
+              <IoMdClose
+                className={`max-sm:text-lg text-xl cursor-pointer text-gray-600 hover:text-gray-800 ${
+                  isDarkMode ? "text-white" : "text-black"
+                }`}
+                onClick={closeModal}
+              />
+            </div>
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
                 <Input
@@ -510,10 +531,10 @@ const UsuariosComponent = () => {
                   value={userName}
                   className={`w-full px-4 py-2 border ${
                     isDarkMode
-                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      ? "border-[#555555] bg-[#00000021] text-white"
                       : "border-gray-300 bg-white text-gray-800"
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
-                  labelClass={`text-sm font-bold ${
+                  labelClass={`text-sm font-[500] ${
                     isDarkMode ? "text-white" : "text-black"
                   }`}
                   onChange={(e) => setUserName(e.target.value)}
@@ -522,7 +543,7 @@ const UsuariosComponent = () => {
               <div className="mb-4">
                 <label
                   htmlFor="department"
-                  className={`block text-sm mb-2 font-bold ${
+                  className={`block text-sm mb-2 font-[500] ${
                     isDarkMode ? "text-gray-300" : "text-gray-800"
                   }`}
                 >
@@ -537,7 +558,7 @@ const UsuariosComponent = () => {
                   }}
                   className={`w-full px-4 py-2 border ${
                     isDarkMode
-                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      ? "border-[#555555] bg-[#00000021] text-white"
                       : "border-gray-300 bg-white text-gray-800"
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 >
@@ -551,7 +572,7 @@ const UsuariosComponent = () => {
               <div className="mb-6">
                 <label
                   htmlFor="manager"
-                  className={`block text-sm mb-2 font-bold ${
+                  className={`block text-sm mb-2 font-[500] ${
                     isDarkMode ? "text-gray-300" : "text-gray-800"
                   }`}
                 >
@@ -565,13 +586,13 @@ const UsuariosComponent = () => {
                   disabled
                   className={`w-full px-4 py-2 border ${
                     isDarkMode
-                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      ? "border-[#555555] bg-[#00000021] text-white"
                       : "border-gray-300 bg-gray-200 text-gray-800"
                   } rounded-lg`}
                 />
                 <label
                   htmlFor="permission"
-                  className={`block text-sm mt-4 font-bold ${
+                  className={`block text-sm mt-4 font-[500] ${
                     isDarkMode ? "text-gray-300" : "text-gray-800"
                   }`}
                 >
@@ -582,7 +603,7 @@ const UsuariosComponent = () => {
                   name="permission"
                   className={`block w-full p-2 mt-1 border ${
                     isDarkMode
-                      ? "border-gray-600 bg-[#2a3749] text-white"
+                      ? "border-gray-600 bg-[#00000021] text-white"
                       : "border-gray-300 bg-white text-gray-800"
                   } rounded-md focus:outline-none focus:ring-blue-500`}
                   value={userPermission}
@@ -606,6 +627,151 @@ const UsuariosComponent = () => {
                   }`}
                 >
                   Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className={`px-4 py-2 w-full rounded-lg ${
+                    isDarkMode
+                      ? "bg-[#112a54] text-white hover:bg-[#0e2347]"
+                      : "bg-[#164095] text-white hover:bg-blue-700"
+                  }`}
+                >
+                  {isEditMode ? "Salvar" : "Adicionar"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {isEditMode ?? (
+        <div
+          className={`fixed inset-0 ${
+            isDarkMode
+              ? "bg-[#000000] bg-opacity-70"
+              : "bg-[#000000] bg-opacity-50"
+          } flex items-center justify-center`}
+        >
+          <div
+            className={`${
+              isDarkMode ? "bg-[#2D2D2D] text-white" : "bg-white text-black"
+            } rounded-lg p-6 w-96 shadow-lg`}
+          >
+            <div className="flex justify-between">
+              <h2 className="text-xl ml-[68px] font-[700] mb-6 flex justify-center items-center">
+                {isEditMode ? "Editar Usuário" : "Adicionar Usuário"}
+              </h2>
+              <IoMdClose
+                className={`max-sm:text-lg text-xl cursor-pointer text-gray-600 hover:text-gray-800 ${
+                  isDarkMode ? "text-white" : "text-black"
+                }`}
+                onClick={closeModal}
+              />
+            </div>
+            <form onSubmit={handleFormSubmit}>
+              <div className="mb-4">
+                <Input
+                  type="text"
+                  label="Nome Completo"
+                  value={userName}
+                  className={`w-full px-4 py-2 border ${
+                    isDarkMode
+                      ? "border-[#555555] bg-[#00000021] text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                  labelClass={`text-sm font-[500] ${
+                    isDarkMode ? "text-white" : "text-black"
+                  }`}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="department"
+                  className={`block text-sm mb-2 font-[500] ${
+                    isDarkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
+                >
+                  Departamento:
+                </label>
+                <select
+                  id="department"
+                  value={userDepartment}
+                  onChange={(e) => {
+                    setUserDepartment(e.target.value);
+                    updateManager(e.target.value);
+                  }}
+                  className={`w-full px-4 py-2 border ${
+                    isDarkMode
+                      ? "border-[#555555] bg-[#00000021] text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+                >
+                  {Object.keys(departments).map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-6">
+                <label
+                  htmlFor="manager"
+                  className={`block text-sm mb-2 font-[500] ${
+                    isDarkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
+                >
+                  Gestor:
+                </label>
+                <input
+                  type="text"
+                  id="manager"
+                  value={userManager}
+                  onChange={(e) => setUserManager(e.target.value)}
+                  disabled
+                  className={`w-full px-4 py-2 border ${
+                    isDarkMode
+                      ? "border-[#555555] bg-[#00000021] text-white"
+                      : "border-gray-300 bg-gray-200 text-gray-800"
+                  } rounded-lg`}
+                />
+                <label
+                  htmlFor="permission"
+                  className={`block text-sm mt-4 font-[500] ${
+                    isDarkMode ? "text-gray-300" : "text-gray-800"
+                  }`}
+                >
+                  Permissawdwão:
+                </label>
+                <select
+                  id="permission"
+                  name="permission"
+                  className={`block w-full p-2 mt-1 border ${
+                    isDarkMode
+                      ? "border-gray-600 bg-[#00000021] text-white"
+                      : "border-gray-300 bg-white text-gray-800"
+                  } rounded-md focus:outline-none focus:ring-blue-500`}
+                  value={userPermission}
+                  onChange={handlePermissionChange}
+                >
+                  <option value="">Selecione uma permissão</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Usuário">Usuário</option>
+                  <option value="Gestor">Gestor</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className={`px-4 py-2 w-full rounded-lg ${
+                    isDarkMode
+                      ? "bg-gray-600 text-white hover:bg-gray-500"
+                      : "bg-gray-400 text-white hover:bg-gray-500"
+                  }`}
+                >
+                  Cancawdawdelar
                 </button>
                 <button
                   type="submit"

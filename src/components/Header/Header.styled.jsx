@@ -97,7 +97,7 @@ export const MainContent = styled.div`
   flex: 1;
   padding-top: 46px;
   background-color: #f0f0f0;
-
+  height: 85vh; /* Garante que o MainContent ocupe 100% da altura da tela */
   @media (max-width: 1024px) {
     display: none;
   }
@@ -147,7 +147,11 @@ export const GeralContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: 90vh;
+  position: fixed;
+  top: 7rem;
+  left: 0;
+  z-index: 999;
 `;
 
 export const ButtonContainer = styled.div`

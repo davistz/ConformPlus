@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { FaPlus, FaTrash, FaBuilding, FaLaptopCode } from "react-icons/fa";
 import { GiHumanPyramid, GiTakeMyMoney } from "react-icons/gi";
+import { IoMdClose } from "react-icons/io";
 import Botao from "./Botao";
 import axios from "axios";
 import { toast } from "sonner";
@@ -15,6 +16,7 @@ function DepartamentosPage() {
 
   const [departments, setDepartments] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [editingDepartment, setEditingDepartment] = useState(null);
   const [departamento, setDepartamento] = useState("");
   const [gestor, setGestor] = useState("");
@@ -31,6 +33,14 @@ function DepartamentosPage() {
   }, []);
   const canChangeDepartament = personState?.permission === "Admin";
 
+  const openEditModal = (dept) => {
+    setEditingDepartment(dept);
+    setDepartamento(dept.name);
+    setGestor(dept.manager);
+    setStatus(dept.status);
+    setIsEditMode(true);
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/departamentos")
@@ -46,53 +56,98 @@ function DepartamentosPage() {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const openEditModal = (dept) => {
-    setEditingDepartment(dept);
-    setDepartamento(dept.name);
-    setGestor(dept.manager);
-    setStatus(dept.status);
-    setIsModalOpen(true);
-  };
-
-  const saveEditDepartment = (event) => {
+  const editDepartment = async (event) => {
     event.preventDefault();
 
-    setDepartments((prevDepartments) =>
-      prevDepartments.map((dept) =>
-        dept.id === editingDepartment.id
-          ? { ...dept, name: departamento, manager: gestor, status }
-          : dept
-      )
-    );
+    if (!editingDepartment) {
+      console.error("Departamento para edição não encontrado.");
+      toast.error("Erro ao editar departamento: Dados inválidos.");
+      return;
+    }
 
-    toast.success("Departamento Editado com Sucesso!");
-    closeModal();
-    setEditingDepartment(null);
+    setIsEditMode(true);
+
+    try {
+      const updatedDepartment = {
+        id: editingDepartment.id,
+        name: departamento,
+        manager: gestor,
+        status: status,
+      };
+
+      const response = await axios.put(
+        `http://localhost:3001/departamentos/${editingDepartment.id}`,
+        updatedDepartment
+      );
+
+      setDepartments((prevDepartments) =>
+        prevDepartments.map((dept) =>
+          dept.id === editingDepartment.id ? response.data : dept
+        )
+      );
+
+      toast.success("Departamento Editado com Sucesso!");
+      setIsEditMode(false);
+      setEditingDepartment(null);
+    } catch (error) {
+      console.error("Erro ao editar departamento:", error);
+      toast.error("Erro ao editar departamento. Tente novamente.");
+    }
   };
 
-  const addDepartment = (event) => {
+  const addDepartment = async (event) => {
     event.preventDefault();
 
-    const newDepartment = {
-      id: departments.length + 1,
-      name: departamento,
-      manager: gestor,
-      status: "active",
-    };
+    try {
+      const response = await axios.get("http://localhost:3001/departamentos");
+      const departmentsList = response.data;
 
-    setDepartments((prevDepartments) => [...prevDepartments, newDepartment]);
+      const lastDepartment = departmentsList[departmentsList.length - 1];
+      const newId = lastDepartment
+        ? (parseInt(lastDepartment.id) + 1).toString()
+        : "1";
 
-    toast.success("Departamento Adicionado com Sucesso!");
-    closeModal();
-    setDepartamento("");
-    setGestor("");
+      const newDepartment = {
+        id: newId,
+        name: departamento,
+        manager: gestor,
+        status: "active",
+      };
+
+      const postResponse = await axios.post(
+        "http://localhost:3001/departamentos",
+        newDepartment
+      );
+
+      setDepartments((prevDepartments) => [
+        ...prevDepartments,
+        postResponse.data,
+      ]);
+
+      toast.success("Departamento Adicionado com Sucesso!");
+
+      closeModal();
+      setDepartamento("");
+      setGestor("");
+    } catch (error) {
+      console.error("Erro ao adicionar departamento:", error);
+      toast.error("Erro ao adicionar departamento. Tente novamente.");
+    }
   };
 
-  const removeDepartment = (id) => {
-    toast.success("Departamento Removido com Sucesso!");
-    setDepartments((prevDepartments) =>
-      prevDepartments.filter((dept) => dept.id !== id)
-    );
+  const removeDepartment = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3001/departamentos/${id}`);
+
+      setDepartments((prevDepartments) =>
+        prevDepartments.filter((dept) => dept.id !== id)
+      );
+
+      toast.success("Departamento Removido com Sucesso!");
+    } catch (error) {
+      console.error("Erro ao remover departamento:", error);
+      toast.error("Erro ao remover departamento. Tente novamente.");
+    }
   };
 
   useEffect(() => {
@@ -124,7 +179,7 @@ function DepartamentosPage() {
               </s.MiniLogoWrapper>
             ) : (
               <s.Botao onClick={openModal}>
-                Adicionar Departamento <FaPlus className="ml-2" />
+                Adicionar Departamento <FaPlus className="max-sm:hidden ml-2" />
               </s.Botao>
             )}
           </div>
@@ -160,6 +215,7 @@ function DepartamentosPage() {
                     >
                       Editar
                     </s.EditButton>
+
                     <button
                       className="text-lg text-red-600 hover:text-red-800"
                       onClick={() => removeDepartment(dept.id)}
@@ -187,6 +243,106 @@ function DepartamentosPage() {
           ))}
         </s.DepartmentsGrid>
       </s.Main>
+      {isModalOpen && (
+        <>
+          <s.ModalOverlay onClick={closeModal} />
+          <s.Modal isDarkMode={isDarkMode}>
+            <s.ModalTitle isDarkMode={isDarkMode}>
+              Adicionar Departamento
+            </s.ModalTitle>
+            <IoMdClose
+              className={`absolute max-sm:text-lg top-4 right-4 text-2xl cursor-pointer text-gray-600 hover:text-gray-800 ${
+                isDarkMode ? "text-white" : "text-black"
+              }`}
+              onClick={closeModal}
+            />
+            <form onSubmit={addDepartment}>
+              <s.InputWrapper isDarkMode={isDarkMode}>
+                <label htmlFor="departamento">Nome do Departamento</label>
+                <input
+                  id="departamento"
+                  type="text"
+                  placeholder="Digite o nome do departamento"
+                  value={departamento}
+                  onChange={(e) => setDepartamento(e.target.value)}
+                  required
+                />
+              </s.InputWrapper>
+              <s.InputWrapper isDarkMode={isDarkMode}>
+                <label className="mt-5" htmlFor="gestor">
+                  Nome do Gestor
+                </label>
+                <input
+                  id="gestor"
+                  type="text"
+                  placeholder="Digite o nome do gestor"
+                  value={gestor}
+                  onChange={(e) => setGestor(e.target.value)}
+                  required
+                />
+              </s.InputWrapper>
+              <s.ButtonsWrapper>
+                <s.BotaoCancel type="button" onClick={closeModal} secondary>
+                  Cancelar
+                </s.BotaoCancel>
+                <s.Botao type="submit">Salvar</s.Botao>
+              </s.ButtonsWrapper>
+            </form>
+          </s.Modal>
+        </>
+      )}
+      {isEditMode && (
+        <>
+          <s.ModalOverlay onClick={() => setIsEditMode(false)} />
+          <s.Modal isDarkMode={isDarkMode}>
+            <s.ModalTitle isDarkMode={isDarkMode}>
+              Editar Departamento
+            </s.ModalTitle>
+            <IoMdClose
+              className={`absolute max-sm:text-lg top-4 right-4 text-2xl cursor-pointer text-gray-600 hover:text-gray-800 ${
+                isDarkMode ? "text-white" : "text-black"
+              }`}
+              onClick={() => setIsEditMode(false)}
+            />
+            <form onSubmit={editDepartment}>
+              <s.InputWrapper isDarkMode={isDarkMode}>
+                <label htmlFor="departamento">Nome do Departamento</label>
+                <input
+                  id="departamento"
+                  type="text"
+                  placeholder="Digite o nome do departamento"
+                  value={departamento}
+                  onChange={(e) => setDepartamento(e.target.value)}
+                  required
+                />
+              </s.InputWrapper>
+              <s.InputWrapper isDarkMode={isDarkMode}>
+                <label className="mt-5" htmlFor="gestor">
+                  Nome do Gestor
+                </label>
+                <input
+                  id="gestor"
+                  type="text"
+                  placeholder="Digite o nome do gestor"
+                  value={gestor}
+                  onChange={(e) => setGestor(e.target.value)}
+                  required
+                />
+              </s.InputWrapper>
+              <s.ButtonsWrapper>
+                <s.BotaoCancel
+                  type="button"
+                  onClick={() => setIsEditMode(false)}
+                  secondary
+                >
+                  Cancelar
+                </s.BotaoCancel>
+                <s.Botao type="submit">Salvar</s.Botao>
+              </s.ButtonsWrapper>
+            </form>
+          </s.Modal>
+        </>
+      )}
     </s.Container>
   );
 }

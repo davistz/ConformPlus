@@ -3,8 +3,13 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   margin-top: 130px;
-  margin-left: 12px;
+  margin-left: 21rem;
   color: ${(props) => (props.isDarkMode ? "white" : "black")};
+
+  @media (max-width: 640px) {
+    width: 100%;
+    margin-left: 0rem;
+  }
 `;
 
 export const Main = styled.main`
@@ -30,7 +35,7 @@ export const Title = styled.h2`
 
   @media (max-width: 640px) {
     font-size: 1.2rem;
-    margin-left: -1.5rem;
+    margin-left: -1rem;
   }
 `;
 
@@ -70,6 +75,7 @@ export const DividerMain = styled.div`
 export const DepartmentsGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  margin-left: 0.6rem;
   gap: 16px;
   margin-top: 24px;
 
@@ -186,8 +192,33 @@ export const Botao = styled.button`
   }
 
   @media (max-width: 768px) {
-    font-size: 0.775rem;
-    width: 200px;
+    font-size: 0.675rem;
+    width: 160px;
+    height: 40px;
+  }
+`;
+export const BotaoCancel = styled.button`
+  background-color: ${(props) => (props.isDarkMode ? "#4b5563" : "#555555")};
+  /* width: 10px; */
+  height: 50px;
+  /* padding-left: 0.5rem; */
+  /* padding-right: 0.5rem; */
+  font-size: 0.875rem; /* text-sm */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #2c2b2b; /* hover:bg-blue-700 */
+    transform: scale(1.01); /* hover:scale-[1.01] */
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.675rem;
     height: 40px;
   }
 `;
@@ -221,6 +252,90 @@ export const ManagerInfo = styled.div`
     .role {
       font-size: 1rem;
       color: #6b7280;
+    }
+  }
+`;
+
+export const Modal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background-color: ${(props) => (props.isDarkMode ? "#1f1f1f" : "#ffffff")};
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    padding: 15px;
+    gap: 15px;
+  }
+`;
+
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  backdrop-filter: blur(3px);
+`;
+
+export const ModalTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: ${(props) => (props.isDarkMode ? "#ffffff" : "#333333")};
+  text-align: center;
+  margin-bottom: 10px;
+
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+  }
+`;
+
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 40px;
+
+  button {
+    flex: 1;
+  }
+`;
+
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  label {
+    font-size: 1rem;
+    color: ${(props) => (props.isDarkMode ? "#cccccc" : "#333333")};
+    font-weight: 500;
+  }
+
+  input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid ${(props) => (props.isDarkMode ? "#444444" : "#cccccc")};
+    border-radius: 5px;
+    background-color: ${(props) => (props.isDarkMode ? "#323232" : "#f9f9f9")};
+    color: ${(props) => (props.isDarkMode ? "#ffffff" : "#333333")};
+    outline: none;
+
+    &:focus {
+      border-color: ${(props) => (props.isDarkMode ? "#6a5acd" : "#164095")};
+      box-shadow: 0px 0px 5px
+        ${(props) => (props.isDarkMode ? "#6a5acd" : "#164095")};
     }
   }
 `;

@@ -3,7 +3,7 @@ import Users from "../components/UsersPage";
 import { useTheme } from "../ThemeContext";
 
 const UsersPage = () => {
-  const { isDarkMode } = useTheme(); // Obtém o estado do tema
+  const { isDarkMode } = useTheme();
 
   return (
     <div className={isDarkMode ? "dark-mode flex" : "light-mode flex"}>
