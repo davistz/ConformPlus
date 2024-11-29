@@ -78,8 +78,7 @@ export const ButtonGroup = styled.div`
   margin-bottom: 40px;
   width: 100%;
   justify-content: flex-end;
-  margin-left: -10px;
-  margin-right: 10px;
+  margin-left: 0px;
 
   @media (max-width: 640px) {
     flex-direction: column;
@@ -94,7 +93,7 @@ export const BtnAdd = styled.button`
   background-color: #164095;
   /* width: 260px; */
   width: ${({ canViewConformidadesPendente }) =>
-    canViewConformidadesPendente ? "300px" : "100%"};
+    canViewConformidadesPendente ? "260px" : "100%"};
   height: ${({ canViewConformidadesPendente }) =>
     canViewConformidadesPendente ? "42px" : "100px"};
   font-size: ${({ canViewConformidadesPendente }) =>
@@ -124,7 +123,7 @@ export const BtnAdd = styled.button`
 
 export const BtnCheck = styled.button`
   background-color: #e49d31;
-  width: 220px;
+  width: 300px;
   height: 40px;
   padding: 0 8px;
   font-size: 0.875rem;
@@ -143,6 +142,27 @@ export const BtnCheck = styled.button`
     width: 100%;
     height: 45px;
     font-size: 0.6rem;
+  }
+`;
+
+export const StyledUl = styled.ul`
+  display: grid;
+  background-color: #919191;
+  color: black;
+  font-size: rem;
+  font-weight: normal;
+  list-style: none;
+  margin-left: 44px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 0 85px 15px 105px 15px 100px 10px;
+
+    font-size: 9px;
+    margin-left: -10px;
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: 50px 100px 200px 50px 200px 50px 100px 50px 250px 50px 100px;
   }
 `;
 

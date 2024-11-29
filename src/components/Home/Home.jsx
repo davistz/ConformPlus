@@ -115,6 +115,61 @@ const NaoConformidades = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchLoginsAndConformidades = async () => {
+      if (!personState || !personState.name) {
+        console.warn("Usuário não logado ou inválido.");
+        return;
+      }
+
+      try {
+        const loginsResponse = await axios.get("http://localhost:3001/logins");
+        const currentUser = loginsResponse.data.find(
+          (login) => login.name === personState.name
+        );
+
+        if (!currentUser) {
+          toast.error("Usuário logado não encontrado.");
+          return;
+        }
+
+        const conformidadesResponse = await axios.get(
+          "http://localhost:3001/conformidades"
+        );
+        const allConformidades = Array.isArray(conformidadesResponse.data)
+          ? conformidadesResponse.data
+          : [];
+
+        allConformidades.forEach((conformidade) => {
+          const createdByFormatted = conformidade.createdBy
+            .trim()
+            .toLowerCase()
+            .replace(" ", "");
+          const currentUserFormatted = currentUser.name
+            .trim()
+            .toLowerCase()
+            .replace(" ", "");
+        });
+
+        const userConformidades = allConformidades.filter(
+          (conformidade) =>
+            conformidade.createdBy.trim().toLowerCase().replace(" ", "") ===
+            currentUser.name.trim().toLowerCase().replace(" ", "")
+        );
+
+        setConformidades(allConformidades);
+        setUserConformidades(userConformidades);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+        toast.error("Erro ao carregar as informações.");
+      }
+    };
+
+    fetchLoginsAndConformidades();
+  }, [personState]);
+
+  const [userConformidades, setUserConformidades] = useState([]);
+
   const canViewConformidadesPendente =
     personState?.permission === "Admin" || personState?.permission === "Gestor";
 
@@ -193,7 +248,6 @@ const NaoConformidades = () => {
         }
 
         try {
-          // Atualizando o status na API
           const response = await axios.patch(
             `http://localhost:3001/conformidades/${conformidade.id}`,
             { status: novoStatus }
@@ -212,6 +266,8 @@ const NaoConformidades = () => {
 
     setConformidades(novasConformidades);
   };
+
+  const [viewMyConformidade, setViewMyConformidade] = useState(true);
 
   return (
     <s.Container>
@@ -251,24 +307,146 @@ const NaoConformidades = () => {
         )}
         <div className="w-full">
           {!canViewConformidadesPendente && (
-            <div className="ml-10 flex flex-col ">
-              <h1 className="text-4xl font-bold mb-4">
-                Solicite sua conformidade agora mesmo!
-              </h1>
-              <p
-                className={`text-lg ${
-                  isDarkMode ? "text-gray-400" : "text-gray-600"
-                } mb-4 max-sm:text-sm`}
-              >
-                Nossa plataforma permite que você registre, acompanhe e gerencie
-                não conformidades de forma rápida e eficiente. Com apenas alguns
-                cliques, você pode adicionar novas conformidades e acompanhar o
-                progresso de cada uma delas.
-              </p>
-              <img
-                src={imgAdd}
-                className="w-[500px] ml-auto mr-auto h-auto max-sm:w-[400px]"
-              />
+            <div className="">
+              <div className="ml-10 flex flex-col ">
+                {!viewMyConformidade ? (
+                  <div className="w-full">
+                    <div className="flex items-center justify-between">
+                      <h1 className="text-4xl max-sm:text-lg font-bold mb-4">
+                        Suas Não Conformidades
+                      </h1>
+                      <h1
+                        onClick={() => setViewMyConformidade(true)}
+                        className="text-lg max-sm:text-sm mr-4 font-bold text-gray-600 ml-2 hover:text-blue-600 cursor-pointer transition-colors duration-300"
+                      >
+                        Voltar
+                      </h1>
+                    </div>
+                    <div className="max-sm:w-[400px]">
+                      <s.DividerMain isDarkMode={isDarkMode} />
+                    </div>
+                    <div className="flex ml-[1050px] max-sm:ml-[110px] mt-[-20px] mb-4 gap-10 max-sm:gap-0 items-center">
+                      <div className="flex items-center max-sm:w-[80px] gap-1">
+                        <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-gray-400"></div>{" "}
+                        <p className="max-sm:text-[10px] max-sm:hidden">Em</p>
+                        <p className="max-sm:text-[10px]">Aberto</p>
+                      </div>
+
+                      <div className="flex items-center max-sm:w-[100px] gap-1">
+                        <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-yellow-500"></div>{" "}
+                        <p className="max-sm:text-[10px]  max-sm:hidden">Em</p>
+                        <p className="max-sm:text-[10px]">Andamento</p>
+                      </div>
+
+                      <div className="flex items-center max-sm:w-[100px] gap-1">
+                        <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-[#26d2dbc0]"></div>{" "}
+                        <p className="max-sm:text-[10px]">Concluídas</p>
+                      </div>
+                    </div>
+
+                    {userConformidades.length > 0 ? (
+                      <ul className="flex max-sm:flex-col max-sm:pb-4">
+                        {userConformidades.map((conformidade) => {
+                          let statusClasses = "";
+
+                          if (conformidade.status === "aberto") {
+                            statusClasses = "bg-[#c0c0c0] text-[#202224]";
+                          } else if (conformidade.status === "andamento") {
+                            statusClasses = "bg-[#edc533] text-[#202224]";
+                          } else if (conformidade.status === "concluida") {
+                            statusClasses = "bg-[#26d2db64] text-[#202224]";
+                          }
+
+                          return (
+                            <li key={conformidade.id} className=" py-2">
+                              <div className="flex justify-between max-sm:pb-0 items-center p-2 pb-10 rounded-lg">
+                                <div
+                                  className={`flex flex-col max-sm:w-[350px] w-[400px] p-4 rounded-lg space-y-2 ${statusClasses}`}
+                                >
+                                  {/* ID */}
+                                  {!isSmallScreen && (
+                                    <div className="text-lg">
+                                      <span className="font-bold">Id:</span>{" "}
+                                      {conformidade.id}
+                                    </div>
+                                  )}
+
+                                  {/* Título */}
+                                  <div className="text-lg max-sm:text-sm">
+                                    <span className="font-bold">Título:</span>{" "}
+                                    {conformidade.titulo}
+                                  </div>
+
+                                  {/* Origem */}
+                                  <div className="text-lg max-sm:text-sm">
+                                    <span className="font-bold">Origem:</span>{" "}
+                                    {conformidade.origem}
+                                  </div>
+
+                                  {/* Departamento */}
+                                  <div className="text-lg max-sm:text-sm">
+                                    <span className="font-bold">
+                                      Departamento:
+                                    </span>{" "}
+                                    {conformidade.departamento}
+                                  </div>
+
+                                  {/* Grau de Severidade */}
+                                  <div className="text-lg max-sm:text-sm">
+                                    <span className="font-bold">Grau:</span>{" "}
+                                    {conformidade.grau_severidade}
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      <p className="text-gray-500">
+                        Nenhuma não conformidade encontrada.
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex w-full flex-col ">
+                    <div className="flex items-center max-sm:w-[400px] justify-between">
+                      <h1 className="text-4xl max-sm:text-lg font-bold mb-4">
+                        Solicite sua conformidade agora mesmo!
+                      </h1>
+                      <h1
+                        onClick={() => setViewMyConformidade(false)}
+                        className="text-lg max-sm:text-[12px] mr-4 max-sm:mr-0 font-bold text-gray-600 ml-2 hover:text-blue-600 cursor-pointer transition-colors duration-300"
+                      >
+                        <span className="hidden max-sm:block mr-4">
+                          Visualizar
+                        </span>
+                        <span className="hidden sm:block">
+                          Visualizar suas não conformidades
+                        </span>
+                      </h1>
+                    </div>
+                    <div className="max-sm:w-[400px]">
+                      <s.DividerMain isDarkMode={isDarkMode} />
+                    </div>
+
+                    <p
+                      className={`text-lg  ${
+                        isDarkMode ? "text-gray-400" : "text-gray-600"
+                      } mb-4 max-sm:text-sm`}
+                    >
+                      Nossa plataforma permite que você registre, acompanhe e
+                      gerencie não conformidades de forma rápida e eficiente.
+                      Com apenas alguns cliques, você pode adicionar novas
+                      conformidades e acompanhar o progresso de cada uma delas.
+                    </p>
+                    <img
+                      src={imgAdd}
+                      className="w-[500px] ml-auto mr-auto h-auto max-sm:w-[400px]"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -283,13 +461,15 @@ const NaoConformidades = () => {
                   : ""}
               </s.BtnCheck>
             )}
-            <s.BtnAdd
-              canViewConformidadesPendente={canViewConformidadesPendente}
-              onClick={() => setAddConformidadeDialogIsOpen(true)}
-            >
-              Adicionar Não Conformidade
-              <IoMdAdd className="max-sm:hidden ml-2" />
-            </s.BtnAdd>
+            <div className=" max-sm:ml-0">
+              <s.BtnAdd
+                canViewConformidadesPendente={canViewConformidadesPendente}
+                onClick={() => setAddConformidadeDialogIsOpen(true)}
+              >
+                Adicionar Não Conformidade
+                <IoMdAdd className="max-sm:hidden ml-2" />
+              </s.BtnAdd>
+            </div>
           </s.ButtonGroup>
         </div>
       </s.Row>

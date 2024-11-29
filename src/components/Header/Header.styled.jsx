@@ -271,7 +271,7 @@ export const FooterButtonMob = styled.button`
   align-items: center;
   padding: 0.7rem;
   margin-left: 2rem;
-  margin-top: 23rem;
+  margin-top: 19rem;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
