@@ -1,9 +1,10 @@
 import * as S from "./KanbanColumn.styled";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
-import { useTheme } from "../../ThemeContext"; // Importando o hook do seu contexto
+import { useTheme } from "../../ThemeContext";
+import { FaTrashAlt } from "react-icons/fa";
 
-const KanbanColumn = ({ title, droppableId, tasks }) => {
-  const { isDarkMode } = useTheme(); // Obtendo o estado do dark mode
+const KanbanColumn = ({ title, droppableId, tasks, onDeleteTask }) => {
+  const { isDarkMode } = useTheme();
 
   const getColumnColors = () => {
     switch (title) {
@@ -44,6 +45,10 @@ const KanbanColumn = ({ title, droppableId, tasks }) => {
           backgroundColorTaskDark: "#333",
         };
     }
+  };
+
+  const handleDelete = (id) => {
+    onDeleteTask(id);
   };
 
   const columnColors = getColumnColors();
@@ -108,6 +113,10 @@ const KanbanColumn = ({ title, droppableId, tasks }) => {
                         Abertura:
                       </p>
                       {conformidade.data}
+                      <FaTrashAlt
+                        className="trash-icon"
+                        onClick={() => handleDelete(conformidade.id)}
+                      />
                     </div>
                   </S.TaskItem>
                 )}

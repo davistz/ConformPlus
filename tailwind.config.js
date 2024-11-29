@@ -16,6 +16,11 @@ export default {
         desktop: "1280px",
       },
     },
+    variants: {
+      extend: {
+        placeholder: ["responsive"], // Adicione isso se não estiver habilitado
+      },
+    },
   },
   plugins: [
     react(),

@@ -7,7 +7,7 @@ const NaoConformidadePage = () => {
   const { isDarkMode } = useTheme();
 
   return (
-    <div className={isDarkMode ? "dark-mode flex" : "light-mode flex"}>
+    <div className={`flex w-full ${isDarkMode ? "dark-mode " : "light-mode "}`}>
       <Header className="" />
 
       <Home />

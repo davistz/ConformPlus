@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import Logo from "../../img/logo-conform-white.png";
 import PropTypes from "prop-types";
-import Cookies from "js-cookie";
+
 import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
 import { IoMdNotifications } from "react-icons/io";
@@ -16,6 +16,7 @@ import daviAvatar from "../../img/img_users/davi.png";
 import lucasAvatar from "../../img/img_users/lucas.png";
 import * as s from "./Header.styled";
 import { useTheme } from "../../ThemeContext";
+import clickSound from "../../audio/click-mouse.mp3";
 
 const Header = () => {
   const location = useLocation();
@@ -24,9 +25,23 @@ const Header = () => {
   const [activeButton, setActiveButton] = useState("home");
   const { isDarkMode, toggleTheme } = useTheme();
 
+  const handleClickWithSound = () => {
+    const audio = new Audio(clickSound);
+    audio.play();
+    toggleTheme();
+  };
+
   const handleButtonClick = (button) => {
     setActiveButton(button);
     navigate(`/${button}`);
+  };
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      setIsNotificationOpen(false);
+    }, 400);
   };
 
   const [personState, setPersonState] = useState(null);
@@ -93,12 +108,14 @@ const Header = () => {
   };
 
   const renderizarNotificacoes = () => {
-    return notificacoes.map((notificacao) => (
+    return notificacoes.map((notificacao, index) => (
       <div
-        className={`flex items-start p-4 border-b border-gray-200 ${
-          notificacao.isNew ? "bg-blue-100" : "bg-white"
+        className={`flex p-4  ${
+          isDarkMode
+            ? ` ${notificacao.isNew ? "bg-[#060707]" : "bg-[#1f1f1f]"}`
+            : ` ${notificacao.isNew ? "bg-[#050d1e]" : "bg-[#0b1b3a] "}`
         }`}
-        key={notificacao.processoOrigem}
+        key={index}
       >
         <img
           className="w-12 h-11 rounded-full mr-3"
@@ -163,6 +180,8 @@ const Header = () => {
     setIsOn((prev) => !prev);
   };
 
+  const [isClosing, setIsClosing] = useState(false);
+
   return (
     <s.Layout>
       <s.HeaderContainer isOn={isDarkMode}>
@@ -176,15 +195,21 @@ const Header = () => {
         )}
 
         <s.UserInfoContainer>
-          <MdLightMode className="w-8 h-8 mr-2 text-[#ffffffdb]" />
-          <s.SwitchContainer isOn={isDarkMode} onClick={toggleTheme}>
-            <s.SwitchCircle isOn={isDarkMode} />
-          </s.SwitchContainer>
-          <MdDarkMode className="w-8 h-8 ml-2 mr-6 text-[#ffffffdb]" />
-          <div className="max-sm:hidden">
-            <s.NotificationsButton onClick={() => setIsNotificationOpen(true)}>
-              <IoMdNotifications />
-            </s.NotificationsButton>
+          <div className="max-sm:hidden flex items-center">
+            <MdLightMode className="w-8 h-8 mr-2 text-[#ffffffdb]" />
+            <s.SwitchContainer isOn={isDarkMode} onClick={handleClickWithSound}>
+              <s.SwitchCircle isOn={isDarkMode} />
+            </s.SwitchContainer>
+            <MdDarkMode className="w-8 h-8 ml-2 mr-6 text-[#ffffffdb]" />
+          </div>
+          <div className="">
+            {!PermView && (
+              <s.NotificationsButton
+                onClick={() => setIsNotificationOpen(true)}
+              >
+                <IoMdNotifications />
+              </s.NotificationsButton>
+            )}
           </div>
           {personState ? (
             <s.UserDetails onClick={handleUsers}>
@@ -206,14 +231,14 @@ const Header = () => {
         </s.UserInfoContainer>
 
         {isNotificationOpen && (
-          <s.NotificationModal>
-            <s.NotificationHeader>
+          <s.NotificationModal isDarkMode={isDarkMode} isClosing={isClosing}>
+            <s.NotificationHeader isDarkMode={isDarkMode}>
               <h2>Notificações</h2>
-              <s.CloseButton onClick={() => setIsNotificationOpen(false)}>
+              <s.CloseButton onClick={handleClose}>
                 <IoIosClose />
               </s.CloseButton>
             </s.NotificationHeader>
-            <s.NotificationContent>
+            <s.NotificationContent isDarkMode={isDarkMode}>
               {renderizarNotificacoes()}
             </s.NotificationContent>
           </s.NotificationModal>
@@ -253,6 +278,13 @@ const Header = () => {
                   </s.MenuItem>
                 </>
               )}
+              <div className="flex items-center ml-10 mt-5">
+                <MdLightMode className="w-8 h-8 mr-2 text-[#ffffffdb]" />
+                <s.SwitchContainer isOn={isDarkMode} onClick={toggleTheme}>
+                  <s.SwitchCircle isOn={isDarkMode} />
+                </s.SwitchContainer>
+                <MdDarkMode className="w-8 h-8 ml-2 mr-6 text-[#ffffffdb]" />
+              </div>
             </s.MenuList>
           </div>
 

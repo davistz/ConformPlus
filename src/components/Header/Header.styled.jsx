@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const SidebarContainer = styled.div`
   top: 0;
   left: 0;
   background-color: ${(props) =>
-    props.isDarkMode ? "#000000ee" : "#164095f0"}; /* Ajuste de cores */
+    props.isDarkMode ? "#000000ee" : "#164095f0"};
   width: 300px;
   height: 100%;
   z-index: 50;
@@ -97,7 +97,7 @@ export const MainContent = styled.div`
   flex: 1;
   padding-top: 46px;
   background-color: #f0f0f0;
-  height: 85vh; /* Garante que o MainContent ocupe 100% da altura da tela */
+  height: 85vh;
   @media (max-width: 1024px) {
     display: none;
   }
@@ -271,7 +271,7 @@ export const FooterButtonMob = styled.button`
   align-items: center;
   padding: 0.7rem;
   margin-left: 2rem;
-  margin-top: 25rem;
+  margin-top: 23rem;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -288,42 +288,70 @@ export const UserPermission = styled.div`
 export const UserPlaceholder = styled.p`
   color: white;
 `;
+const slideInFromRight = keyframes`
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
+// Animação para fechar (opcional, caso você queira que ele saia com um efeito)
+const slideOutToRight = keyframes`
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+`;
 
 export const NotificationModal = styled.div`
   position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #0e285b;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  top: 0;
+  right: 0;
+  height: 100%;
   width: 400px;
+  /* background-color: #0e285b; */
+  background-color: ${(props) =>
+    props.isDarkMode ? "#0f0f0fd8" : "#0e285bcd"};
+  border-radius: 0;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  max-height: 80vh;
   overflow-y: auto;
+  animation: ${(props) =>
+      props.isClosing ? slideOutToRight : slideInFromRight}
+    0.4s ease-in-out;
+  transform: ${(props) =>
+    props.isClosing ? "translateX(100%)" : "translateX(0)"};
+
+  @media (max-width: 480px) {
+    height: 100%;
+    width: 350px;
+  }
 `;
 
 export const NotificationHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
-  padding-left: 20px;
-  background-color: #0e285b;
-  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  background-color: ${(props) => (props.isDarkMode ? "#161616" : "#06183b")};
   color: white;
   font-size: 1.5rem;
 `;
 
 export const CloseButton = styled.button`
-  position: absolute;
-  top: 20px;
-  right: 10px;
   cursor: pointer;
   background: transparent;
   border: none;
   font-size: 40px;
+  color: white;
 `;
 
-export const NotificationContent = styled.div`
-  margin-top: 20px;
-`;
+export const NotificationContent = styled.div``;

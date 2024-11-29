@@ -8,10 +8,11 @@ export const StyledLi = styled.li`
   align-items: center;
   margin-left: 27px;
   border-radius: 10px;
+
   margin-bottom: 4px;
 
   @media (max-width: 640px) {
-    max-width: 400px;
+    width: 95%;
     margin-left: 0px;
   }
 
@@ -63,8 +64,9 @@ export const StyledDiv = styled.div`
 
   @media (max-width: 640px) {
     flex-direction: column;
+    width: 100%;
     align-items: flex-start;
-    margin-left: 10px;
+    margin-left: 20px;
   }
 `;
 export const SearchContainer = styled.div`
@@ -87,17 +89,13 @@ export const StyledUl = styled.ul`
   list-style: none;
   margin-left: 44px;
 
-  /* Layout para telas menores que 640px */
   @media (max-width: 640px) {
-    grid-template-columns: 0 125px 0px 10px 10px 0px;
+    grid-template-columns: 0 85px 15px 105px 15px 100px 10px;
 
-    font-size: 11px;
+    font-size: 9px;
     margin-left: -10px;
   }
 
-  /* Layout para telas menores que 1024px */
-
-  /* Layout para telas maiores que 1280px */
   @media (min-width: 1280px) {
     grid-template-columns: 50px 50px 200px 50px 220px 55px 200px 40px 220px 80px auto;
   }

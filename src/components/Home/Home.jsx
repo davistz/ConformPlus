@@ -9,6 +9,7 @@ import axios from "axios";
 import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
 import NaoConformidadeCheck from "../ConformidadesCheck/NaoConformidadeCheck.jsx";
 import Id from "../Id/Id.jsx";
+import imgAdd from "../../img/image-addconform.png";
 import KanbanBoard from "../KanbanBoard/KanbanBoard.jsx";
 import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 import { useTheme } from "../../ThemeContext.jsx";
@@ -16,9 +17,9 @@ import ConformidadeFilter from "../ConformidadeFilter/ConformidadeFilter.jsx";
 
 const NaoConformidades = () => {
   const [conformidades, setConformidades] = useState([]);
-  const [filteredConformidades, setFilteredConformidades] = useState([]); // Lista filtrada
-  const [searchQuery, setSearchQuery] = useState(""); // Estado para pesquisa
-  const [isFilter, setIsFilter] = useState(true); // Controla se está filtrando
+  const [filteredConformidades, setFilteredConformidades] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isFilter, setIsFilter] = useState(false);
 
   const [
     checkNaoConformidadeDialogIsOpen,
@@ -35,7 +36,7 @@ const NaoConformidades = () => {
     setViewMode(event.target.value);
   };
 
-  const { isDarkMode } = useTheme(); // Obtém o estado do tema
+  const { isDarkMode } = useTheme();
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -54,7 +55,7 @@ const NaoConformidades = () => {
         const response = await axios.get("http://localhost:3001/conformidades");
         const data = Array.isArray(response.data) ? response.data : [];
         setConformidades(data);
-        setFilteredConformidades(data); // Inicialmente, todas as conformidades são exibidas
+        setFilteredConformidades(data);
       } catch (error) {
         toast.error("Erro ao carregar as não conformidades.");
         console.error(error);
@@ -166,89 +167,131 @@ const NaoConformidades = () => {
     setAddConformidadeDialogIsOpen(false);
   };
 
-  const alterarStatusConformidade = (conformidadeId) => {
-    const novasConformidades = conformidades.map((conformidade) => {
-      if (conformidade.id !== conformidadeId || !conformidade.status) {
-        return conformidade;
-      }
+  const alterarStatusConformidade = async (conformidadeId) => {
+    const novasConformidades = await Promise.all(
+      conformidades.map(async (conformidade) => {
+        if (conformidade.id !== conformidadeId || !conformidade.status) {
+          return conformidade;
+        }
 
-      if (conformidade.status === "pendente") {
-        toast.success("Não conformidade alterada para em andamento!");
-        return { ...conformidade, status: "aberto" };
-      }
-      if (conformidade.status === "aberto") {
-        toast.success("Não conformidade alterada para em andamento!");
-        return { ...conformidade, status: "andamento" };
-      }
-      if (conformidade.status === "concluida") {
-        toast.success("Não conformidade alterada para em andamento!");
-        setCheckNaoConformidadeDialogIsOpen(false);
-        return { ...conformidade, status: "aberto" };
-      }
-      if (conformidade.status === "andamento") {
-        toast.success("Não conformidade alterada para concluída!");
-        return { ...conformidade, status: "concluida" };
-      }
-      return conformidade;
-    });
+        let novoStatus;
+        let mensagem;
+
+        if (conformidade.status === "pendente") {
+          novoStatus = "aberto";
+          mensagem = "Não conformidade alterada para aberto!";
+        } else if (conformidade.status === "aberto") {
+          novoStatus = "andamento";
+          mensagem = "Não conformidade alterada para andamento!";
+        } else if (conformidade.status === "andamento") {
+          novoStatus = "concluida";
+          mensagem = "Não conformidade alterada para concluída!";
+        } else if (conformidade.status === "concluida") {
+          novoStatus = "aberto";
+          mensagem = "Não conformidade alterada para aberto!";
+          setCheckNaoConformidadeDialogIsOpen(false);
+        }
+
+        try {
+          // Atualizando o status na API
+          const response = await axios.patch(
+            `http://localhost:3001/conformidades/${conformidade.id}`,
+            { status: novoStatus }
+          );
+
+          toast.success(mensagem);
+
+          return { ...conformidade, status: novoStatus };
+        } catch (error) {
+          console.error("Erro ao alterar o status:", error);
+          toast.error("Erro ao alterar o status da não conformidade.");
+          return conformidade;
+        }
+      })
+    );
+
     setConformidades(novasConformidades);
   };
 
   return (
     <s.Container>
       <s.Row>
-        <s.DivSelector isDarkMode={isDarkMode}>
-          <div className="flex w-[800px] items-center">
-            <p className="font-semibold max-sm:text-[14px] mr-4">
-              Escolher modo de Visualizar
-            </p>
-            <select name="" id="" onChange={handleChangeViewMode}>
-              <option value="Lista">Lista</option>
-              <option value="Quadro">Quadro</option>
-            </select>
-          </div>
-          <div className="relative ml-[-15px] w-full">
-            {/* Campo de Pesquisa com ícone de lupa */}
-            <input
-              type="text"
-              placeholder="Pesquisar não conformidade"
-              className={`w-full h-10 pl-5 rounded-xl ${
-                isDarkMode
-                  ? "bg-[#4f4f4f] placeholder:text-[#b4b4b4] border-[#494949]"
-                  : "bg-[#ffffff] border-[#909090] placeholder:text-[#262626]"
-              }`}
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onBlur={handleClearSearch}
-            />
-            {/* Ícone de lupa posicionado */}
-            <IoMdSearch
-              className={`absolute right-3 top-[20px] transform -translate-y-1/2 text-gray-500 ${
-                isDarkMode ? "text-[#b4b4b4]" : "text-[#4e4e4e]"
-              }`}
-              size={20}
-            />
-          </div>
-        </s.DivSelector>
-        <s.ButtonGroup>
-          {canViewConformidadesPendente && (
-            <s.BtnCheck
-              onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
-            >
-              Conformidades Pendentes{" "}
-              {conformidadesPendentes.length > 0
-                ? conformidadesPendentes.length
-                : ""}
-            </s.BtnCheck>
+        {canViewConformidadesPendente && (
+          <s.DivSelector isDarkMode={isDarkMode}>
+            <div className="max-sm:hidden flex w-[800px] items-center">
+              <p className="font-semibold max-sm:text-[14px] mr-4">
+                Escolher modo de Visualizar
+              </p>
+              <select name="" id="" onChange={handleChangeViewMode}>
+                <option value="Lista">Lista</option>
+                <option value="Quadro">Quadro</option>
+              </select>
+            </div>
+            <div className="relative max-sm:ml-2 max-sm:mt-[-50px] max-sm:mb-[-35px] ml-[-15px] w-full">
+              <input
+                type="text"
+                placeholder="Pesquisar não conformidade"
+                className={`w-full h-10 pl-5 rounded-xl ${
+                  isDarkMode
+                    ? "bg-[#4f4f4f] placeholder:text-[#b4b4b4] border-[#494949]"
+                    : "bg-[#ffffff] border-[#909090] placeholder:text-[#262626]"
+                }`}
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+
+              <IoMdSearch
+                className={`absolute right-3 top-[20px] transform -translate-y-1/2 text-gray-500 ${
+                  isDarkMode ? "text-[#b4b4b4]" : "text-[#4e4e4e]"
+                }`}
+                size={20}
+              />
+            </div>
+          </s.DivSelector>
+        )}
+        <div className="w-full">
+          {!canViewConformidadesPendente && (
+            <div className="ml-10 flex flex-col ">
+              <h1 className="text-4xl font-bold mb-4">
+                Solicite sua conformidade agora mesmo!
+              </h1>
+              <p
+                className={`text-lg ${
+                  isDarkMode ? "text-gray-400" : "text-gray-600"
+                } mb-4 max-sm:text-sm`}
+              >
+                Nossa plataforma permite que você registre, acompanhe e gerencie
+                não conformidades de forma rápida e eficiente. Com apenas alguns
+                cliques, você pode adicionar novas conformidades e acompanhar o
+                progresso de cada uma delas.
+              </p>
+              <img
+                src={imgAdd}
+                className="w-[500px] ml-auto mr-auto h-auto max-sm:w-[400px]"
+              />
+            </div>
           )}
-          <s.BtnAdd onClick={() => setAddConformidadeDialogIsOpen(true)}>
-            Adicionar Não Conformidade
-            <IoMdAdd
-              className="max-sm:hidden"
-              style={{ marginLeft: "8px", width: "20px", height: "20px" }}
-            />
-          </s.BtnAdd>
-        </s.ButtonGroup>
+
+          <s.ButtonGroup>
+            {canViewConformidadesPendente && (
+              <s.BtnCheck
+                onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
+              >
+                Conformidades Pendentes{" "}
+                {conformidadesPendentes.length > 0
+                  ? conformidadesPendentes.length
+                  : ""}
+              </s.BtnCheck>
+            )}
+            <s.BtnAdd
+              canViewConformidadesPendente={canViewConformidadesPendente}
+              onClick={() => setAddConformidadeDialogIsOpen(true)}
+            >
+              Adicionar Não Conformidade
+              <IoMdAdd className="max-sm:hidden ml-2" />
+            </s.BtnAdd>
+          </s.ButtonGroup>
+        </div>
       </s.Row>
 
       <ModalConformidadeInfo
@@ -274,7 +317,7 @@ const NaoConformidades = () => {
         {viewMode === "Quadro" ? (
           <KanbanBoard
             viewMode={viewMode}
-            conformidades={filteredConformidades} // Passa a lista filtrada para o Kanban
+            conformidades={filteredConformidades}
             onStatusChange={alterarStatusConformidade}
             onInfoClick={handleInfoClick}
             onEditConformidadeSubmit={handleEditConformidadeSubmit}
@@ -283,21 +326,45 @@ const NaoConformidades = () => {
           <div>
             {isFilter ? (
               <div>
-                <h1 className="text-2xl font-[500] mb-2">
-                  Todas as não conformidades
-                </h1>
+                <div className="flex justify-between">
+                  <h1 className="text-2xl max-sm:text-sm max-sm:w-full font-[500] mb-2">
+                    Todas as não conformidades
+                  </h1>
+
+                  <div className="flex gap-10 max-sm:gap-0 items-center">
+                    <div className="flex items-center max-sm:w-[80px] gap-1">
+                      <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-gray-400"></div>{" "}
+                      <p className="max-sm:text-[10px] max-sm:hidden">Em</p>
+                      <p className="max-sm:text-[10px]">Aberto</p>
+                    </div>
+
+                    <div className="flex items-center max-sm:w-[100px] gap-1">
+                      <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-yellow-500"></div>{" "}
+                      <p className="max-sm:text-[10px]  max-sm:hidden">Em</p>
+                      <p className="max-sm:text-[10px]">Andamento</p>
+                    </div>
+
+                    <div className="flex items-center max-sm:w-[100px] gap-1">
+                      <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-[#26d2dbc0]"></div>{" "}
+                      <p className="max-sm:text-[10px]">Concluídas</p>
+                    </div>
+                  </div>
+                </div>
                 <s.DividerMain isDarkMode={isDarkMode} />
 
-                {/* Verificação de conformidades filtradas */}
                 {filteredConformidades.length === 0 ? (
-                  <p className="mt-2 text-xl text-gray-500">
+                  <p className="mt-2 max-sm:text-lg text-xl text-gray-500">
                     Não existe nenhuma conformidade chamada "{searchQuery}"
                   </p>
                 ) : (
                   <ul>
                     {filteredConformidades.map((conformidade) => (
                       <li key={conformidade.id}>
-                        <ConformidadeFilter conformidade={conformidade} />
+                        <ConformidadeFilter
+                          conformidade={conformidade}
+                          deletarNaoConformidade={deletarNaoConformidade}
+                          onInfoClick={handleInfoClick}
+                        />
                       </li>
                     ))}
                   </ul>
@@ -305,104 +372,110 @@ const NaoConformidades = () => {
               </div>
             ) : (
               <div>
-                {/* Exibe a lista de conformidades com status */}
-                <s.Box section="aberto" isDarkMode={isDarkMode}>
-                  <div className="flex items-center justify-between max-sm:mb-2 max-sm:w-full">
-                    <s.SectionTitle>Em Aberto</s.SectionTitle>
-                    <s.IconWrapper>
-                      <a
-                        onClick={() => setAddConformidadeDialogIsOpen(true)}
-                        href="#"
-                      >
-                        <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
-                      </a>
-                    </s.IconWrapper>
-                  </div>
+                {/* Em aberto */}
+                {canViewConformidadesPendente && (
+                  <s.Box section="aberto" isDarkMode={isDarkMode}>
+                    <div className="flex items-center justify-between max-sm:mb-2 max-sm:w-full">
+                      <s.SectionTitle>Em Aberto</s.SectionTitle>
+                      <s.IconWrapper>
+                        <a
+                          onClick={() => setAddConformidadeDialogIsOpen(true)}
+                          href="#"
+                        >
+                          <IoMdAdd className="w-7 h-7 hover:scale-110 transition-all duration-300" />
+                        </a>
+                      </s.IconWrapper>
+                    </div>
 
-                  {isSmallScreen ? (
-                    <s.StatusHeader>
-                      <h1>Departamento</h1>
-                      <h1>Grau de Severidade</h1>
-                    </s.StatusHeader>
-                  ) : (
-                    <Id className="ml-[140px]" />
-                  )}
-                  <div className="">
-                    {conformidadesAberto.map((conformidade) => (
-                      <ConformidadeItem
-                        key={conformidade.id}
-                        conformidade={conformidade}
-                        alterarStatusConformidade={alterarStatusConformidade}
-                        deletarNaoConformidade={deletarNaoConformidade}
-                        onInfoClick={handleInfoClick}
-                      />
-                    ))}
-                  </div>
-                </s.Box>
+                    {isSmallScreen ? (
+                      <s.StatusHeader>
+                        <h1>Departamento</h1>
+                        <h1>Grau de Severidade</h1>
+                      </s.StatusHeader>
+                    ) : (
+                      <Id className="ml-[140px]" />
+                    )}
+                    <div className="">
+                      {conformidadesAberto.map((conformidade) => (
+                        <ConformidadeItem
+                          key={conformidade.id}
+                          conformidade={conformidade}
+                          alterarStatusConformidade={alterarStatusConformidade}
+                          deletarNaoConformidade={deletarNaoConformidade}
+                          onInfoClick={handleInfoClick}
+                        />
+                      ))}
+                    </div>
+                  </s.Box>
+                )}
 
                 {/* Seções: Em Andamento e Concluídas */}
-                <s.Box
-                  section="andamento"
-                  isDarkMode={isDarkMode}
-                  style={{ marginTop: "24px" }}
-                >
-                  <div className="flex items-center justify-between">
-                    <s.SectionTitle>Em Andamento</s.SectionTitle>
-                  </div>
+                {canViewConformidadesPendente && (
+                  <s.Box
+                    section="andamento"
+                    isDarkMode={isDarkMode}
+                    style={{ marginTop: "24px" }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <s.SectionTitle>Em Andamento</s.SectionTitle>
+                    </div>
 
-                  {isSmallScreen ? (
-                    <s.StatusHeader>
-                      <h1>Departamento</h1>
-                      <h1>Grau de Severidade</h1>
-                    </s.StatusHeader>
-                  ) : (
-                    <Id className="ml-[140px]" />
-                  )}
+                    {isSmallScreen ? (
+                      <s.StatusHeader>
+                        <h1>Departamento</h1>
+                        <h1>Grau de Severidade</h1>
+                      </s.StatusHeader>
+                    ) : (
+                      <Id className="ml-[140px]" />
+                    )}
 
-                  <div className="pb-4">
-                    {conformidadesAndamento.map((conformidade) => (
-                      <ConformidadeItem
-                        key={conformidade.id}
-                        conformidade={conformidade}
-                        alterarStatusConformidade={alterarStatusConformidade}
-                        deletarNaoConformidade={deletarNaoConformidade}
-                        onInfoClick={handleInfoClick}
-                      />
-                    ))}
-                  </div>
-                </s.Box>
+                    <div className="pb-4">
+                      {conformidadesAndamento.map((conformidade) => (
+                        <ConformidadeItem
+                          key={conformidade.id}
+                          conformidade={conformidade}
+                          alterarStatusConformidade={alterarStatusConformidade}
+                          deletarNaoConformidade={deletarNaoConformidade}
+                          onInfoClick={handleInfoClick}
+                        />
+                      ))}
+                    </div>
+                  </s.Box>
+                )}
 
                 {/* Seção Concluídas */}
-                <s.Box
-                  section="concluido"
-                  isDarkMode={isDarkMode}
-                  style={{ marginTop: "24px", marginBottom: "20px" }}
-                >
-                  <div className="flex items-center justify-between">
-                    <s.SectionTitle>Concluídas</s.SectionTitle>
-                  </div>
+                {canViewConformidadesPendente && (
+                  <s.Box
+                    section="concluido"
+                    isDarkMode={isDarkMode}
+                    style={{ marginTop: "24px", marginBottom: "20px" }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <s.SectionTitle>Concluídas</s.SectionTitle>
+                    </div>
 
-                  {isSmallScreen ? (
-                    <s.StatusHeader>
-                      <h1>Departamento</h1>
-                      <h1>Grau de Severidade</h1>
-                    </s.StatusHeader>
-                  ) : (
-                    <Id className="ml-[140px]" />
-                  )}
+                    {isSmallScreen ? (
+                      <s.StatusHeader>
+                        <h1>Departamento</h1>
+                        <h1>Grau de Severidade</h1>
+                      </s.StatusHeader>
+                    ) : (
+                      <Id className="ml-[140px]" />
+                    )}
 
-                  <div className="pb-4">
-                    {conformidadesConcluida.map((conformidade) => (
-                      <ConformidadeItem
-                        key={conformidade.id}
-                        conformidade={conformidade}
-                        alterarStatusConformidade={alterarStatusConformidade}
-                        deletarNaoConformidade={deletarNaoConformidade}
-                        onInfoClick={handleInfoClick}
-                      />
-                    ))}
-                  </div>
-                </s.Box>
+                    <div className="pb-4">
+                      {conformidadesConcluida.map((conformidade) => (
+                        <ConformidadeItem
+                          key={conformidade.id}
+                          conformidade={conformidade}
+                          alterarStatusConformidade={alterarStatusConformidade}
+                          deletarNaoConformidade={deletarNaoConformidade}
+                          onInfoClick={handleInfoClick}
+                        />
+                      ))}
+                    </div>
+                  </s.Box>
+                )}
               </div>
             )}
           </div>
@@ -411,19 +484,5 @@ const NaoConformidades = () => {
     </s.Container>
   );
 };
-
-// {isFilter ? (
-//   <ul>
-//     {filteredConformidades.map((conformidade) => (
-//       <li key={conformidade.id}>
-//         <ConformidadeItem conformidade={conformidade} />
-//       </li>
-//     ))}
-//   </ul>
-// ) : (
-//   <div>
-
-//   </div>
-// )}
 
 export default NaoConformidades;

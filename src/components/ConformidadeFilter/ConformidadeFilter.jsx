@@ -5,16 +5,15 @@ import { LuLoader2 } from "react-icons/lu";
 import { CiCircleInfo } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import * as s from "./ConformidadeFilter.styled";
-import { useTheme } from "../../ThemeContext"; // Importando o useTheme
+import { useTheme } from "../../ThemeContext";
 
 const ConformidadeFilter = ({
   conformidade,
-  alterarStatusConformidade,
   deletarNaoConformidade,
   onInfoClick,
 }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const { isDarkMode } = useTheme(); // Obtém o valor de isDarkMode do contexto global
+  const { isDarkMode } = useTheme();
 
   const [personState, setPersonState] = useState(null);
 
@@ -44,19 +43,19 @@ const ConformidadeFilter = ({
   const getStatusClasses = () => {
     if (conformidade.status === "aberto") {
       return isDarkMode
-        ? "bg-[#707070] text-[#e2e2e2]" // Escuro no modo dark
-        : "bg-[#c0c0c0] text-[#202224]"; // Claro no modo light
+        ? "bg-[#707070] text-[#e2e2e2]"
+        : "bg-[#c0c0c0] text-[#202224]";
     }
     if (conformidade.status === "andamento") {
       return isDarkMode
-        ? "bg-[#906c00] text-[#e2e2e2]" // Escuro no modo dark
-        : "bg-[#edc533] text-[#202224]"; // Claro no modo light
+        ? "bg-[#906c00] text-[#e2e2e2]"
+        : "bg-[#edc533] text-[#202224]";
     }
     s;
     if (conformidade.status === "concluida") {
       return isDarkMode
-        ? "bg-[#0c5256] text-[#e2e2e2]" // Escuro no modo dark
-        : "bg-[#26d2db64] text-[#202224]"; // Claro no modo light
+        ? "bg-[#0c5256] text-[#e2e2e2]"
+        : "bg-[#26d2db64] text-[#202224]";
     }
   };
 
@@ -65,21 +64,19 @@ const ConformidadeFilter = ({
       <s.StyledLi className={getStatusClasses()}>
         <s.StyledDiv>
           <s.StyledUl>
-            {/* Exibir o ID apenas em telas maiores */}
             {!isSmallScreen && <li>{conformidade.id}</li>}
             {!isSmallScreen ? <li>•</li> : <li></li>}
-            {!isSmallScreen && <li>{conformidade.titulo}</li>}
-            {!isSmallScreen ? <li>•</li> : <li></li>}
+            <li>{conformidade.titulo}</li>
+            <li>•</li>
             <li>{conformidade.origem}</li>
             {!isSmallScreen ? <li>•</li> : <li>•</li>}
             <li>{conformidade.departamento}</li>
-            {!isSmallScreen ? <li>•</li> : <li>•</li>}
+            {!isSmallScreen ? <li>•</li> : <li></li>}
             {!isSmallScreen && <li>{conformidade.enquadramento}</li>}
             {!isSmallScreen ? <li>•</li> : <li></li>}
             {!isSmallScreen && <li>{conformidade.grau_severidade}</li>}
           </s.StyledUl>
 
-          {/* Ações disponíveis somente se o usuário puder alterar conformidades */}
           {canChangeConformidades && (
             <s.ActionButtonWrapper>
               <s.ActionButton

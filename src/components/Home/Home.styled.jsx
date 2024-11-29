@@ -11,6 +11,7 @@ export const Container = styled.div`
   @media (max-width: 640px) {
     height: auto;
     margin-left: 0rem;
+    width: 100%;
   }
 `;
 
@@ -22,7 +23,8 @@ export const Row = styled.div`
 
   @media (max-width: 640px) {
     flex-direction: column;
-    margin-left: 0;
+    width: 90%;
+    margin-left: -10px;
     align-items: center;
   }
 `;
@@ -37,32 +39,26 @@ export const DivSelector = styled.div`
     font-size: 1.1rem;
     font-weight: 500;
     margin-right: 10px;
-    color: ${({ isDarkMode }) =>
-      isDarkMode ? "#fff" : "#000"}; /* Cor do texto do título */
+    color: ${({ isDarkMode }) => (isDarkMode ? "#fff" : "#000")};
   }
 
   select {
     width: 140px;
     height: 40px;
     font-size: 1rem;
-    border: 1px solid ${({ isDarkMode }) => (isDarkMode ? "#666" : "#ccc")}; /* Cor da borda */
+    border: 1px solid ${({ isDarkMode }) => (isDarkMode ? "#666" : "#ccc")};
     border-radius: 5px;
     outline: none;
-    background-color: ${({ isDarkMode }) =>
-      isDarkMode ? "#333" : "#fff"}; /* Cor de fundo */
-    color: ${({ isDarkMode }) =>
-      isDarkMode ? "#fff" : "#000"}; /* Cor do texto */
+    background-color: ${({ isDarkMode }) => (isDarkMode ? "#333" : "#fff")};
+    color: ${({ isDarkMode }) => (isDarkMode ? "#fff" : "#000")};
     cursor: pointer;
 
     option {
-      background-color: ${({ isDarkMode }) =>
-        isDarkMode ? "#444" : "#fff"}; /* Cor de fundo das opções */
-      color: ${({ isDarkMode }) =>
-        isDarkMode ? "#fff" : "#000"}; /* Cor das opções */
+      background-color: ${({ isDarkMode }) => (isDarkMode ? "#444" : "#fff")};
+      color: ${({ isDarkMode }) => (isDarkMode ? "#fff" : "#000")};
     }
   }
   @media (max-width: 640px) {
-    display: none;
   }
 `;
 
@@ -73,7 +69,6 @@ export const DividerMain = styled.div`
 
   @media (max-width: 768px) {
     margin-left: -3rem;
-    margin-right: -2rem;
   }
 `;
 
@@ -81,23 +76,33 @@ export const ButtonGroup = styled.div`
   display: flex;
   gap: 12px;
   margin-bottom: 40px;
-
+  width: 100%;
   justify-content: flex-end;
-  margin-left: 40px;
+  margin-left: -10px;
   margin-right: 10px;
 
   @media (max-width: 640px) {
+    flex-direction: column;
     justify-content: center;
-    margin-left: 75px;
+    width: 90%;
+    margin-left: 40px;
+    gap: 12px;
   }
 `;
 
 export const BtnAdd = styled.button`
   background-color: #164095;
-  width: 260px;
-  height: 40px;
+  /* width: 260px; */
+  width: ${({ canViewConformidadesPendente }) =>
+    canViewConformidadesPendente ? "300px" : "100%"};
+  height: ${({ canViewConformidadesPendente }) =>
+    canViewConformidadesPendente ? "42px" : "100px"};
+  font-size: ${({ canViewConformidadesPendente }) =>
+    canViewConformidadesPendente ? "0.875rem" : "1.575rem"};
+  font-weight: ${({ canViewConformidadesPendente }) =>
+    canViewConformidadesPendente ? "400" : "700"};
+
   padding: 0 8px;
-  font-size: 0.875rem;
   color: #ffffff;
   display: flex;
   align-items: center;

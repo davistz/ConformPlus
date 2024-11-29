@@ -82,7 +82,7 @@ const GraficosDetalhados = () => {
               y: {
                 beginAtZero: true,
                 ticks: {
-                  color: isDarkMode ? "#a7a7a7" : "black", // Cor das marcações no eixo Y
+                  color: isDarkMode ? "#a7a7a7" : "black",
                 },
               },
               x: {
@@ -98,8 +98,11 @@ const GraficosDetalhados = () => {
                 },
               },
               tooltip: {
+                backgroundColor: isDarkMode ? "#333" : "#fff",
                 titleColor: isDarkMode ? "#b1aeae" : "black",
                 bodyColor: isDarkMode ? "#b1aeae" : "black",
+                borderColor: isDarkMode ? "#b1aeae" : "#ccc",
+                borderWidth: 1,
               },
             },
           },
@@ -148,24 +151,27 @@ const GraficosDetalhados = () => {
               y: {
                 beginAtZero: true,
                 ticks: {
-                  color: isDarkMode ? "#a7a7a7" : "black", // Cor das marcações no eixo Y
+                  color: isDarkMode ? "#a7a7a7" : "black",
                 },
               },
               x: {
                 ticks: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor das marcações no eixo X
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
             },
             plugins: {
               legend: {
                 labels: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
               tooltip: {
-                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
-                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+                backgroundColor: isDarkMode ? "#333" : "#fff",
+                titleColor: isDarkMode ? "#b1aeae" : "black",
+                bodyColor: isDarkMode ? "#b1aeae" : "black",
+                borderColor: isDarkMode ? "#b1aeae" : "#ccc",
+                borderWidth: 1,
               },
             },
           },
@@ -203,12 +209,15 @@ const GraficosDetalhados = () => {
             plugins: {
               legend: {
                 labels: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
               tooltip: {
-                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
-                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+                backgroundColor: isDarkMode ? "#333" : "#fff",
+                titleColor: isDarkMode ? "#b1aeae" : "black",
+                bodyColor: isDarkMode ? "#b1aeae" : "black",
+                borderColor: isDarkMode ? "#b1aeae" : "#ccc",
+                borderWidth: 1,
               },
             },
           },
@@ -246,12 +255,15 @@ const GraficosDetalhados = () => {
             plugins: {
               legend: {
                 labels: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
               tooltip: {
-                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
-                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+                backgroundColor: isDarkMode ? "#333" : "#fff",
+                titleColor: isDarkMode ? "#b1aeae" : "black",
+                bodyColor: isDarkMode ? "#b1aeae" : "black",
+                borderColor: isDarkMode ? "#b1aeae" : "#ccc",
+                borderWidth: 1,
               },
             },
           },
@@ -287,19 +299,22 @@ const GraficosDetalhados = () => {
               },
               x: {
                 ticks: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor das marcações no eixo X
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
             },
             plugins: {
               legend: {
                 labels: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
               tooltip: {
-                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
-                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+                backgroundColor: isDarkMode ? "#333" : "#fff",
+                titleColor: isDarkMode ? "#b1aeae" : "black",
+                bodyColor: isDarkMode ? "#b1aeae" : "black",
+                borderColor: isDarkMode ? "#b1aeae" : "#ccc",
+                borderWidth: 1,
               },
             },
           },
@@ -336,8 +351,11 @@ const GraficosDetalhados = () => {
                 },
               },
               tooltip: {
-                titleColor: isDarkMode ? "#b1aeae" : "black", // Cor do título das tooltips
-                bodyColor: isDarkMode ? "#b1aeae" : "black", // Cor do corpo das tooltips
+                backgroundColor: isDarkMode ? "#333" : "#fff",
+                titleColor: isDarkMode ? "#b1aeae" : "black",
+                bodyColor: isDarkMode ? "#b1aeae" : "black",
+                borderColor: isDarkMode ? "#b1aeae" : "#ccc",
+                borderWidth: 1,
               },
             },
           },
@@ -464,7 +482,7 @@ const GraficosDetalhados = () => {
             <h2 className="chart-title text-lg max-sm:text-sm mt-2 font-medium">
               Classificação por Severidade
             </h2>
-            <canvas id="severityChart" className="w-full h-full"></canvas>
+            <canvas id="severityChart" className=" w-full h-full"></canvas>
           </div>
 
           {/* Conformidades Totais */}

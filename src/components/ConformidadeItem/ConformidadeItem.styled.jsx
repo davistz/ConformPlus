@@ -87,17 +87,13 @@ export const StyledUl = styled.ul`
   list-style: none;
   margin-left: 44px;
 
-  /* Layout para telas menores que 640px */
   @media (max-width: 640px) {
-    grid-template-columns: 0 125px 0px 10px 10px 0px;
+    grid-template-columns: 0 115px 10px 10px 10px 0px;
 
     font-size: 11px;
     margin-left: -10px;
   }
 
-  /* Layout para telas menores que 1024px */
-
-  /* Layout para telas maiores que 1280px */
   @media (min-width: 1280px) {
     grid-template-columns: 80px 55px 190px 60px 240px 50px 240px 80px auto;
   }

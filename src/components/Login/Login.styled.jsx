@@ -36,7 +36,7 @@ export const LogoImg = styled.img`
 export const BoxInput = styled.div`
   margin-left: 1rem;
   @media (max-width: 480px) {
-    margin-top: -4rem;
+    /* margin-top: -2rem; */
     font-size: 10px;
   }
 `;
@@ -84,8 +84,8 @@ export const Title = styled.h1`
 
   @media (max-width: 480px) {
     font-size: 1.6rem;
-    margin-top: -1rem;
-    margin-bottom: 7rem;
+    margin-top: -4rem;
+    /* margin-bottom: 7rem; */
   }
 `;
 
@@ -93,7 +93,6 @@ export const TitleRegister = styled.h1`
   font-size: 2.3rem;
   font-weight: bold;
   text-align: center;
-  margin-top: 1.7rem;
   color: ${(props) => (props.darkMode ? "#fff" : "#000")};
 
   @media (max-width: 768px) {
@@ -185,7 +184,7 @@ export const FormContainer = styled.div`
     flex-direction: column;
     border-radius: 20px;
     align-items: center;
-    height: 370px;
+    height: 400px;
     background-color: white;
     display: flex;
     flex-direction: row;
@@ -296,9 +295,10 @@ export const InputLogin = styled.div`
   transition: transform 0.5s ease;
 
   @media (max-width: 768px) {
+    top: 5rem;
     height: auto;
     width: 400px;
-    right: -0.5rem;
+    right: 0;
   }
 `;
 
@@ -312,6 +312,7 @@ export const InputRegister = styled.div`
 
   @media (max-width: 768px) {
     height: auto;
+    top: 0rem;
     width: 400px;
     margin-bottom: 4rem;
   }
@@ -337,8 +338,8 @@ export const RegisterContainer = styled.div`
   flex-direction: column;
   margin-left: 3.5rem;
   margin-right: 2rem;
-  margin-bottom: -1rem;
-  margin-top: 3rem;
+  margin-bottom: -2rem;
+  margin-top: 1rem;
 
   position: relative;
 `;
@@ -376,6 +377,16 @@ export const Label = styled.label`
     margin-bottom: 0.3rem;
   }
 `;
+export const RegisterLabel = styled.label`
+  font-size: 1.2rem;
+  font-weight: 500;
+  display: block;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+`;
 
 export const ForgotPasswordLink = styled.a`
   position: absolute;
@@ -388,7 +399,7 @@ export const ForgotPasswordLink = styled.a`
   transition: color 0.3s ease, transform 0.3s ease;
 
   @media (max-width: 768px) {
-    top: 0.1rem;
+    top: 4.1rem;
     font-size: 0.675rem;
   }
 
@@ -559,7 +570,7 @@ export const CheckboxContainer = styled.div`
   }
 
   @media (max-width: 480px) {
-    margin-left: 1.5rem;
+    margin-left: 2.5rem;
   }
 `;
 

@@ -44,31 +44,33 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-      <div className="bg-white w-[650px] h-[640px] p-6 rounded-lg shadow-lg flex flex-col">
-        <div className="">
-          <h2 className="text-2xl font-bold mb-6 text-gray-700">
+      <div className="bg-white max-sm:w-[400px] max-sm:h-[500px] w-[650px] h-[640px] p-6 rounded-lg shadow-lg flex flex-col">
+        <div className="w-full">
+          <h2 className="text-2xl ml-[100px] max-sm:ml-[30px] max-sm:text-lg w-[300px]  font-bold mb-6 text-gray-700">
             Detalhes da Não Conformidade
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-4 max-sm:space-y-0">
             <div className="flex flex-col">
-              <label className="font-medium text-lg">Descrição:</label>
+              <label className="font-medium max-sm:text-sm text-lg">
+                Descrição:
+              </label>
               <input
                 type="text"
                 name="titulo"
                 value={editConformidade.titulo || ""}
                 onChange={handleChange}
-                className="w-full mt-[14px] h-[40px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                className="w-full mt-[14px] max-sm:mb-2 max-sm:mt-2 max-sm:h-[30px] h-[40px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
               />
             </div>
             <div className="flex flex-col">
-              <label className="font-medium text-lg">
+              <label className="font-medium max-sm:text-sm text-lg">
                 Departamento de Origem:
               </label>
               <select
                 name="origem"
                 value={editConformidade.origem || ""}
                 onChange={handleChange}
-                className="w-full mt-[14px] h-[40px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                className="w-full mt-[14px] max-sm:mb-2  max-sm:mt-2 max-sm:h-[37px] h-[40px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
               >
                 <option>Laboratorio</option>
                 <option>Recursos Humanos</option>
@@ -78,12 +80,14 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
               </select>
             </div>
             <div className="flex flex-col">
-              <label className="font-medium text-lg">Enquadramento</label>
+              <label className="font-medium max-sm:text-sm text-lg">
+                Enquadramento
+              </label>
               <select
                 name="enquadramento"
                 value={editConformidade.enquadramento || ""}
                 onChange={handleChange}
-                className="w-full h-[40px] mt-[14px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                className="w-full h-[40px] mt-[14px] max-sm:mt-2 max-sm:mb-2 max-sm:h-[35px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
               >
                 <option>ABNT NBR ISO 15189:2015</option>
                 <option>ABNT NBR ISO 9001:2015</option>
@@ -94,12 +98,14 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
               </select>
             </div>
             <div className="flex flex-col">
-              <label className="font-medium text-lg">Grau de Severidade:</label>
+              <label className="font-medium max-sm:text-sm text-lg">
+                Grau de Severidade:
+              </label>
               <select
                 name="grau_severidade"
                 value={editConformidade.grau_severidade || ""}
                 onChange={handleChange}
-                className="w-full h-[40px] mt-[14px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
+                className="w-full h-[40px] mt-[14px] max-sm:mt-2 max-sm:mb-2 max-sm:h-[35px] rounded-md pl-5 bg-[#F1F4F9] text-black border border-[#000000]"
               >
                 <option>Baixo</option>
                 <option>Médio</option>
@@ -109,12 +115,14 @@ const ModalConformidadeInfo = ({ isOpen, onClose, conformidade, onSave }) => {
 
             {/* Input para anexar arquivos */}
             <div className="flex flex-col">
-              <label className="font-medium text-lg">Anexar Arquivos:</label>
+              <label className="font-medium max-sm:text-sm text-lg">
+                Anexar Arquivos:
+              </label>
               <input
                 type="file"
                 multiple
                 onChange={handleFileChange}
-                className="mt-[14px] border border-[#000000] rounded-md pl-2 bg-[#F1F4F9]"
+                className="mt-[14px] max-sm:mt-2 max-sm:mb-2 max-sm:h-[35px] border border-[#000000] rounded-md pl-2 bg-[#F1F4F9]"
               />
               {fileEvidencia.length > 0 && (
                 <div className="mt-4">

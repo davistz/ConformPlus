@@ -10,8 +10,8 @@ export const KanbanBoard = styled.div`
 export const Column = styled.div`
   background-color: ${(props) =>
     props.isDarkMode
-      ? props.backgroundColorDark || "#333" // Cor para o modo escuro
-      : props.backgroundColorLight || "#e4e3e3"}; // Cor para o modo claro
+      ? props.backgroundColorDark || "#333"
+      : props.backgroundColorLight || "#e4e3e3"};
   border-radius: 5px;
   width: 500px;
   display: flex;
@@ -28,9 +28,8 @@ export const ColumnTitle = styled.h3`
   font-weight: 600;
   background-color: ${(props) =>
     props.isDarkMode
-      ? props.backgroundColorDarkTitle || "#444" // Cor para o título no modo escuro
-      : props.backgroundColorLightTitle ||
-        "#bababa"}; // Cor para o título no modo claro
+      ? props.backgroundColorDarkTitle || "#444"
+      : props.backgroundColorLightTitle || "#bababa"};
   color: ${(props) => (props.isDarkMode ? "white" : "black")};
 
   border-top-left-radius: 5px;
@@ -40,15 +39,29 @@ export const ColumnTitle = styled.h3`
 export const TaskItem = styled.div`
   background-color: ${(props) =>
     props.isDarkMode
-      ? props.backgroundColorDark || "#333" // Cor para o item no modo escuro
-      : props.backgroundColorLight ||
-        "#f1e0a0"}; // Cor para o item no modo claro
+      ? props.backgroundColorDark || "#333"
+      : props.backgroundColorLight || "#f1e0a0"};
   border-radius: 5px;
   padding: 10px;
   padding-right: 50px;
   margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   position: relative;
+
+  .trash-icon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #ff4848;
+    width: 20px;
+    height: 20px;
+
+    &:hover {
+      transition: 0.4s;
+      color: #ff0000;
+    }
+  }
 `;
 
 export const TaskList = styled.div`
