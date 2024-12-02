@@ -1,0 +1,63 @@
+// api/conformidades.js
+export default function handler(req, res) {
+  const conformidades = [
+    {
+      id: "1",
+      titulo: "Conformidade 1",
+      origem: "Processos / Insumos",
+      descricao: "Conformidade 2",
+      enquadramento: "ABNT NBR ISO 9001:2015",
+      acao_imediata: "Conformidade 2",
+      investigacao: "Conformidade 2",
+      departamento: "Financeiro",
+      data: "2024-11-22T05:13:41.846Z",
+      grau_severidade: "Baixo",
+      status: "aberto",
+      createdBy: "Davi Souza",
+    },
+    {
+      id: "2",
+      titulo: "Conformidade 2",
+      origem: "Processos / Insumos",
+      descricao: "Conformidade 2",
+      enquadramento: "ABNT NBR ISO 9001:2015",
+      acao_imediata: "Conformidade 2",
+      investigacao: "Conformidade 2",
+      departamento: "Financeiro",
+      data: "2024-11-22T05:13:41.846Z",
+      grau_severidade: "Baixo",
+      status: "andamento",
+      createdBy: "Felipe Melo",
+    },
+    {
+      id: "3",
+      titulo: "Conformidade 3",
+      origem: "Processos / Insumos",
+      descricao: "Conformidade 3",
+      enquadramento: "ABNT NBR ISO 9001:2015",
+      acao_imediata: "Conformidade 3",
+      investigacao: "Conformidade 3",
+      departamento: "Financeiro",
+      data: "2024-11-22T05:14:03.234Z",
+      grau_severidade: "Baixo",
+      status: "aberto",
+      createdBy: "Lucas Melo",
+    },
+    {
+      id: "4",
+      titulo: "Conformidade 4",
+      origem: "Processos / Insumos",
+      descricao: "Conformidade 3",
+      enquadramento: "ABNT NBR ISO 9001:2015",
+      acao_imediata: "Conformidade 3",
+      investigacao: "Conformidade 3",
+      departamento: "Financeiro",
+      data: "2024-11-22T05:14:03.234Z",
+      grau_severidade: "Baixo",
+      status: "concluida",
+      createdBy: "Lucas Melo",
+    },
+  ];
+
+  res.status(200).json(conformidades); // Retorna as conformidades
+}

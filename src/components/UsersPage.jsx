@@ -8,8 +8,12 @@ import axios from "axios";
 import { toast } from "sonner";
 import miniLogo from "../img/mini_logo.png";
 import { useTheme } from "../ThemeContext";
+import { LOGINS } from "../constants/logins.js";
+import { useNotification } from "../NotificationContext.jsx";
 
 const UsuariosComponent = () => {
+  const { addNotification } = useNotification();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [currentProfile, setCurrentProfile] = useState(null);
@@ -24,16 +28,7 @@ const UsuariosComponent = () => {
   const { isDarkMode } = useTheme();
 
   useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/logins");
-        setProfiles(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar logins:", error);
-      }
-    };
-
-    fetchProfiles();
+    setProfiles(LOGINS);
   }, []);
 
   const colors = [
@@ -58,6 +53,16 @@ const UsuariosComponent = () => {
     setIsModalOpen(false);
     setIsEditMode(false);
     setCurrentProfile(null);
+  };
+
+  const removeProfile = (id) => {
+    const firstName = personState?.name?.split(" ")[0];
+
+    addNotification(`Usuário ${firstName} deletado com sucesso!`, "success");
+
+    setProfiles((prevProfiles) =>
+      prevProfiles.filter((profile) => profile.id !== id)
+    );
   };
 
   const openModal = (profile = null) => {
@@ -88,6 +93,8 @@ const UsuariosComponent = () => {
     department: "",
     permission: "",
   });
+
+  console.log(personState);
 
   const [isPersonStateLoaded, setIsPersonStateLoaded] = useState(false);
 
@@ -135,76 +142,69 @@ const UsuariosComponent = () => {
     }
   };
 
-  const updateManager = (department) => {
-    setUserManager(departments[department] || "");
-  };
-
   const handlePermissionChange = (e) => {
     setUserPermission(e.target.value);
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = (e) => {
     e.preventDefault();
 
     if (isEditMode && currentProfile) {
-      try {
-        const updatedProfile = {
-          ...currentProfile,
-          name: userName,
-          department: userDepartment,
-          manager: userManager,
-          photo: userPhoto,
-          userPermission: userPermission,
-        };
+      const firstName = personState?.name?.split(" ")[0];
+      const firstNameAdd = userName.split(" ")[0];
 
-        await axios.patch(
-          `http://localhost:3001/logins/${currentProfile.id}`,
-          updatedProfile
-        );
+      addNotification(`Usuário ${firstName} alterado com sucesso!`, "success");
 
-        setProfiles((prevProfiles) =>
-          prevProfiles.map((profile) =>
-            profile.id === currentProfile.id ? updatedProfile : profile
-          )
-        );
-
-        toast.success("Usuário atualizado com sucesso!");
-        closeModal();
-      } catch (error) {
-        console.error("Erro ao atualizar o usuário:", error);
-        toast.error("Erro ao atualizar o usuário.");
-      }
-    }
-  };
-
-  const toggleProfileStatus = async (id) => {
-    try {
-      const profile = profiles.find((profile) => profile.id === id);
-      const updatedStatus = profile.status === "active" ? "blocked" : "active";
-
-      await axios.patch(`http://localhost:3001/logins/${id}`, {
-        status: updatedStatus,
-      });
+      const updatedProfile = {
+        ...currentProfile,
+        name: userName,
+        department: userDepartment,
+        manager: userManager,
+        photo: userPhoto,
+        permission: userPermission,
+      };
 
       setProfiles((prevProfiles) =>
         prevProfiles.map((profile) =>
-          profile.id === id ? { ...profile, status: updatedStatus } : profile
+          profile.id === currentProfile.id ? updatedProfile : profile
         )
       );
-    } catch (error) {
-      console.error("Erro ao atualizar o status:", error);
+
+      toast.success("Usuário atualizado com sucesso!");
+      closeModal();
+    } else {
+      addNotification(`Usuário ${userName} adicionado com sucesso!`, "success");
+
+      const newProfile = {
+        id: String(profiles.length + 1),
+        name: userName,
+        department: userDepartment,
+        manager: userManager,
+        photo: userPhoto || "../img/img_users/default.png",
+        permission: userPermission,
+        status: "active",
+      };
+
+      setProfiles((prevProfiles) => [...prevProfiles, newProfile]);
+
+      toast.success("Usuário adicionado com sucesso!");
+      closeModal();
     }
   };
 
-  const removeProfile = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3001/logins/${id}`);
-      setProfiles((prevProfiles) =>
-        prevProfiles.filter((profile) => profile.id !== id)
-      );
-    } catch (error) {
-      console.error("Erro ao deletar usuário:", error);
-    }
+  const toggleProfileStatus = (id) => {
+    const profile = profiles.find((profile) => profile.id === id);
+    const updatedStatus = profile.status === "active" ? "blocked" : "active";
+
+    setProfiles((prevProfiles) =>
+      prevProfiles.map((profile) =>
+        profile.id === id ? { ...profile, status: updatedStatus } : profile
+      )
+    );
+  };
+
+  const updateManager = (department) => {
+    setUserManager(departments[department] || "");
   };
 
   const handleChange = (e) => {
@@ -262,7 +262,6 @@ const UsuariosComponent = () => {
           <h1 className="text-xl text-white mb-6">Suas Informações</h1>
           {isPersonStateLoaded ?? <h1>teste</h1>}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/** Campos de Input */}
             <div>
               <label
                 htmlFor="nome"
@@ -279,9 +278,6 @@ const UsuariosComponent = () => {
                   isDarkMode ? "bg-[#10254f] " : "bg-[#26447f] text-white"
                 } mt-1 block w-full placeholder:text-[#cbcbcb] p-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 `}
               />
-              {/* ${
-                  isDarkMode ? "text-gray-300 " : "text-black"
-                } */}
             </div>
 
             <div>
@@ -563,7 +559,11 @@ const UsuariosComponent = () => {
                   } rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
                 >
                   {Object.keys(departments).map((dept) => (
-                    <option key={dept} value={dept}>
+                    <option
+                      className={`${isDarkMode ? "bg-zinc-800" : ""}`}
+                      key={dept}
+                      value={dept}
+                    >
                       {dept}
                     </option>
                   ))}
@@ -609,10 +609,30 @@ const UsuariosComponent = () => {
                   value={userPermission}
                   onChange={handlePermissionChange}
                 >
-                  <option value="">Selecione uma permissão</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Usuário">Usuário</option>
-                  <option value="Gestor">Gestor</option>
+                  <option
+                    className={`${isDarkMode ? "bg-zinc-800" : ""}`}
+                    value=""
+                  >
+                    Selecione uma permissão
+                  </option>
+                  <option
+                    className={`${isDarkMode ? "bg-zinc-800" : ""}`}
+                    value="Admin"
+                  >
+                    Admin
+                  </option>
+                  <option
+                    className={`${isDarkMode ? "bg-zinc-800" : ""}`}
+                    value="Usuário"
+                  >
+                    Usuário
+                  </option>
+                  <option
+                    className={`${isDarkMode ? "bg-zinc-800" : ""}`}
+                    value="Gestor"
+                  >
+                    Gestor
+                  </option>
                 </select>
               </div>
 

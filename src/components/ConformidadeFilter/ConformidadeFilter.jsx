@@ -6,6 +6,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import * as s from "./ConformidadeFilter.styled";
 import { useTheme } from "../../ThemeContext";
+import userImg from "../../img/img_users/lucas.png";
 
 const ConformidadeFilter = ({
   conformidade,
@@ -72,7 +73,16 @@ const ConformidadeFilter = ({
             {!isSmallScreen ? <li>•</li> : <li>•</li>}
             <li>{conformidade.departamento}</li>
             {!isSmallScreen ? <li>•</li> : <li></li>}
-            {!isSmallScreen && <li>{conformidade.enquadramento}</li>}
+            {!isSmallScreen && (
+              <li className="flex items-center ">
+                <img
+                  src={userImg}
+                  alt="User Icon"
+                  className="w-[40px] mr-[10px] rounded-full"
+                />
+                {conformidade.createdBy}
+              </li>
+            )}
             {!isSmallScreen ? <li>•</li> : <li></li>}
             {!isSmallScreen && <li>{conformidade.grau_severidade}</li>}
           </s.StyledUl>

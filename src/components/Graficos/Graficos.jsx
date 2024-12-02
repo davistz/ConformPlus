@@ -294,7 +294,7 @@ const GraficosDetalhados = () => {
               y: {
                 beginAtZero: true,
                 ticks: {
-                  color: isDarkMode ? "#a7a7a7" : "black", // Cor das marcações no eixo Y
+                  color: isDarkMode ? "#a7a7a7" : "black",
                 },
               },
               x: {
@@ -347,7 +347,7 @@ const GraficosDetalhados = () => {
             plugins: {
               legend: {
                 labels: {
-                  color: isDarkMode ? "#b1aeae" : "black", // Cor da legenda
+                  color: isDarkMode ? "#b1aeae" : "black",
                 },
               },
               tooltip: {

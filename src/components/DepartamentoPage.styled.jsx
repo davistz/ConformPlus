@@ -128,7 +128,7 @@ export const DepartmentHeader = styled.div`
 
   div {
     display: flex;
-    gap: 12px; /* Ajustando o espaçamento entre os botões */
+    gap: 12px;
     align-items: center;
   }
 
@@ -177,18 +177,19 @@ export const Botao = styled.button`
   height: 50px;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  font-size: 0.875rem; /* text-sm */
+  font-size: 0.875rem;
   color: white;
   display: flex;
+  font-weight: 700;
   justify-content: center;
   align-items: center;
-  border-radius: 0.5rem; /* rounded-lg */
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: #1e5bc6; /* hover:bg-blue-700 */
-    transform: scale(1.01); /* hover:scale-[1.01] */
+    background-color: #1e5bc6;
+    transform: scale(1.01);
   }
 
   @media (max-width: 768px) {
@@ -199,11 +200,10 @@ export const Botao = styled.button`
 `;
 export const BotaoCancel = styled.button`
   background-color: ${(props) => (props.isDarkMode ? "#4b5563" : "#555555")};
-  /* width: 10px; */
+
   height: 50px;
-  /* padding-left: 0.5rem; */
-  /* padding-right: 0.5rem; */
-  font-size: 0.875rem; /* text-sm */
+
+  font-size: 0.875rem;
   color: white;
   display: flex;
   justify-content: center;
@@ -213,8 +213,8 @@ export const BotaoCancel = styled.button`
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: #2c2b2b; /* hover:bg-blue-700 */
-    transform: scale(1.01); /* hover:scale-[1.01] */
+    background-color: #2c2b2b;
+    transform: scale(1.01);
   }
 
   @media (max-width: 768px) {

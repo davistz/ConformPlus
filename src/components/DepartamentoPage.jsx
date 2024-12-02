@@ -10,11 +10,13 @@ import Input from "./Input";
 import miniLogo from "../img/mini_logo.png";
 import { useTheme } from "../ThemeContext";
 import * as s from "./DepartamentoPage.styled";
+import { departament } from "../constants/departamentos";
+import { useNotification } from "../NotificationContext";
 
 function DepartamentosPage() {
   const { isDarkMode } = useTheme();
 
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState(departament);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editingDepartment, setEditingDepartment] = useState(null);
@@ -23,6 +25,7 @@ function DepartamentosPage() {
   const [status, setStatus] = useState("");
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [personState, setPersonState] = useState(null);
+  const { addNotification } = useNotification();
 
   useEffect(() => {
     const storedPerson = localStorage.getItem("person");
@@ -41,23 +44,12 @@ function DepartamentosPage() {
     setIsEditMode(true);
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/departamentos")
-      .then((response) => {
-        setDepartments(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao carregar departamentos:", error);
-        toast.error("Erro ao carregar departamentos");
-      });
-  }, []);
-
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const editDepartment = async (event) => {
+  const editDepartment = (event) => {
     event.preventDefault();
+    addNotification(`Dados do departamento alterado com sucesso!`, "success");
 
     if (!editingDepartment) {
       console.error("Departamento para edição não encontrado.");
@@ -75,34 +67,33 @@ function DepartamentosPage() {
         status: status,
       };
 
-      const response = await axios.put(
-        `http://localhost:3001/departamentos/${editingDepartment.id}`,
-        updatedDepartment
-      );
-
       setDepartments((prevDepartments) =>
         prevDepartments.map((dept) =>
-          dept.id === editingDepartment.id ? response.data : dept
+          dept.id === editingDepartment.id ? updatedDepartment : dept
         )
       );
 
       toast.success("Departamento Editado com Sucesso!");
       setIsEditMode(false);
       setEditingDepartment(null);
+      setDepartamento("");
+      setGestor("");
+      setStatus("");
     } catch (error) {
       console.error("Erro ao editar departamento:", error);
       toast.error("Erro ao editar departamento. Tente novamente.");
     }
   };
 
-  const addDepartment = async (event) => {
+  const addDepartment = (event) => {
     event.preventDefault();
+    addNotification(
+      `Novo departamento criado por ${personState.name}!`,
+      "success"
+    );
 
     try {
-      const response = await axios.get("http://localhost:3001/departamentos");
-      const departmentsList = response.data;
-
-      const lastDepartment = departmentsList[departmentsList.length - 1];
+      const lastDepartment = departments[departments.length - 1];
       const newId = lastDepartment
         ? (parseInt(lastDepartment.id) + 1).toString()
         : "1";
@@ -114,15 +105,7 @@ function DepartamentosPage() {
         status: "active",
       };
 
-      const postResponse = await axios.post(
-        "http://localhost:3001/departamentos",
-        newDepartment
-      );
-
-      setDepartments((prevDepartments) => [
-        ...prevDepartments,
-        postResponse.data,
-      ]);
+      setDepartments((prevDepartments) => [...prevDepartments, newDepartment]);
 
       toast.success("Departamento Adicionado com Sucesso!");
 
@@ -135,10 +118,23 @@ function DepartamentosPage() {
     }
   };
 
-  const removeDepartment = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3001/departamentos/${id}`);
+  const removeDepartment = (id) => {
+    const departmentToDelete = departments.find((dept) => dept.id === id);
 
+    if (!departmentToDelete) {
+      console.error("Departamento não encontrado.");
+      toast.error("Erro ao remover departamento. Tente novamente.");
+      return;
+    }
+
+    addNotification(
+      `${departmentToDelete.name} deletado por ${
+        personState.name || "usuário desconhecido"
+      }!`,
+      "success"
+    );
+
+    try {
       setDepartments((prevDepartments) =>
         prevDepartments.filter((dept) => dept.id !== id)
       );

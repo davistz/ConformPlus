@@ -51,7 +51,7 @@ export const TaskItem = styled.div`
   .trash-icon {
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    right: 45px;
     cursor: pointer;
     color: #ff4848;
     width: 20px;
@@ -60,6 +60,21 @@ export const TaskItem = styled.div`
     &:hover {
       transition: 0.4s;
       color: #ff0000;
+    }
+  }
+
+  .info-icon {
+    position: absolute;
+    bottom: 7px;
+    right: 10px;
+    cursor: pointer;
+    color: #cccccc;
+    width: 25px;
+    height: 25px;
+
+    &:hover {
+      transition: 0.4s;
+      color: #5f5f5f;
     }
   }
 `;
@@ -79,7 +94,7 @@ export const TitleProcesso = styled.div`
 
 export const ProcessoStatus = styled.span`
   position: absolute;
-  top: 8px;
+  top: 48px;
   right: 8px;
   padding: 3px 10px;
   background-color: ${(props) => {

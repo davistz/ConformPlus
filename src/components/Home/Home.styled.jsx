@@ -65,7 +65,7 @@ export const DivSelector = styled.div`
 export const DividerMain = styled.div`
   border-bottom: 1px solid
     ${(props) => (props.isDarkMode ? "#4b5563" : "#d1d5db")};
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 
   @media (max-width: 768px) {
     margin-left: -3rem;
@@ -83,24 +83,23 @@ export const ButtonGroup = styled.div`
   @media (max-width: 640px) {
     flex-direction: column;
     justify-content: center;
+    margin-top: -20px;
     width: 90%;
-    margin-left: 40px;
+    margin-left: 50px;
     gap: 12px;
   }
 `;
 
 export const BtnAdd = styled.button`
   background-color: #164095;
-  /* width: 260px; */
+
   width: ${({ canViewConformidadesPendente }) =>
     canViewConformidadesPendente ? "260px" : "100%"};
   height: ${({ canViewConformidadesPendente }) =>
     canViewConformidadesPendente ? "42px" : "100px"};
   font-size: ${({ canViewConformidadesPendente }) =>
     canViewConformidadesPendente ? "0.875rem" : "1.575rem"};
-  font-weight: ${({ canViewConformidadesPendente }) =>
-    canViewConformidadesPendente ? "400" : "700"};
-
+  font-weight: 700;
   padding: 0 8px;
   color: #ffffff;
   display: flex;
@@ -117,7 +116,7 @@ export const BtnAdd = styled.button`
   @media (max-width: 640px) {
     width: 100%;
     height: 45px;
-    font-size: 0.575rem;
+    font-size: 0.875rem;
   }
 `;
 
@@ -125,6 +124,7 @@ export const BtnCheck = styled.button`
   background-color: #e49d31;
   width: 300px;
   height: 40px;
+  font-weight: 700;
   padding: 0 8px;
   font-size: 0.875rem;
   color: #ffffff;
@@ -141,7 +141,7 @@ export const BtnCheck = styled.button`
   @media (max-width: 640px) {
     width: 100%;
     height: 45px;
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -243,9 +243,9 @@ export const StatusHeader = styled.div`
   }
 
   @media (max-width: 640px) {
-    margin-left: 35px;
+    margin-left: 5px;
     justify-content: center;
     font-size: 0.65rem;
-    gap: 15px;
+    gap: 30px;
   }
 `;

@@ -10,6 +10,8 @@ import DepartamentoPage from "./pages/departamentos-page.jsx";
 
 import NaoConformidadePage from "./pages/naoconformidades-page.jsx";
 import { ThemeProvider } from "./ThemeContext";
+import CalendarPage from "./pages/calendar-page.jsx";
+import { NotificationProvider } from "./NotificationContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,12 +38,18 @@ const router = createBrowserRouter([
     path: "/conformidades",
     element: <NaoConformidadePage />,
   },
+  {
+    path: "/calendario",
+    element: <CalendarPage />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <NotificationProvider>
+        <RouterProvider router={router} />
+      </NotificationProvider>
     </ThemeProvider>
   </StrictMode>
 );

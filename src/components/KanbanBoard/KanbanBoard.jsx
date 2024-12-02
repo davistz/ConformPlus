@@ -3,6 +3,8 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import axios from "axios";
 import * as S from "./KanbanBoard.styled";
 import KanbanColumn from "./KanbanColumn";
+import CONFORMIDADES from "../../constants/nao_conformidades.js";
+import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 
 const KanbanBoard = () => {
   const [conformidadesPendentes, setConformidadesPendentes] = useState([]);
@@ -10,29 +12,36 @@ const KanbanBoard = () => {
   const [conformidadesConcluida, setConformidadesConcluida] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedConformidade, setDraggedConformidade] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalConformidade, setModalConformidade] = useState(null);
 
-  const fetchConformidades = async () => {
-    try {
-      const response = await axios.get("http://localhost:3001/conformidades");
-      const conformidades = response.data;
-
-      setConformidadesPendentes(
-        conformidades.filter((conformidade) => conformidade.status === "aberto")
-      );
-      setConformidadesAndamento(
-        conformidades.filter(
-          (conformidade) => conformidade.status === "andamento"
-        )
-      );
-      setConformidadesConcluida(
-        conformidades.filter(
-          (conformidade) => conformidade.status === "concluida"
-        )
-      );
-    } catch (error) {
-      console.error("Erro ao buscar as conformidades:", error);
-    }
+  const openModal = (conformidade) => {
+    setModalConformidade(conformidade);
+    setIsModalOpen(true);
   };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalConformidade(null);
+  };
+
+  useEffect(() => {
+    const conformidades = CONFORMIDADES;
+
+    setConformidadesPendentes(
+      conformidades.filter((conformidade) => conformidade.status === "aberto")
+    );
+    setConformidadesAndamento(
+      conformidades.filter(
+        (conformidade) => conformidade.status === "andamento"
+      )
+    );
+    setConformidadesConcluida(
+      conformidades.filter(
+        (conformidade) => conformidade.status === "concluida"
+      )
+    );
+  }, []);
 
   useEffect(() => {
     fetchConformidades();
@@ -51,7 +60,7 @@ const KanbanBoard = () => {
     setDraggedConformidade(draggedItem);
   };
 
-  const onDragEnd = async (result) => {
+  const onDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) {
       setIsDragging(false);
@@ -59,20 +68,16 @@ const KanbanBoard = () => {
       return;
     }
 
-    if (destination.droppableId === "delete") {
-      await handleDeleteTask(draggedConformidade.id);
-    } else {
-      const sourceList = getList(source.droppableId);
-      const destinationList = getList(destination.droppableId);
-      const [movedConformidade] = sourceList.splice(source.index, 1);
-      destinationList.splice(destination.index, 0, movedConformidade);
+    const sourceList = getList(source.droppableId);
+    const destinationList = getList(destination.droppableId);
+    const [movedConformidade] = sourceList.splice(source.index, 1);
+    destinationList.splice(destination.index, 0, movedConformidade);
 
-      const updatedStatus = getStatusByDroppableId(destination.droppableId);
-      await updateConformidadeStatus(movedConformidade.id, updatedStatus);
+    const updatedStatus = getStatusByDroppableId(destination.droppableId);
+    movedConformidade.status = updatedStatus;
 
-      setList(source.droppableId, sourceList);
-      setList(destination.droppableId, destinationList);
-    }
+    setList(source.droppableId, sourceList);
+    setList(destination.droppableId, destinationList);
 
     setIsDragging(false);
     setDraggedConformidade(null);
@@ -91,21 +96,31 @@ const KanbanBoard = () => {
     }
   };
 
-  const updateConformidadeStatus = async (id, status) => {
-    try {
-      await axios.patch(`http://localhost:3001/conformidades/${id}`, {
-        status,
-      });
-      fetchConformidades();
-    } catch (error) {
-      console.error("Erro ao atualizar o status da conformidade:", error);
-    }
+  const handleSaveConformidade = (updatedConformidade) => {
+    setConformidades((prev) =>
+      prev.map((item) =>
+        item.id === updatedConformidade.id ? updatedConformidade : item
+      )
+    );
   };
 
-  const handleDeleteTask = async (id) => {
+  const handleDeleteTask = (id) => {
     try {
-      await axios.delete(`http://localhost:3001/conformidades/${id}`);
-      fetchConformidades();
+      const newPendentes = conformidadesPendentes.filter(
+        (conformidade) => conformidade.id !== id
+      );
+      const newAndamento = conformidadesAndamento.filter(
+        (conformidade) => conformidade.id !== id
+      );
+      const newConcluida = conformidadesConcluida.filter(
+        (conformidade) => conformidade.id !== id
+      );
+
+      setConformidadesPendentes(newPendentes);
+      setConformidadesAndamento(newAndamento);
+      setConformidadesConcluida(newConcluida);
+
+      console.log(`Conformidade com ID ${id} deletada com sucesso.`);
     } catch (error) {
       console.error("Erro ao deletar a conformidade:", error);
     }
@@ -132,21 +147,32 @@ const KanbanBoard = () => {
             droppableId="aberta"
             tasks={conformidadesPendentes}
             onDeleteTask={handleDeleteTask}
+            openModal={openModal}
           />
           <KanbanColumn
             title="Em Andamento"
             droppableId="andamento"
             tasks={conformidadesAndamento}
             onDeleteTask={handleDeleteTask}
+            openModal={openModal}
           />
           <KanbanColumn
             title="Concluídas"
             droppableId="concluida"
             tasks={conformidadesConcluida}
             onDeleteTask={handleDeleteTask}
+            openModal={openModal}
           />
         </S.KanbanContainer>
       </DragDropContext>
+      {isModalOpen && (
+        <ModalConformidadeInfo
+          isOpen={isModalOpen}
+          conformidade={modalConformidade}
+          onClose={closeModal}
+          onSave={handleSaveConformidade}
+        />
+      )}
     </S.Container>
   );
 };

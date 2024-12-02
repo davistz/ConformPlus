@@ -1,10 +1,11 @@
-const LOGINS = [
+export const LOGINS = [
   {
     id: "1",
-    name: "Davi",
-    email: "davi",
+    name: "Davi Souza",
+    email: "davi@gmail.com",
     password: "1234",
     permission: "Admin",
+    telefone: "(79) 9983-6358",
     status: "active",
     department: "TI",
     manager: "Julio Mendes",
@@ -12,10 +13,11 @@ const LOGINS = [
   },
   {
     id: "2",
-    name: "Lucas",
-    email: "Lucas",
+    name: "Lucas Melo",
+    email: "lucas@gmail.com",
     password: "1234",
     permission: "Gestor",
+    telefone: "(79) 9974-2374",
     status: "active",
     department: "RH",
     manager: "Aline Machado",
@@ -23,15 +25,14 @@ const LOGINS = [
   },
   {
     id: "3",
-    name: "Felipe",
-    email: "Felipe",
+    name: "Felipe Melo",
+    email: "felipe@gmail.com",
     password: "1234",
     permission: "Usuário",
+    telefone: "(79) 9933-1254",
     status: "active",
     department: "Ambulatorio",
     manager: "Carlos Almeida",
     photo: "../img/img_users/user_default.png",
   },
 ];
-
-export default LOGINS;

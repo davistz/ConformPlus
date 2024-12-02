@@ -6,6 +6,7 @@ import { CiCircleInfo } from "react-icons/ci";
 import { FaTrashAlt } from "react-icons/fa";
 import * as s from "./ConformidadeItem.styled";
 import { useTheme } from "../../ThemeContext";
+import userImg from "../../img/img_users/lucas.png";
 
 const ConformidadeItem = ({
   conformidade,
@@ -96,15 +97,26 @@ const ConformidadeItem = ({
 
         <s.StyledDiv>
           <s.StyledUl>
-            {!isSmallScreen && <li>{conformidade.id}</li>}
-            {!isSmallScreen ? <li>•</li> : <li></li>}
             <li>{conformidade.titulo}</li>
-            {!isSmallScreen ? <li>•</li> : <li>•</li>}
-            {!isSmallScreen && <li>{conformidade.enquadramento}</li>}
+            {!isSmallScreen ? <li>•</li> : <li></li>}
+            {!isSmallScreen && <li>{conformidade.origem}</li>}
+            {!isSmallScreen ? <li>•</li> : <li></li>}
+            {!isSmallScreen && (
+              <li className="flex items-center ">
+                <img
+                  src={userImg}
+                  alt="User Icon"
+                  className="w-[40px] mr-[10px] rounded-full"
+                />
+                {conformidade.createdBy}
+              </li>
+            )}
+            {!isSmallScreen ? <li>•</li> : <li></li>}
+            <li>{conformidade.grau_severidade}</li>
             {!isSmallScreen ? <li>•</li> : <li></li>}
             {!isSmallScreen && <li>{conformidade.data}</li>}
             {!isSmallScreen ? <li>•</li> : <li></li>}
-            <li>{conformidade.grau_severidade}</li>
+            {!isSmallScreen && <li>{conformidade.prazo}</li>}
           </s.StyledUl>
 
           {canChangeConformidades && (

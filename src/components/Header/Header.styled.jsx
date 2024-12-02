@@ -226,7 +226,7 @@ export const UserDetails = styled.div`
 
 export const UserInitials = styled.div`
   font-size: 30px;
-  background-color: #0e5eba;
+  background-color: ${(props) => (props.isDarkMode ? "#0b2d70" : "#0e5eba")};
   color: white;
   width: 70px;
   height: 70px;
@@ -271,7 +271,7 @@ export const FooterButtonMob = styled.button`
   align-items: center;
   padding: 0.7rem;
   margin-left: 2rem;
-  margin-top: 19rem;
+  margin-top: ${(props) => (props.PermView ? "27rem" : "22rem")};
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -299,7 +299,6 @@ const slideInFromRight = keyframes`
   }
 `;
 
-// Animação para fechar (opcional, caso você queira que ele saia com um efeito)
 const slideOutToRight = keyframes`
   from {
     transform: translateX(0);
@@ -317,10 +316,9 @@ export const NotificationModal = styled.div`
   right: 0;
   height: 100%;
   width: 400px;
-  /* background-color: #0e285b; */
   background-color: ${(props) =>
     props.isDarkMode ? "#0f0f0fd8" : "#0e285bcd"};
-  border-radius: 0;
+  border-radius: 0 0 8px 8px;
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   overflow-y: auto;
@@ -329,10 +327,11 @@ export const NotificationModal = styled.div`
     0.4s ease-in-out;
   transform: ${(props) =>
     props.isClosing ? "translateX(100%)" : "translateX(0)"};
+  backdrop-filter: blur(8px);
 
   @media (max-width: 480px) {
+    width: 70%;
     height: 100%;
-    width: 350px;
   }
 `;
 
@@ -342,16 +341,52 @@ export const NotificationHeader = styled.div`
   align-items: center;
   padding: 20px;
   background-color: ${(props) => (props.isDarkMode ? "#161616" : "#06183b")};
-  color: white;
+  color: ${(props) => (props.isDarkMode ? "#ffffff" : "#f1f4f9")};
   font-size: 1.5rem;
+  border-bottom: 1px solid
+    ${(props) => (props.isDarkMode ? "#333333" : "#001434")};
+`;
+
+export const NotificationItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #1d1d1d;
+  background-color: ${(props) =>
+    props.isNew ? (props.isDarkMode ? "#262626" : "#e8f0fe") : "transparent"};
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => (props.isDarkMode ? "#333333" : "#0052de")};
+  }
+`;
+
+export const NotificationContent = styled.div`
+  margin-left: 15px;
+
+  color: ${(props) => (props.isDarkMode ? "#ffffff" : "#000000")};
+
+  strong {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: ${(props) => (props.isDarkMode ? "#cccccc" : "white")};
+  }
 `;
 
 export const CloseButton = styled.button`
-  cursor: pointer;
   background: transparent;
   border: none;
-  font-size: 40px;
-  color: white;
-`;
+  color: ${(props) => (props.isDarkMode ? "#ffffff" : "#f1f4f9")};
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
 
-export const NotificationContent = styled.div``;
+  &:hover {
+    color: ${(props) => (props.isDarkMode ? "#f5a623" : "#0056d2")};
+  }
+`;

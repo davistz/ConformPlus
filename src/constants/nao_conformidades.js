@@ -1,49 +1,50 @@
-const data = new Date().toLocaleDateString("pt-BR", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-
 const CONFORMIDADES = [
   {
     id: "1",
-    titulo: "Não conformidade no processo de calibração",
+    titulo: "Técnico",
     origem: "Laboratório",
     descricao: "Falha no processo de calibração do equipamento XYZ.",
     enquadramento: "ABNT/NBR/300",
     acao_imediata: "Recalibrar o equipamento imediatamente.",
     investigacao:
       "A falha foi identificada após análise detalhada do processo de calibração.",
-    departamento: "Laboratório",
-    data: data,
+    departamento: "Hospitalar",
+    data: "2 de dez. de 2024",
+    prazo: "6 de dez. de 2024",
     grau_severidade: "Alto",
     status: "aberto",
+    createdBy: "Felipe Melo",
   },
   {
     id: "2",
-    titulo: "Auditoria interna - não conformidade na documentação",
+    titulo: "Documentação",
     origem: "Administração",
     descricao: "Documentação incompleta em processos críticos.",
     enquadramento: "ABNT/NBR/400",
     acao_imediata: "Atualizar toda a documentação pendente.",
     investigacao: "Auditoria interna identificou inconsistências.",
-
-    data: data,
+    departamento: "Limpeza",
+    data: "9 de dez. de 2024",
+    prazo: "12 de dez. de 2024",
     grau_severidade: "Médio",
     status: "andamento",
+    createdBy: "Felipe Melo",
   },
   {
     id: "3",
-    titulo: "Não conformidade no ensaio de laboratório",
+    titulo: "Manutenção",
     descricao:
       "O ensaio de amostras não atendeu aos critérios de qualidade estabelecidos.",
     acao_imediata: "Repetir o ensaio com controle rigoroso.",
     investigacao: "Foi detectada uma falha no protocolo de ensaio.",
+    departamento: "Recursos Humanos",
     origem: "Laboratório",
     enquadramento: "ABNT/NBR/500",
-    data: data,
+    data: "10 de dez. de 2024",
+    prazo: "15 de dez. de 2024",
     grau_severidade: "Baixo",
     status: "concluida",
+    createdBy: "Felipe Melo",
   },
 ];
 

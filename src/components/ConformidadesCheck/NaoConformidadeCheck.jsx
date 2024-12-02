@@ -3,6 +3,8 @@ import { IoMdClose } from "react-icons/io";
 import { FaCheck, FaTrashAlt } from "react-icons/fa";
 import * as s from "./NaoConformidadeCheck.styled";
 import { useTheme } from "../../ThemeContext";
+import userImg from "../../img/img_users/lucas.png";
+import { useNotification } from "../../NotificationContext";
 
 const NaoConformidadeCheck = ({
   isOpen,
@@ -14,6 +16,7 @@ const NaoConformidadeCheck = ({
   if (!isOpen) return null;
 
   const { isDarkMode } = useTheme();
+  const { addNotification } = useNotification();
 
   return (
     <s.Overlay>
@@ -26,15 +29,24 @@ const NaoConformidadeCheck = ({
           </s.Subtitle>
         </s.TitleContainer>
 
+        {s.EmptyMessage && conformidadesPendentes.length === 0 && (
+          <s.EmptyMessage isDarkMode={isDarkMode}>
+            Não possui conformidades pendentes!
+          </s.EmptyMessage>
+        )}
+
         {conformidadesPendentes.length > 0 && (
           <div style={{ marginTop: "2.5rem" }}>
             <s.CardsContainer>
               {conformidadesPendentes.map((conformidade, index) => (
                 <s.Card key={index} isDarkMode={isDarkMode}>
                   <s.CardContent>
-                    <p>
-                      <strong>Id:</strong> {conformidade.id}
-                    </p>
+                    <div className="flex justify-between">
+                      <p>
+                        <strong>Titulo: </strong>
+                        {conformidade.titulo}
+                      </p>
+                    </div>
                     <p>
                       <strong>Origem:</strong> {conformidade.origem}
                     </p>
@@ -46,17 +58,29 @@ const NaoConformidadeCheck = ({
                       <strong>Grau de Severidade:</strong>{" "}
                       {conformidade.grau_severidade}
                     </p>
+                    <p className="font-semibold">Responsável:</p>
+                    <div className="flex items-center gap-1">
+                      <img className="w-8 rounded-full" src={userImg} alt="" />
+                      <p className="text-sm ">Davi Souza</p>
+                    </div>
                   </s.CardContent>
                   <s.CardActions>
                     <s.ActionButton
-                      onClick={() => alterarStatusConformidade(conformidade.id)}
-                    >
-                      <FaCheck />
-                    </s.ActionButton>
-                    <s.ActionButton
                       onClick={() => deletarNaoConformidade(conformidade.id)}
                     >
-                      <FaTrashAlt />
+                      Recusar
+                    </s.ActionButton>
+                    <s.ActionButton
+                      onClick={() => {
+                        addNotification(
+                          `Nova não conformidade autorizada por Davi Souza!`,
+                          "success"
+                        );
+
+                        alterarStatusConformidade(conformidade.id);
+                      }}
+                    >
+                      Aceitar
                     </s.ActionButton>
                   </s.CardActions>
                 </s.Card>

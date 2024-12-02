@@ -5,7 +5,7 @@ import { IoMdAdd, IoMdSearch } from "react-icons/io";
 import * as s from "./Home.styled.jsx";
 import ConformidadeItem from "../ConformidadeItem/ConformidadeItem.jsx";
 import { toast } from "sonner";
-import axios from "axios";
+
 import AddConformidadeDialog from "../AddConformidadeDialog.jsx";
 import NaoConformidadeCheck from "../ConformidadesCheck/NaoConformidadeCheck.jsx";
 import Id from "../Id/Id.jsx";
@@ -14,9 +14,10 @@ import KanbanBoard from "../KanbanBoard/KanbanBoard.jsx";
 import ModalConformidadeInfo from "../ModalConformidadeInfo.jsx";
 import { useTheme } from "../../ThemeContext.jsx";
 import ConformidadeFilter from "../ConformidadeFilter/ConformidadeFilter.jsx";
+import CONFORMIDADES from "../../constants/nao_conformidades.js";
 
 const NaoConformidades = () => {
-  const [conformidades, setConformidades] = useState([]);
+  const [conformidades, setConformidades] = useState(CONFORMIDADES);
   const [filteredConformidades, setFilteredConformidades] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilter, setIsFilter] = useState(false);
@@ -47,22 +48,6 @@ const NaoConformidades = () => {
     checkScreenSize();
 
     return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
-
-  useEffect(() => {
-    const fetchConformidades = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/conformidades");
-        const data = Array.isArray(response.data) ? response.data : [];
-        setConformidades(data);
-        setFilteredConformidades(data);
-      } catch (error) {
-        toast.error("Erro ao carregar as não conformidades.");
-        console.error(error);
-      }
-    };
-
-    fetchConformidades();
   }, []);
 
   const handleSearchChange = (e) => {
@@ -123,28 +108,18 @@ const NaoConformidades = () => {
       }
 
       try {
-        const loginsResponse = await axios.get("http://localhost:3001/logins");
-        const currentUser = loginsResponse.data.find(
-          (login) => login.name === personState.name
-        );
+        const currentUser = {
+          name: personState.name,
+        };
 
-        if (!currentUser) {
-          toast.error("Usuário logado não encontrado.");
-          return;
-        }
-
-        const conformidadesResponse = await axios.get(
-          "http://localhost:3001/conformidades"
-        );
-        const allConformidades = Array.isArray(conformidadesResponse.data)
-          ? conformidadesResponse.data
+        const allConformidades = Array.isArray(CONFORMIDADES)
+          ? CONFORMIDADES
           : [];
 
         allConformidades.forEach((conformidade) => {
           const createdByFormatted = conformidade.createdBy
-            .trim()
-            .toLowerCase()
-            .replace(" ", "");
+            ? conformidade.createdBy.trim().toLowerCase().replace(" ", "")
+            : "";
           const currentUserFormatted = currentUser.name
             .trim()
             .toLowerCase()
@@ -153,8 +128,9 @@ const NaoConformidades = () => {
 
         const userConformidades = allConformidades.filter(
           (conformidade) =>
+            conformidade.createdBy &&
             conformidade.createdBy.trim().toLowerCase().replace(" ", "") ===
-            currentUser.name.trim().toLowerCase().replace(" ", "")
+              currentUser.name.trim().toLowerCase().replace(" ", "")
         );
 
         setConformidades(allConformidades);
@@ -186,17 +162,15 @@ const NaoConformidades = () => {
     (conformidade) => conformidade.status === "concluida"
   );
 
-  const deletarNaoConformidade = async (conformidadeId) => {
+  const deletarNaoConformidade = (conformidadeId) => {
     const conformidadeIdStr = String(conformidadeId);
     console.log("Deletando conformidade com ID:", conformidadeIdStr);
 
     try {
-      await axios.delete(
-        `http://localhost:3001/conformidades/${conformidadeIdStr}`
-      );
       const novasConformidades = conformidades.filter(
         (conformidade) => String(conformidade.id) !== conformidadeIdStr
       );
+
       setConformidades(novasConformidades);
 
       toast.success("Não conformidade removida com sucesso!");
@@ -222,47 +196,33 @@ const NaoConformidades = () => {
     setAddConformidadeDialogIsOpen(false);
   };
 
-  const alterarStatusConformidade = async (conformidadeId) => {
-    const novasConformidades = await Promise.all(
-      conformidades.map(async (conformidade) => {
-        if (conformidade.id !== conformidadeId || !conformidade.status) {
-          return conformidade;
-        }
+  const alterarStatusConformidade = (conformidadeId) => {
+    const novasConformidades = conformidades.map((conformidade) => {
+      if (conformidade.id !== conformidadeId || !conformidade.status) {
+        return conformidade;
+      }
 
-        let novoStatus;
-        let mensagem;
+      let novoStatus;
+      let mensagem;
 
-        if (conformidade.status === "pendente") {
-          novoStatus = "aberto";
-          mensagem = "Não conformidade alterada para aberto!";
-        } else if (conformidade.status === "aberto") {
-          novoStatus = "andamento";
-          mensagem = "Não conformidade alterada para andamento!";
-        } else if (conformidade.status === "andamento") {
-          novoStatus = "concluida";
-          mensagem = "Não conformidade alterada para concluída!";
-        } else if (conformidade.status === "concluida") {
-          novoStatus = "aberto";
-          mensagem = "Não conformidade alterada para aberto!";
-          setCheckNaoConformidadeDialogIsOpen(false);
-        }
+      if (conformidade.status === "pendente") {
+        novoStatus = "aberto";
+        mensagem = "Não conformidade alterada para aberto!";
+      } else if (conformidade.status === "aberto") {
+        novoStatus = "andamento";
+        mensagem = "Não conformidade alterada para andamento!";
+      } else if (conformidade.status === "andamento") {
+        novoStatus = "concluida";
+        mensagem = "Não conformidade alterada para concluída!";
+      } else if (conformidade.status === "concluida") {
+        novoStatus = "aberto";
+        mensagem = "Não conformidade alterada para aberto!";
+        setCheckNaoConformidadeDialogIsOpen(false);
+      }
 
-        try {
-          const response = await axios.patch(
-            `http://localhost:3001/conformidades/${conformidade.id}`,
-            { status: novoStatus }
-          );
-
-          toast.success(mensagem);
-
-          return { ...conformidade, status: novoStatus };
-        } catch (error) {
-          console.error("Erro ao alterar o status:", error);
-          toast.error("Erro ao alterar o status da não conformidade.");
-          return conformidade;
-        }
-      })
-    );
+      toast.success(mensagem);
+      return { ...conformidade, status: novoStatus };
+    });
 
     setConformidades(novasConformidades);
   };
@@ -305,12 +265,12 @@ const NaoConformidades = () => {
             </div>
           </s.DivSelector>
         )}
-        <div className="w-full">
+        <div className="w-full ">
           {!canViewConformidadesPendente && (
-            <div className="">
+            <div className="mb-[-40px]">
               <div className="ml-10 flex flex-col ">
                 {!viewMyConformidade ? (
-                  <div className="w-full">
+                  <div className="w-full ">
                     <div className="flex items-center justify-between">
                       <h1 className="text-4xl max-sm:text-lg font-bold mb-4">
                         Suas Não Conformidades
@@ -325,7 +285,7 @@ const NaoConformidades = () => {
                     <div className="max-sm:w-[400px]">
                       <s.DividerMain isDarkMode={isDarkMode} />
                     </div>
-                    <div className="flex ml-[1050px] max-sm:ml-[110px] mt-[-20px] mb-4 gap-10 max-sm:gap-0 items-center">
+                    <div className="flex ml-[1050px] max-sm:ml-[110px] mt-[-10px] mb-4 gap-10 max-sm:gap-0 items-center">
                       <div className="flex items-center max-sm:w-[80px] gap-1">
                         <div className="h-4 w-4 max-sm:w-3 max-sm:h-3 rounded-full bg-gray-400"></div>{" "}
                         <p className="max-sm:text-[10px] max-sm:hidden">Em</p>
@@ -345,63 +305,75 @@ const NaoConformidades = () => {
                     </div>
 
                     {userConformidades.length > 0 ? (
-                      <ul className="flex max-sm:flex-col max-sm:pb-4">
-                        {userConformidades.map((conformidade) => {
-                          let statusClasses = "";
+                      <div>
+                        <ul className="flex max-sm:flex-col max-sm:pb-4">
+                          {userConformidades.map((conformidade) => {
+                            let statusClasses = "";
 
-                          if (conformidade.status === "aberto") {
-                            statusClasses = "bg-[#c0c0c0] text-[#202224]";
-                          } else if (conformidade.status === "andamento") {
-                            statusClasses = "bg-[#edc533] text-[#202224]";
-                          } else if (conformidade.status === "concluida") {
-                            statusClasses = "bg-[#26d2db64] text-[#202224]";
-                          }
+                            if (conformidade.status === "aberto") {
+                              statusClasses = isDarkMode
+                                ? "bg-[#707070] text-[#c0c0c0]"
+                                : "bg-[#c0c0c0] text-[#202224]";
+                            } else if (conformidade.status === "andamento") {
+                              statusClasses = isDarkMode
+                                ? "bg-[#b68929] text-[#c0c0c0]"
+                                : "bg-[#edc533] text-[#202224]";
+                            } else if (conformidade.status === "concluida") {
+                              statusClasses = isDarkMode
+                                ? "bg-[#1d9299] text-[#c0c0c0]"
+                                : "bg-[#26d2db64] text-[#202224]";
+                            }
 
-                          return (
-                            <li key={conformidade.id} className=" py-2">
-                              <div className="flex justify-between max-sm:pb-0 items-center p-2 pb-10 rounded-lg">
-                                <div
-                                  className={`flex flex-col max-sm:w-[350px] w-[400px] p-4 rounded-lg space-y-2 ${statusClasses}`}
-                                >
-                                  {/* ID */}
-                                  {!isSmallScreen && (
-                                    <div className="text-lg">
-                                      <span className="font-bold">Id:</span>{" "}
-                                      {conformidade.id}
+                            return (
+                              <li key={conformidade.id} className="py-2">
+                                <div className="flex justify-between max-sm:pb-0 items-center p-2 pb-10 rounded-lg">
+                                  <div
+                                    className={`flex flex-col max-sm:w-[350px] w-[400px] p-4 rounded-lg space-y-2 ${statusClasses}`}
+                                  >
+                                    {!isSmallScreen && (
+                                      <div className="text-lg">
+                                        <span className="font-bold">Id:</span>{" "}
+                                        {conformidade.id}
+                                      </div>
+                                    )}
+
+                                    <div className="text-lg max-sm:text-sm">
+                                      <span className="font-bold">Título:</span>{" "}
+                                      {conformidade.titulo}
                                     </div>
-                                  )}
 
-                                  {/* Título */}
-                                  <div className="text-lg max-sm:text-sm">
-                                    <span className="font-bold">Título:</span>{" "}
-                                    {conformidade.titulo}
-                                  </div>
+                                    <div className="text-lg max-sm:text-sm">
+                                      <span className="font-bold">Origem:</span>{" "}
+                                      {conformidade.origem}
+                                    </div>
 
-                                  {/* Origem */}
-                                  <div className="text-lg max-sm:text-sm">
-                                    <span className="font-bold">Origem:</span>{" "}
-                                    {conformidade.origem}
-                                  </div>
+                                    <div className="text-lg max-sm:text-sm">
+                                      <span className="font-bold">
+                                        Departamento:
+                                      </span>{" "}
+                                      {conformidade.departamento}
+                                    </div>
 
-                                  {/* Departamento */}
-                                  <div className="text-lg max-sm:text-sm">
-                                    <span className="font-bold">
-                                      Departamento:
-                                    </span>{" "}
-                                    {conformidade.departamento}
-                                  </div>
-
-                                  {/* Grau de Severidade */}
-                                  <div className="text-lg max-sm:text-sm">
-                                    <span className="font-bold">Grau:</span>{" "}
-                                    {conformidade.grau_severidade}
+                                    <div className="text-lg max-sm:text-sm">
+                                      <span className="font-bold">Grau:</span>{" "}
+                                      {conformidade.grau_severidade}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </li>
-                          );
-                        })}
-                      </ul>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                        <s.BtnAdd
+                          canViewConformidadesPendente={
+                            canViewConformidadesPendente
+                          }
+                          onClick={() => setAddConformidadeDialogIsOpen(true)}
+                        >
+                          Adicionar Não Conformidade
+                          <IoMdAdd className="max-sm:hidden ml-2" />
+                        </s.BtnAdd>
+                      </div>
                     ) : (
                       <p className="text-gray-500">
                         Nenhuma não conformidade encontrada.
@@ -410,15 +382,18 @@ const NaoConformidades = () => {
                   </div>
                 ) : (
                   <div className="flex w-full flex-col ">
-                    <div className="flex items-center max-sm:w-[400px] justify-between">
-                      <h1 className="text-4xl max-sm:text-lg font-bold mb-4">
-                        Solicite sua conformidade agora mesmo!
+                    <div className="flex items-center max-sm:w-full justify-between">
+                      <h1 className="text-4xl max-sm:text-lg  font-bold mb-4">
+                        Solicite sua conformidade
+                        <br /> agora mesmo!
                       </h1>
                       <h1
                         onClick={() => setViewMyConformidade(false)}
-                        className="text-lg max-sm:text-[12px] mr-4 max-sm:mr-0 font-bold text-gray-600 ml-2 hover:text-blue-600 cursor-pointer transition-colors duration-300"
+                        className={`${
+                          isDarkMode ? "text-[#858585]" : "text-[#434343]"
+                        } text-lg max-sm:text-[12px] mr-4 max-sm:mr-0 font-bold  hover:text-blue-600 cursor-pointer transition-colors duration-300`}
                       >
-                        <span className="hidden max-sm:block mr-4">
+                        <span className="hidden max-sm:block mr-4 max-sm:mr-0">
                           Visualizar
                         </span>
                         <span className="hidden sm:block">
@@ -426,7 +401,7 @@ const NaoConformidades = () => {
                         </span>
                       </h1>
                     </div>
-                    <div className="max-sm:w-[400px]">
+                    <div className="max-sm:w-full max-sm:ml-8">
                       <s.DividerMain isDarkMode={isDarkMode} />
                     </div>
 
@@ -447,29 +422,46 @@ const NaoConformidades = () => {
                   </div>
                 )}
               </div>
+              <s.ButtonGroup>
+                <div className="flex max-sm:flex-col mr-2 max-sm:mr-0 gap-4">
+                  <div className="max-sm:ml-0 mt-10">
+                    <s.BtnAdd
+                      canViewConformidadesPendente={
+                        canViewConformidadesPendente
+                      }
+                      onClick={() => setAddConformidadeDialogIsOpen(true)}
+                    >
+                      Adicionar Não Conformidade
+                      <IoMdAdd className="ml-2" />
+                    </s.BtnAdd>
+                  </div>
+                </div>
+              </s.ButtonGroup>
             </div>
           )}
 
           <s.ButtonGroup>
             {canViewConformidadesPendente && (
-              <s.BtnCheck
-                onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
-              >
-                Conformidades Pendentes{" "}
-                {conformidadesPendentes.length > 0
-                  ? conformidadesPendentes.length
-                  : ""}
-              </s.BtnCheck>
+              <div className="flex max-sm:flex-col mr-2 max-sm:mr-0 gap-4">
+                <s.BtnCheck
+                  onClick={() => setCheckNaoConformidadeDialogIsOpen(true)}
+                >
+                  Conformidades Pendentes{" "}
+                  {conformidadesPendentes.length > 0
+                    ? conformidadesPendentes.length
+                    : ""}
+                </s.BtnCheck>
+                <div className="max-sm:ml-0">
+                  <s.BtnAdd
+                    canViewConformidadesPendente={canViewConformidadesPendente}
+                    onClick={() => setAddConformidadeDialogIsOpen(true)}
+                  >
+                    Adicionar Não Conformidade
+                    <IoMdAdd className="max-sm:hidden ml-2" />
+                  </s.BtnAdd>
+                </div>
+              </div>
             )}
-            <div className=" max-sm:ml-0">
-              <s.BtnAdd
-                canViewConformidadesPendente={canViewConformidadesPendente}
-                onClick={() => setAddConformidadeDialogIsOpen(true)}
-              >
-                Adicionar Não Conformidade
-                <IoMdAdd className="max-sm:hidden ml-2" />
-              </s.BtnAdd>
-            </div>
           </s.ButtonGroup>
         </div>
       </s.Row>
@@ -538,6 +530,14 @@ const NaoConformidades = () => {
                   </p>
                 ) : (
                   <ul>
+                    <div className="grid grid-cols-[50px_240px_260px_260px_200px_240px] max-sm:grid-cols-[50px_120px_50px] max-sm:text-sm max-sm:ml-4 gap-4 ml-12 mb-2 font-bold text-center">
+                      <h1 className="max-sm:hidden">Id</h1>
+                      <h1>Titulo</h1>
+                      <h1>Origem</h1>
+                      <h1>Departamento</h1>
+                      <h1 className="max-sm:hidden">Responsável</h1>
+                      <h1 className="max-sm:hidden">Grau Severidade</h1>
+                    </div>
                     {filteredConformidades.map((conformidade) => (
                       <li key={conformidade.id}>
                         <ConformidadeFilter
@@ -552,7 +552,6 @@ const NaoConformidades = () => {
               </div>
             ) : (
               <div>
-                {/* Em aberto */}
                 {canViewConformidadesPendente && (
                   <s.Box section="aberto" isDarkMode={isDarkMode}>
                     <div className="flex items-center justify-between max-sm:mb-2 max-sm:w-full">
@@ -589,7 +588,6 @@ const NaoConformidades = () => {
                   </s.Box>
                 )}
 
-                {/* Seções: Em Andamento e Concluídas */}
                 {canViewConformidadesPendente && (
                   <s.Box
                     section="andamento"
@@ -623,7 +621,6 @@ const NaoConformidades = () => {
                   </s.Box>
                 )}
 
-                {/* Seção Concluídas */}
                 {canViewConformidadesPendente && (
                   <s.Box
                     section="concluido"

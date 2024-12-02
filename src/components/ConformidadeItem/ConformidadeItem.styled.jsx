@@ -84,18 +84,18 @@ export const StyledUl = styled.ul`
   display: grid;
   font-size: 1rem;
   font-weight: normal;
+  align-items: center;
   list-style: none;
-  margin-left: 44px;
-
+  margin-left: 10px;
   @media (max-width: 640px) {
     grid-template-columns: 0 115px 10px 10px 10px 0px;
 
-    font-size: 11px;
+    font-size: 13px;
     margin-left: -10px;
   }
 
   @media (min-width: 1280px) {
-    grid-template-columns: 80px 55px 190px 60px 240px 50px 240px 80px auto;
+    grid-template-columns: 140px 30px 150px 30px 180px 100px 140px 40px 180px 30px 150px;
   }
 `;
 

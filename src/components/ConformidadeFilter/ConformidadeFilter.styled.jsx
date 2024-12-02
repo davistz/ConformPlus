@@ -90,9 +90,9 @@ export const StyledUl = styled.ul`
   margin-left: 44px;
 
   @media (max-width: 640px) {
-    grid-template-columns: 0 85px 15px 105px 15px 100px 10px;
+    grid-template-columns: 0 85px 15px 85px 25px 100px;
 
-    font-size: 9px;
+    font-size: 10px;
     margin-left: -10px;
   }
 

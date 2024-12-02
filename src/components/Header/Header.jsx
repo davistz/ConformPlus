@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { useEffect, useState } from "react";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
-import { IoMdNotifications } from "react-icons/io";
+import { IoMdCalendar, IoMdNotifications } from "react-icons/io";
 import { AiFillDashboard } from "react-icons/ai";
 import { IoIosGitNetwork, IoMdClose } from "react-icons/io";
 import { PiUsersLight } from "react-icons/pi";
@@ -17,13 +17,22 @@ import lucasAvatar from "../../img/img_users/lucas.png";
 import * as s from "./Header.styled";
 import { useTheme } from "../../ThemeContext";
 import clickSound from "../../audio/click-mouse.mp3";
+import { useNotification } from "../../NotificationContext";
+import userImg from "../../img/img_users/lucas.png";
 
 const Header = () => {
+  const { notifications, removeNotification, addNotification } =
+    useNotification();
+
   const location = useLocation();
   const navigate = useNavigate();
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [activeButton, setActiveButton] = useState("home");
   const { isDarkMode, toggleTheme } = useTheme();
+
+  const toggleNotifications = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
 
   const handleClickWithSound = () => {
     const audio = new Audio(clickSound);
@@ -57,7 +66,11 @@ const Header = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const PermView = personState?.permission === "Usuário";
+  const PermView =
+    personState?.permission === "Usuário" ||
+    personState?.permission === "Gestor";
+
+  const GestorView = personState?.permission === "Gestor";
 
   const telaPequena = () => {
     setIsSidebarOpen(true);
@@ -182,6 +195,19 @@ const Header = () => {
 
   const [isClosing, setIsClosing] = useState(false);
 
+  const getFormattedCurrentTime = () => {
+    const now = new Date();
+
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    return `${day}/${month} - ${hours}:${minutes}`;
+  };
+
+  const horaAtual = getFormattedCurrentTime();
+
   return (
     <s.Layout>
       <s.HeaderContainer isOn={isDarkMode}>
@@ -204,16 +230,21 @@ const Header = () => {
           </div>
           <div className="">
             {!PermView && (
-              <s.NotificationsButton
-                onClick={() => setIsNotificationOpen(true)}
-              >
+              <s.NotificationsButton onClick={toggleNotifications}>
                 <IoMdNotifications />
+                {notifications.length > 0 && (
+                  <span className="bg-red-500 bg-opacity-90 text-white text-xs rounded-full px-2 absolute top-9 ml-5">
+                    {notifications.length}
+                  </span>
+                )}
               </s.NotificationsButton>
             )}
           </div>
           {personState ? (
             <s.UserDetails onClick={handleUsers}>
-              <s.UserInitials>{initials}</s.UserInitials>
+              <s.UserInitials isDarkMode={isDarkMode}>
+                {initials}
+              </s.UserInitials>
               <div className="max-sm:hidden ">
                 <s.UserInfo>
                   <s.UserName>{personState.name}</s.UserName>
@@ -233,14 +264,52 @@ const Header = () => {
         {isNotificationOpen && (
           <s.NotificationModal isDarkMode={isDarkMode} isClosing={isClosing}>
             <s.NotificationHeader isDarkMode={isDarkMode}>
-              <h2>Notificações</h2>
-              <s.CloseButton onClick={handleClose}>
-                <IoIosClose />
+              <span>Notificações</span>
+              <s.CloseButton isDarkMode={isDarkMode} onClick={handleClose}>
+                <IoIosClose size={24} />
               </s.CloseButton>
             </s.NotificationHeader>
-            <s.NotificationContent isDarkMode={isDarkMode}>
-              {renderizarNotificacoes()}
-            </s.NotificationContent>
+            {notifications.length === 0 ? (
+              <p
+                style={{
+                  padding: "40px",
+                  textAlign: "center",
+                  color: isDarkMode ? "#ffffff" : "#ffffff",
+                }}
+              >
+                Sem novas notificações
+              </p>
+            ) : (
+              notifications.map((notification) => (
+                <s.NotificationItem
+                  key={notification.id}
+                  isDarkMode={isDarkMode}
+                  isNew={notification.isNew}
+                >
+                  <img
+                    src={userImg}
+                    alt="Avatar"
+                    style={{
+                      width: "40px",
+                      height: "40px",
+                      borderRadius: "50%",
+                      marginRight: "10px",
+                    }}
+                  />
+                  <s.NotificationContent isDarkMode={isDarkMode}>
+                    <strong>{notification.title}</strong>
+                    <p>{notification.message}</p>
+                    <h1 className="text-[13px] text-[#c3c3c3]">{horaAtual}</h1>
+                  </s.NotificationContent>
+                  <s.CloseButton
+                    isDarkMode={isDarkMode}
+                    onClick={() => removeNotification(notification.id)}
+                  >
+                    <IoIosClose size={20} />
+                  </s.CloseButton>
+                </s.NotificationItem>
+              ))
+            )}
           </s.NotificationModal>
         )}
 
@@ -256,12 +325,20 @@ const Header = () => {
             <s.MenuList>
               <s.MenuItem onClick={() => handleButtonClick("dashboard")}>
                 Dashboard
-                <RiDashboardHorizontalFill />
+                <RiDashboardHorizontalFill className="ml-3" />
               </s.MenuItem>
               <s.MenuItem onClick={() => handleButtonClick("conformidades")}>
                 Não Conformidades
                 <AiFillDashboard />
               </s.MenuItem>
+              {GestorView ? (
+                <s.MenuItem onClick={() => handleButtonClick("calendario")}>
+                  Caléndario
+                  <IoMdCalendar className="ml-3" />
+                </s.MenuItem>
+              ) : (
+                <></>
+              )}
               {PermView ? (
                 <></>
               ) : (
@@ -288,7 +365,11 @@ const Header = () => {
             </s.MenuList>
           </div>
 
-          <s.FooterButtonMob onClick={handleLogout} select="not">
+          <s.FooterButtonMob
+            PermView={PermView}
+            onClick={handleLogout}
+            select="not"
+          >
             <MdLogout />
             Sair
           </s.FooterButtonMob>
@@ -312,10 +393,26 @@ const Header = () => {
               <AiFillDashboard />
               Não Conformidades
             </s.StyledButton>
+            {GestorView && (
+              <s.StyledButton
+                active={activeButton === "calendario"}
+                onClick={() => handleButtonClick("calendario")}
+              >
+                <IoMdCalendar />
+                Calendário
+              </s.StyledButton>
+            )}
             {PermView ? (
               <></>
             ) : (
               <>
+                <s.StyledButton
+                  active={activeButton === "calendario"}
+                  onClick={() => handleButtonClick("calendario")}
+                >
+                  <IoMdCalendar />
+                  Calendário
+                </s.StyledButton>
                 <s.StyledButton
                   active={activeButton === "departamentos"}
                   onClick={() => handleButtonClick("departamentos")}

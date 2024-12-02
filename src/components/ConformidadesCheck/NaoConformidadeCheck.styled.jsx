@@ -91,11 +91,7 @@ export const Card = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 200px;
-
-  &:hover {
-    background-color: ${(props) => (props.isDarkMode ? "#555555" : "#b8b8b8")};
-  }
+  height: auto;
 `;
 
 export const CardContent = styled.div`
@@ -106,16 +102,43 @@ export const CardContent = styled.div`
 
 export const CardActions = styled.div`
   display: flex;
+  gap: 10px;
   justify-content: space-between;
   margin-top: 1rem;
 `;
 
 export const ActionButton = styled.button`
-  font-size: 1.5rem;
+  background-color: #e52727;
+  border-radius: 10px;
+  height: 30px;
+  width: 100%;
+  font-size: 1rem;
   cursor: pointer;
-  color: ${(props) => (props.isDarkMode ? "#a5d6a7" : "green")};
+  color: white;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #a31010;
+  }
 
   &:last-child {
-    color: ${(props) => (props.isDarkMode ? "#e57373" : "red")};
+    background-color: #16b01b;
+
+    &:hover {
+      background-color: #0e8c13;
+    }
+  }
+`;
+
+export const EmptyMessage = styled.h1`
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.5rem;
+  color: ${({ isDarkMode }) => (isDarkMode ? "#FFFFFF" : "#4A4A4A")};
+  font-weight: semibold;
+  opacity: 0.8;
+
+  @media (max-width: 680px) {
+    font-size: 1rem;
   }
 `;

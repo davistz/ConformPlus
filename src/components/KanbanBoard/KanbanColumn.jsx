@@ -2,8 +2,16 @@ import * as S from "./KanbanColumn.styled";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import { useTheme } from "../../ThemeContext";
 import { FaTrashAlt } from "react-icons/fa";
+import userImg from "../../img/img_users/lucas.png";
+import { CiCircleInfo } from "react-icons/ci";
 
-const KanbanColumn = ({ title, droppableId, tasks, onDeleteTask }) => {
+const KanbanColumn = ({
+  title,
+  droppableId,
+  tasks,
+  onDeleteTask,
+  openModal,
+}) => {
   const { isDarkMode } = useTheme();
 
   const getColumnColors = () => {
@@ -84,7 +92,19 @@ const KanbanColumn = ({ title, droppableId, tasks, onDeleteTask }) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                   >
-                    <S.TitleProcesso>{conformidade.titulo}</S.TitleProcesso>
+                    <div className="flex justify-between">
+                      <S.TitleProcesso>{conformidade.titulo}</S.TitleProcesso>
+                      <div className="flex items-center gap-2 mr-[-40px]">
+                        <img
+                          className="w-10 rounded-full"
+                          src={userImg}
+                          alt=""
+                        />
+                        <h1 className="font-semibold">
+                          {conformidade.createdBy}
+                        </h1>
+                      </div>
+                    </div>
                     <S.ProcessoStatus prioridade={conformidade.grau_severidade}>
                       {conformidade.grau_severidade}
                     </S.ProcessoStatus>
@@ -113,10 +133,18 @@ const KanbanColumn = ({ title, droppableId, tasks, onDeleteTask }) => {
                         Abertura:
                       </p>
                       {conformidade.data}
-                      <FaTrashAlt
-                        className="trash-icon"
-                        onClick={() => handleDelete(conformidade.id)}
-                      />
+                    </div>
+                    <div>
+                      <div className="flex justify-end">
+                        <CiCircleInfo
+                          onClick={() => openModal(conformidade)}
+                          className="info-icon"
+                        />
+                        <FaTrashAlt
+                          className="trash-icon"
+                          onClick={() => handleDelete(conformidade.id)}
+                        />
+                      </div>
                     </div>
                   </S.TaskItem>
                 )}

@@ -5,14 +5,15 @@ import MiniLogo from "../../img/logo-conform.png";
 
 import * as s from "./Login.styled";
 
+import { LOGINS } from "../../constants/logins";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 
 const Login = () => {
   const [modeLogin, setModeLogin] = useState(true);
+  const [logins, setLogins] = useState(LOGINS);
 
   const toggleMode = () => {
     setModeLogin(!modeLogin);
@@ -27,28 +28,6 @@ const Login = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const handleRegister = async (data) => {
-    console.log("click");
-    try {
-      const response = await axios.post("http://localhost:3001/logins", {
-        name: data.name_register,
-        email: data.email_register,
-        password: data.senha_register,
-        telefone: data.telefone_register,
-        permission: "Usuário",
-        status: "active",
-      });
-      console.log("Login enviado", data);
-      toast.success("Cadastro realizado com sucesso!");
-      setTimeout(() => {
-        setModeLogin((prevMode) => !prevMode);
-      }, 2000);
-    } catch (error) {
-      console.error("Erro ao registrar usuário:", error);
-      toast.error("Erro ao cadastrar usuário. Tente novamente.");
-    }
-  };
-
   const handleRecuperarSenha = () => {
     setRecuperarSenha(false);
   };
@@ -57,45 +36,49 @@ const Login = () => {
   };
   const handleSenhaNova = () => {
     toast.success("Link de redefinir enviado com sucesso!");
+
+    setTimeout(() => {
+      setRecuperarSenha(true);
+    }, 2000);
+  };
+  const handleLogin = (data) => {
+    const { email_logawdain, senha_login } = data;
+
+    const user = logins.find(
+      (login) =>
+        login.email === email_logawdain && login.password === senha_login
+    );
+
+    if (user) {
+      localStorage.setItem("person", JSON.stringify(user));
+      toast.success("Login realizado com sucesso!", {
+        style: { color: "black" },
+      });
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } else {
+      toast.error("Email ou senha incorreta!", { style: { color: "red" } });
+    }
   };
 
-  const handleLogin = async (data) => {
-    const { email_logawdain, senha_login } = data;
-    console.log("Login enviado", data);
+  const handleRegister = (data) => {
+    const newUser = {
+      id: String(logins.length + 1),
+      name: data.name_register,
+      email: data.email_register,
+      password: data.senha_register,
+      telefone: data.telefone_register,
+      permission: "Usuário",
+      status: "active",
+    };
 
-    try {
-      const response = await axios.get("http://localhost:3001/logins", {
-        params: {
-          email: email_logawdain,
-          password: senha_login,
-        },
-      });
+    setLogins((prevLogins) => [...prevLogins, newUser]);
 
-      const usuarios = response.data;
-
-      if (usuarios.length > 0) {
-        const usuario = usuarios[0];
-        console.log("Usuário encontrado:", usuario);
-
-        localStorage.setItem("person", JSON.stringify(usuario));
-
-        toast.success("Login realizado com sucesso!", {
-          style: { color: "black" },
-        });
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 2000);
-      } else {
-        toast.error("Email ou senha incorreta!", {
-          style: { color: "red" },
-        });
-      }
-    } catch (error) {
-      toast.error("Email ou senha incorreta!", {
-        style: { color: "red" },
-      });
-    }
+    toast.success("Cadastro realizado com sucesso!");
+    setTimeout(() => {
+      setModeLogin(true);
+    }, 2000);
   };
 
   const {
@@ -149,6 +132,7 @@ const Login = () => {
         {RecuperarSenha ? (
           <>
             <s.FormWrapper>
+              <div></div>
               <s.FormContainer isActive={modeLogin}>
                 <s.InfoLogin className={`slide-${transitionState}`}>
                   <s.MiniImg className="mt-4" src={MiniLogo} alt="logo fsph" />
@@ -167,7 +151,14 @@ const Login = () => {
                     <s.InputLogin
                       style={{ display: modeLogin ? "block" : "none" }}
                     >
-                      <s.Title>Login</s.Title>
+                      <div className="w-full h-[30px] flex justify-center items-center">
+                        <img
+                          className="max-sm:block hidden w-10"
+                          src={MiniLogo}
+                          alt=""
+                        />
+                        <s.Title>Login</s.Title>
+                      </div>
                       <s.InputContainer>
                         <s.BoxInput>
                           <s.Label>Digite seu Email</s.Label>
@@ -235,7 +226,15 @@ const Login = () => {
                     <s.InputRegister
                       style={{ display: modeLogin ? "none" : "block" }}
                     >
-                      <s.TitleRegister>Registrar</s.TitleRegister>
+                      <div className="w-full h-[30px] mt-2 flex justify-center items-center">
+                        <img
+                          className="max-sm:block hidden w-10"
+                          src={MiniLogo}
+                          alt=""
+                        />
+                        <s.TitleRegister>Registrar</s.TitleRegister>
+                      </div>
+
                       <s.RegisterContainer>
                         <s.BoxRegister>
                           <s.RegisterLabel>Digite seu Nome</s.RegisterLabel>
@@ -315,17 +314,6 @@ const Login = () => {
                           Registrar
                         </s.StyledButtonRegister>
                       </s.ButtonWrapper>
-
-                      <div className="flex ml-[65px] mb-4 min-[430px]:hidden">
-                        <s.MiniImg
-                          className="mt-3"
-                          src={MiniLogo}
-                          alt="logo fsph"
-                        />
-                        <h1 className="font-bold text-[30px] mt-3 text-black">
-                          Conform<span className="text-[#508aff]">Plus</span>
-                        </h1>
-                      </div>
                     </s.InputRegister>
                   </form>
                 </s.FormContainer>
@@ -362,18 +350,11 @@ const Login = () => {
                       <s.StyledInput
                         type="text"
                         placeholder="Insira seu email"
-                        {...register("email-forget", {
-                          required: "Informe seu email",
-                        })}
                       />
-                      {errors.email && (
-                        <s.ErrorMesage>{errors.email.message}</s.ErrorMesage>
-                      )}
                     </div>
                   </s.BoxInput>
                 </s.InputContainer>
 
-                {error && <s.ErrorText>{error}</s.ErrorText>}
                 <s.ButtonWrapper>
                   <div className="w-full ml-[140px] mt-[110px]">
                     <s.StyledButtonPassword
